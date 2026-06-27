@@ -97,7 +97,7 @@
 
   <!-- THE SUITE -->
   <div class="sec-h"><span class="n">1</span>The document suite</div>
-  <p class="sec-sub">The full set, anchored by the Master Reference. Each opens as a download (Word, PDF, or PowerPoint). The Master consolidates everything; the others go deep on each layer.</p>
+  <p class="sec-sub">The full set, anchored by the Master Reference. Each opens in-browser &mdash; no download needed. The Master consolidates everything; the others go deep on each layer.</p>
   <div class="grid" id="suiteGrid"></div>
 
   <!-- THE 80:20 MODEL -->
@@ -147,7 +147,7 @@
   <!-- HONESTY -->
   <div class="note"><b>On sourcing &amp; verification.</b> These are charter-and-scoping artifacts, not a delivery commitment. Several reference specific June-2026 products, metrics, and dates (tool names, the 14-day velocity loop, gross-margin and compliance figures) drawn from source briefings and <b>pending independent verification</b> &mdash; treat them as the target operating model. The durable layer is the structure (the loops, the 80:20 split, the architecture pattern); the perishable layer is the named tools and numbers. The Modutecture engagement is framed as a <b>validated demonstration, not a closed-and-scaled account</b>.</div>
 
-  <div class="footnote" id="footnote">StatusNeo &times; Modutecture &middot; Agentic FDE Practice &middot; charter-and-scoping suite. All artifacts are downloadable above; source markdown lives alongside the binaries in the StatusNeo folder.</div>
+  <div class="footnote" id="footnote">StatusNeo &times; Modutecture &middot; Agentic FDE Practice &middot; charter-and-scoping suite. Every document opens in-browser from its markdown source &mdash; no download needed.</div>
 </div>
 
 <script>
@@ -168,33 +168,52 @@ var SUITE = [
   ["/artifacts/statusneo/10-FDE-OKR-SCORECARD.pdf","OKR Scorecard","✓","var(--green)","The printable tracking grid &mdash; fill in actuals against targets at each 30/60/90 checkpoint, score every Key Result 0.0&ndash;1.0, and roll up a horizon mean. Companion to the OKR &amp; STAR addendum.","Tracking sheet","PDF + DOCX","b-doc"],
 ];
 
+/* map each binary filename stem -> its markdown doc id; cards with a source render in-browser */
+var DOC = {
+  "StatusNeo-Agentic-FDE-MASTER":"00-MASTER-AGENTIC-FDE-REFERENCE",
+  "01-FDE-CHARTER-PROPOSAL":"01-FDE-CHARTER-PROPOSAL",
+  "FDE-80-20-Roles-and-Lifecycle":"06-FDE-80-20-ROLES-AND-LIFECYCLE",
+  "Agentic-FDE-Lifecycle":"05-AGENTIC-FDE-LIFECYCLE",
+  "Multi-Cloud-Agentic-FDE-Tooling-Directory":"07-MULTI-CLOUD-AGENTIC-FDE-TOOLING-DIRECTORY",
+  "AEC-Modutecture-FDE-UseCase":"08-AEC-MODUTECTURE-FDE-USECASE",
+  "02-FDE-LOOP-COOKBOOK":"02-FDE-LOOP-COOKBOOK",
+  "03-LANDING-RUNBOOK":"03-LANDING-RUNBOOK",
+  "09-FDE-30-60-90-OKR-STAR":"09-FDE-30-60-90-OKR-STAR",
+  "10-FDE-OKR-SCORECARD":"10-FDE-OKR-SCORECARD"
+};
+function stem(href){ return href.split("/").pop().replace(/\.(pdf|docx|pptx)$/i,""); }
 function card(item){
-  var a=document.createElement("a"); a.href=item[0]; a.className="card";
-  // PDFs open in-browser; office docs download
+  var docId = DOC[stem(item[0])];
+  var href = docId ? ("/artifacts/statusneo/reader.html?doc="+docId) : item[0];
+  var a=document.createElement("a"); a.href=href; a.className="card";
   var isOffice = /\.(docx|pptx|xlsx)$/i.test(item[0]);
-  if(isOffice) a.setAttribute("download","");
-  var badge = '<span class="badge '+item[7]+'">'+(/\.pdf$/i.test(item[0])?'open':'download')+'</span>';
+  var badgeTxt;
+  if(docId){ badgeTxt="read"; }                                  // opens in-browser from markdown
+  else if(isOffice){ a.setAttribute("download",""); badgeTxt="download"; }
+  else { badgeTxt="open"; }
+  var fmt = docId ? "Read online" : item[6];
   a.innerHTML =
-    badge +
+    '<span class="badge '+item[7]+'">'+badgeTxt+'</span>'+
     '<div class="ico" style="background:'+item[3]+'">'+item[2]+'</div>'+
     '<h3>'+item[1]+'</h3>'+
     '<p>'+item[4]+'</p>'+
-    '<div class="meta"><span class="tag">'+item[5]+'</span><span class="fmt">'+item[6]+'</span></div>';
+    '<div class="meta"><span class="tag">'+item[5]+'</span><span class="fmt">'+fmt+'</span></div>';
   return a;
 }
 SUITE.forEach(function(it){ document.getElementById("suiteGrid").appendChild(card(it)); });
 
-/* ---------- artifact availability note ---------- */
+/* ---------- availability note: only the 2 binary-only artifacts need a file on disk ---------- */
 (function(){
-  var probe = SUITE.map(function(s){ return s[0]; });
+  var bins = SUITE.map(function(s){return s[0];}).filter(function(u){ return !DOC[stem(u)]; });
   var missing=[];
-  Promise.all(probe.map(function(u){
+  Promise.all(bins.map(function(u){
     return fetch(u,{method:"HEAD"}).then(function(r){ if(!r.ok) missing.push(u.split("/").pop()); }).catch(function(){ missing.push(u.split("/").pop()); });
   })).then(function(){
     var n=document.getElementById("footnote");
     if(missing.length){
-      n.innerHTML="Note: "+missing.length+" artifact(s) not yet copied into <code>wwwroot/artifacts/statusneo/</code>. "+
-        "Run <code>sync-statusneo-artifacts.ps1</code> in the StatusNeo folder to populate them, then refresh.";
+      n.innerHTML="Every document above opens in-browser from its markdown source &mdash; no download needed. Two presentation artifacts are optional downloads, not yet in <code>wwwroot/artifacts/statusneo/</code>: "+missing.join(", ")+".";
+    } else {
+      n.innerHTML="Every document opens in-browser; the Board Deck and PR-FAQ are also available as downloads.";
     }
   });
 })();
