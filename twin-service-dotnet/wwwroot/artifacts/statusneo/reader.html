@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>StatusNeo FDE — Document Reader</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--code:#0f1a2e;--codefg:#d6e2f0;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.55;}
+  .backbar{background:#0e1b2e;padding:8px 16px;}
+  .backbar a{color:#c9d6e8;text-decoration:none;font-size:12px;} .backbar a:hover{color:var(--gold);}
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:22px 0 20px;}
+  .hwrap{max-width:1180px;margin:0 auto;padding:0 22px;}
+  .kick{color:var(--gold);font-size:11.5px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;}
+  header.hero h1{font-family:Cambria,Georgia,serif;font-size:25px;margin:0;}
+  .layout{max-width:1180px;margin:0 auto;padding:22px;display:flex;gap:24px;align-items:flex-start;}
+  /* sidebar */
+  nav.docs{flex:0 0 260px;position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  nav.docs .grp{font-size:10px;font-weight:bold;letter-spacing:1.2px;text-transform:uppercase;color:var(--slate);padding:9px 10px 4px;}
+  nav.docs a{display:flex;gap:9px;align-items:baseline;text-decoration:none;color:var(--ink);font-size:13px;
+    padding:7px 10px;border-radius:8px;border-left:3px solid transparent;}
+  nav.docs a:hover{background:var(--tint);}
+  nav.docs a.on{background:#eef3fb;border-left-color:var(--gold);font-weight:bold;color:var(--navy);}
+  nav.docs a .nn{flex:none;font-family:Cambria,serif;font-weight:bold;color:var(--goldk);font-size:12px;min-width:20px;}
+  /* article */
+  main{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:13px;
+       padding:30px 38px 48px;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  .md h1{font-family:Cambria,serif;color:var(--navy);font-size:27px;margin:0 0 6px;line-height:1.2;}
+  .md h2{font-family:Cambria,serif;color:var(--navy);font-size:20px;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px;}
+  .md h3{font-family:Calibri,serif;color:var(--goldk);font-size:16px;margin:18px 0 4px;font-weight:bold;}
+  .md p{margin:9px 0;font-size:14px;}
+  .md em{color:var(--slate);}
+  .md strong{color:var(--navy);}
+  .md ul,.md ol{margin:8px 0;padding-left:24px;} .md li{font-size:14px;margin:4px 0;}
+  .md blockquote{margin:14px 0;padding:11px 16px;background:#f7faff;border-left:4px solid var(--gold);
+    border-radius:0 9px 9px 0;color:var(--navy);font-size:13.5px;}
+  .md blockquote strong{color:var(--navy);}
+  .md hr{border:0;border-top:1px solid var(--line);margin:22px 0;}
+  .md table{border-collapse:collapse;width:100%;margin:14px 0;font-size:12.5px;}
+  .md th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;border:1px solid #2c3f5e;font-weight:bold;}
+  .md td{padding:7px 10px;border:1px solid var(--line);vertical-align:top;}
+  .md tr:nth-child(even) td{background:var(--tint);}
+  .md code{font-family:Consolas,monospace;font-size:12px;background:#eef1f5;padding:1px 6px;border-radius:5px;color:#34495e;}
+  .md pre{background:var(--code);color:var(--codefg);padding:15px 17px;border-radius:11px;overflow:auto;margin:14px 0;}
+  .md pre code{background:none;color:var(--codefg);font-size:12px;padding:0;line-height:1.5;}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
+  .toolbar .src{font-size:11.5px;color:var(--slate);}
+  .toolbar a.raw{font-size:11.5px;color:var(--goldk);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:3px 9px;}
+  .toolbar a.raw:hover{border-color:var(--gold);}
+  .loading{color:var(--slate);font-size:14px;padding:20px 0;}
+  .err{color:#b3402f;font-size:13.5px;background:#fdecea;border:1px solid #f3c8c2;border-radius:9px;padding:12px 15px;}
+  @media(max-width:820px){.layout{flex-direction:column;}nav.docs{position:static;flex:1 1 auto;width:100%;}}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/statusneo.html">&larr; StatusNeo FDE suite</a> &nbsp;&middot;&nbsp; <a href="/showcase.html">Showcase</a></div>
+<header class="hero"><div class="hwrap">
+  <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
+  <h1 id="docTitle">Document Reader</h1>
+</div></header>
+
+<div class="layout">
+  <nav class="docs" id="docNav"></nav>
+  <main>
+    <div class="toolbar">
+      <span class="src" id="srcLabel"></span>
+      <a class="raw" id="rawLink" href="#" target="_blank">View raw .md &rarr;</a>
+    </div>
+    <article class="md" id="docBody"><div class="loading">Loading\u2026</div></article>
+  </main>
+</div>
+
+<script>
+/* ---------- the suite ---------- */
+var DOCS = [
+  ["00-MASTER-AGENTIC-FDE-REFERENCE","00","Master Reference","capstone"],
+  ["01-FDE-CHARTER-PROPOSAL","01","FDE Charter Proposal","charter"],
+  ["02-FDE-LOOP-COOKBOOK","02","FDE Loop Cookbook","method"],
+  ["03-LANDING-RUNBOOK","03","Landing Runbook","method"],
+  ["05-AGENTIC-FDE-LIFECYCLE","05","Agentic FDE Lifecycle","lifecycle"],
+  ["06-FDE-80-20-ROLES-AND-LIFECYCLE","06","80:20 Roles & Lifecycle","model"],
+  ["07-MULTI-CLOUD-AGENTIC-FDE-TOOLING-DIRECTORY","07","Multi-Cloud Tooling Directory","tooling"],
+  ["08-AEC-MODUTECTURE-FDE-USECASE","08","AEC / Modutecture Use Case","use case"],
+  ["09-FDE-30-60-90-OKR-STAR","09","30/60/90 — OKR & STAR","activation"],
+  ["10-FDE-OKR-SCORECARD","10","OKR Scorecard","tracking"],
+];
+
+/* ---------- minimal, offline markdown -> HTML (handles headers, tables,
+              fenced code, blockquotes, lists, hr, bold/italic/code) ---------- */
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function inline(s){
+  // inline code first (protect from other rules)
+  var parts=s.split(/(`[^`]+`)/);
+  return parts.map(function(p){
+    if(/^`[^`]+`$/.test(p)) return "<code>"+esc(p.slice(1,-1))+"</code>";
+    p=esc(p);
+    p=p.replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>");
+    p=p.replace(/(^|[^*])\*([^*]+)\*/g,"$1<em>$2</em>");
+    return p;
+  }).join("");
+}
+function mdToHtml(md){
+  var lines=md.replace(/\r\n/g,"\n").split("\n");
+  var out=[], i=0;
+  function flushParaBuf(buf){ if(buf.length){ out.push("<p>"+inline(buf.join(" "))+"</p>"); buf.length=0; } }
+  var para=[];
+  while(i<lines.length){
+    var ln=lines[i];
+    // fenced code
+    if(/^```/.test(ln)){
+      flushParaBuf(para);
+      var code=[]; i++;
+      while(i<lines.length && !/^```/.test(lines[i])){ code.push(lines[i]); i++; }
+      i++; // skip closing fence
+      out.push("<pre><code>"+esc(code.join("\n"))+"</code></pre>");
+      continue;
+    }
+    // table: header row + |---| separator
+    if(/^\s*\|.*\|\s*$/.test(ln) && i+1<lines.length && /^\s*\|[\s:|-]+\|\s*$/.test(lines[i+1])){
+      flushParaBuf(para);
+      var head=ln.trim().replace(/^\||\|$/g,"").split("|").map(function(c){return c.trim();});
+      i+=2;
+      var rows=[];
+      while(i<lines.length && /^\s*\|.*\|\s*$/.test(lines[i])){
+        rows.push(lines[i].trim().replace(/^\||\|$/g,"").split("|").map(function(c){return c.trim();}));
+        i++;
+      }
+      var t="<table><thead><tr>"+head.map(function(h){return "<th>"+inline(h)+"</th>";}).join("")+"</tr></thead><tbody>";
+      t+=rows.map(function(r){return "<tr>"+r.map(function(c){return "<td>"+inline(c)+"</td>";}).join("")+"</tr>";}).join("");
+      t+="</tbody></table>";
+      out.push(t);
+      continue;
+    }
+    // headers
+    var h=ln.match(/^(#{1,4})\s+(.*)$/);
+    if(h){ flushParaBuf(para); var lvl=h[1].length; out.push("<h"+lvl+">"+inline(h[2])+"</h"+lvl+">"); i++; continue; }
+    // hr
+    if(/^\s*---+\s*$/.test(ln)){ flushParaBuf(para); out.push("<hr>"); i++; continue; }
+    // blockquote (consecutive >)
+    if(/^\s*>\s?/.test(ln)){
+      flushParaBuf(para);
+      var bq=[];
+      while(i<lines.length && /^\s*>\s?/.test(lines[i])){ bq.push(lines[i].replace(/^\s*>\s?/,"")); i++; }
+      out.push("<blockquote>"+inline(bq.join(" "))+"</blockquote>");
+      continue;
+    }
+    // unordered list
+    if(/^\s*[-*]\s+/.test(ln)){
+      flushParaBuf(para);
+      var ul=[];
+      while(i<lines.length && /^\s*[-*]\s+/.test(lines[i])){ ul.push("<li>"+inline(lines[i].replace(/^\s*[-*]\s+/,""))+"</li>"); i++; }
+      out.push("<ul>"+ul.join("")+"</ul>");
+      continue;
+    }
+    // ordered list
+    if(/^\s*\d+\.\s+/.test(ln)){
+      flushParaBuf(para);
+      var ol=[];
+      while(i<lines.length && /^\s*\d+\.\s+/.test(lines[i])){ ol.push("<li>"+inline(lines[i].replace(/^\s*\d+\.\s+/,""))+"</li>"); i++; }
+      out.push("<ol>"+ol.join("")+"</ol>");
+      continue;
+    }
+    // blank line -> paragraph break
+    if(/^\s*$/.test(ln)){ flushParaBuf(para); i++; continue; }
+    // default: paragraph text
+    para.push(ln.trim()); i++;
+  }
+  flushParaBuf(para);
+  return out.join("\n");
+}
+
+/* ---------- render sidebar ---------- */
+var nav=document.getElementById("docNav");
+nav.innerHTML='<div class="grp">The FDE suite</div>';
+DOCS.forEach(function(d){
+  var a=document.createElement("a");
+  a.href="?doc="+d[0]; a.dataset.id=d[0];
+  a.innerHTML='<span class="nn">'+d[1]+'</span><span>'+d[2]+'</span>';
+  nav.appendChild(a);
+});
+
+/* ---------- load a doc ---------- */
+function currentId(){
+  var q=new URLSearchParams(location.search).get("doc");
+  if(q && DOCS.some(function(d){return d[0]===q;})) return q;
+  return DOCS[0][0];
+}
+function loadDoc(id){
+  var meta=DOCS.filter(function(d){return d[0]===id;})[0]||DOCS[0];
+  var url="sources/"+meta[0]+".md";
+  document.getElementById("docTitle").textContent=meta[2];
+  document.getElementById("srcLabel").textContent="sources/"+meta[0]+".md";
+  document.getElementById("rawLink").href=url;
+  document.title="StatusNeo FDE — "+meta[2];
+  Array.prototype.forEach.call(nav.querySelectorAll("a"),function(a){ a.classList.toggle("on",a.dataset.id===id); });
+  var body=document.getElementById("docBody");
+  body.innerHTML='<div class="loading">Loading\u2026</div>';
+  fetch(url).then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function(txt){ body.innerHTML=mdToHtml(txt); window.scrollTo(0,0); })
+    .catch(function(e){
+      body.innerHTML='<div class="err"><b>Couldn\u2019t load this document.</b><br>'+
+        'Expected <code>'+url+'</code>. If the sources folder is empty, run '+
+        '<code>statusneo\\consolidate-statusneo.ps1</code> (it copies the markdown in locally \u2014 no download), then refresh.</div>';
+    });
+}
+nav.addEventListener("click",function(e){
+  var a=e.target.closest("a"); if(!a) return;
+  e.preventDefault();
+  var id=a.dataset.id;
+  history.pushState({},"", "?doc="+id);
+  loadDoc(id);
+});
+window.addEventListener("popstate",function(){ loadDoc(currentId()); });
+loadDoc(currentId());
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

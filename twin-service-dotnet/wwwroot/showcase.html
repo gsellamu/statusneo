@@ -18,6 +18,16 @@
   .hero h1{font-family:Cambria,Georgia,serif;font-size:33px;margin:0 0 10px;}
   .hero p{margin:0;color:#c9d6e8;font-size:14.5px;max-width:820px;}
   .tagline{margin-top:14px;font-style:italic;color:var(--gold);font-family:Cambria,serif;font-size:15px;}
+  /* StatusNeo FDE hero CTA */
+  .fde-cta{display:flex;align-items:center;gap:14px;margin-top:18px;text-decoration:none;
+    background:linear-gradient(100deg,#1c3252,#22344f);border:1.5px solid var(--gold);border-radius:14px;
+    padding:14px 18px;transition:transform .12s,box-shadow .12s;}
+  .fde-cta:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.28);}
+  .fde-cta .fde-badge{flex:none;background:var(--gold);color:var(--navy);font-weight:bold;font-size:11px;
+    letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:9px;}
+  .fde-cta .fde-txt{color:#e8eef7;font-size:13.5px;line-height:1.45;}
+  .fde-cta .fde-txt b{color:#fff;}
+  .fde-cta .fde-go{flex:none;margin-left:auto;color:var(--gold);font-weight:bold;font-size:13.5px;white-space:nowrap;}
   /* tour control bar */
   .tourbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px;
            background:var(--navy2);border:1px solid #34496a;border-radius:14px;padding:14px 18px;}
@@ -71,6 +81,12 @@
   <p>Every live surface and every architecture artifact, from the running room-planner to the slide decks and decision records. Take the self-guided voice tour, or jump straight to any piece.</p>
   <div class="tagline">Unity becomes the GPU. The twin holds the truth. The edge carries the bytes. The brain stays where the data is.</div>
 
+  <a class="fde-cta" href="/statusneo.html">
+    <span class="fde-badge">★ FDE practice</span>
+    <span class="fde-txt"><b>StatusNeo &times; Modutecture &mdash; the Agentic FDE suite.</b> Charter, the 80:20 operating model, lifecycle, tooling, security &amp; the AEC use case &mdash; the full document set in one place.</span>
+    <span class="fde-go">Open the suite &rarr;</span>
+  </a>
+
   <div class="tourbar">
     <span class="lead"><b>Guided voice tour</b> — sit back; it narrates and walks the whole site.</span>
     <button class="btn-go" id="startTour">▶ Start voice tour</button>
@@ -120,6 +136,7 @@ var LIVE = [
   ["/ecosystem.html","Ecosystem","E","var(--goldk)","The master AEC ecosystem blueprint — where each capability lives and who owns what.","Master blueprint"],
   ["/vision.html","Vision","V","var(--exist)","The Context Intelligence roadmap — from design twin to operational twin to the compounding flywheel.","Roadmap"],
   ["/two-track-org.html","Two-Track Org","2T","var(--goldk)","The FDE operating model — tech org + execution org, the ownership boundary, and the pod-based transition. The org that delivers the platform.","Operating model"],
+  ["/statusneo.html","StatusNeo FDE","SN","var(--gold)","The Forward-Deployed Engineering practice suite — charter, the 80:20 operating model, lifecycle, tooling, security, the AEC use case, and the 30/60/90 in OKR &amp; STAR. The full document set.","FDE practice suite"],
 ];
 var ART = [
   ["/artifacts/90-SECOND-PITCH-AND-BLUEPRINT.md","90-Second Pitch + Blueprint","\u2605","var(--gold)","The opening pitch and 5-movement blueprint walkthrough \u2014 the most important 90 seconds of the meeting.","Game-day script","md"],
@@ -184,6 +201,7 @@ var TOUR = [
   ["AI Engine","The agentic A.I. engine. Bounded agents propose placements, grounded in real code and standards through retrieval. But — and this is the guardrail — the model is never the authority. A deterministic gate validates every proposal against the rules. The brain proposes; the gate disposes; the twin remembers.","/ai-engine.html"],
   ["Ecosystem","The master ecosystem blueprint — the whole A.E.C. picture, showing where each capability lives and, just as importantly, who owns what. Boundaries are credibility.","/ecosystem.html"],
   ["Vision","The roadmap: from design twin, to operational twin, to the compounding-context flywheel where operational insight feeds back into better design. This is where the platform is going.","/vision.html"],
+  ["StatusNeo FDE","And the practice that delivers all of this: StatusNeo's Forward-Deployed Engineering suite. One embedded Pod Commander backed by an autonomous A.I. swarm, automating eighty percent of the lifecycle and reserving the judgment-bound twenty percent for the human. Charter, operating model, lifecycle, tooling, security, and the Modutecture use case — the full document set, in one place.","/statusneo.html"],
   ["ADR-009","Finally, the architecture behind the scale story: A.D.R. zero-zero-nine, the edge-feed layer. The twin stays rendering-agnostic; a thin edge layer shapes that same truth for each renderer's latency and bandwidth profile — content is cached, state is synced, the brain is relocated. One twin, many edges, many lenses; truth is shaped at the edge, never forked.","/artifacts/ADR-009-edge-feed-layer.html"],
   ["Close","That's the platform: one twin, many lenses, an A.I. engine bounded by a deterministic gate, and a clear path to telco-grade scale. Everything you just heard is running on the real stack — Postgres, Neo4j, and a local Ollama brain. Thank you for taking the tour.",null],
 ];
