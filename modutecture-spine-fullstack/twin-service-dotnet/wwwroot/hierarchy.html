@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Building Hierarchy (live roll-up)</title>
+<style>
+  :root{--navy:#16263f;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;
+        --green:#1e7a4c;--amber:#d89a12;--red:#b3402f;--blue:#3b6ea5;--grey:#9aa7b4;}
+  *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+  body{margin:0;background:#eef2f7;color:var(--ink);}
+  header{background:var(--navy);color:#fff;padding:16px 26px;display:flex;align-items:center;gap:14px;}
+  header h1{margin:0;font-family:Cambria,Georgia,serif;font-size:20px;} header h1 b{color:var(--gold);}
+  header .s{color:#c9d6e8;font-size:12.5px;} #poll{margin-left:auto;font-size:11px;color:#9fc3e8;}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 26px;display:grid;grid-template-columns:1.4fr 1fr;gap:16px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .card h2{margin:0 0 12px;font-size:14px;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;}
+  .bld{border-left:4px solid var(--navy);padding:8px 12px;margin-bottom:6px;border-radius:4px;background:var(--tint);}
+  .bld .nm{font-weight:bold;font-size:16px;color:var(--navy);}
+  .floor{margin:8px 0 8px 14px;border-left:3px solid var(--line);padding:6px 10px;}
+  .floor .nm{font-weight:bold;color:var(--ink);}
+  .rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px;}
+  .room{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:#fff;}
+  .room .rn{font-weight:bold;font-size:13px;}
+  .room .meta{font-size:11px;color:var(--slate);margin-top:3px;}
+  .room .types{font-size:10px;color:var(--slate);margin-top:4px;font-family:Consolas,monospace;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:bold;color:#fff;}
+  .b-COMPLIANT{background:var(--green);} .b-AT_RISK{background:var(--red);} .b-IN_PROGRESS{background:var(--amber);}
+  .b-EMPTY{background:var(--grey);}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .d-COMPLIANT{background:var(--green);} .d-AT_RISK{background:var(--red);} .d-IN_PROGRESS{background:var(--amber);} .d-EMPTY{background:var(--grey);}
+  table{width:100%;border-collapse:collapse;font-size:12px;} th{background:var(--navy);color:#fff;text-align:left;padding:5px 8px;}
+  td{padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top;} .mono{font-family:Consolas,monospace;font-size:11px;}
+  .muted{color:var(--slate);} .usehint{font-size:11px;color:var(--slate);margin-top:8px;font-style:italic;}
+  .legend{font-size:11px;color:var(--slate);margin-top:10px;}
+  .impactbar{height:6px;border-radius:3px;background:var(--gold);margin-top:3px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Modutecture Spine — <b>Building Hierarchy</b></h1>
+  <span class="s">Moducule → Room → Floor → Building · live roll-up over the composition graph</span>
+  <span id="poll">polling…</span>
+</header>
+<div class="wrap">
+  <div class="card">
+    <h2>Composition roll-up (real-time)</h2>
+    <div id="tree" class="muted">loading hierarchy…</div>
+    <div class="legend">
+      <span class="dot d-COMPLIANT"></span>Compliant &nbsp;
+      <span class="dot d-AT_RISK"></span>At risk &nbsp;
+      <span class="dot d-IN_PROGRESS"></span>In progress &nbsp;
+      <span class="dot d-EMPTY"></span>Empty
+    </div>
+    <div class="usehint">Edit any room in the planner (use its room id, e.g. <span class="mono">icu-101</span>) and watch its
+      status — and the floor and building roll-up — change here in real time. A bed without a med-gas source rolls the
+      whole floor to <b>AT RISK</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Moducule impact (change-blast radius)</h2>
+    <table id="impact"><tr><th>Moducule</th><th>Ver</th><th>Rooms using it</th></tr></table>
+    <div class="usehint">If a Moducule type is revised, every room pinned to the old version flags for review.
+      This is the "celebrity write" — version a type, and its blast radius is exactly these rooms.</div>
+  </div>
+</div>
+
+<script>
+async function gql(q){ const r = await fetch("/graphql",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({query:q})}); const j = await r.json(); if(j.errors) throw new Error(JSON.stringify(j.errors)); return j.data; }
+
+function roomCard(r){
+  return `<div class="room"><div class="rn">${r.name} <span class="badge b-${r.status}">${r.status.replace("_"," ")}</span></div>
+    <div class="meta">${r.program} · v${r.version} · ${r.instances} items · ${r.bindings} edges</div>
+    <div class="types">${r.types.length?r.types.join(", "):"—"}</div></div>`;
+}
+function floorBlock(f){
+  return `<div class="floor"><div class="nm"><span class="dot d-${f.status}"></span>${f.name}
+    <span class="badge b-${f.status}" style="font-size:10px">${f.status.replace("_"," ")}</span></div>
+    <div class="rooms">${f.rooms.map(roomCard).join("")}</div></div>`;
+}
+
+async function refresh(){
+  try{
+    const d = await gql(`{ hierarchy { name status
+        floors { name status rooms { roomId name program status instances bindings version types } }
+        impact { typeId name version roomsUsing } } }`);
+    const h = d.hierarchy;
+    document.getElementById("tree").innerHTML =
+      `<div class="bld"><div class="nm"><span class="dot d-${h.status}"></span>${h.name}
+        <span class="badge b-${h.status}">${h.status.replace("_"," ")}</span></div></div>` +
+      h.floors.map(floorBlock).join("");
+    const maxUse = Math.max(1, ...h.impact.map(i => i.roomsUsing.length));
+    document.getElementById("impact").innerHTML = `<tr><th>Moducule</th><th>Ver</th><th>Rooms using it</th></tr>` +
+      h.impact.map(i => `<tr><td><b>${i.name}</b><div class="mono muted">${i.typeId}</div></td>
+        <td class="mono">${i.version}</td>
+        <td>${i.roomsUsing.length? i.roomsUsing.join(", ") : '<span class="muted">none</span>'}
+          <div class="impactbar" style="width:${i.roomsUsing.length/maxUse*100}%"></div></td></tr>`).join("");
+    document.getElementById("poll").textContent = "● live · updated " + new Date().toLocaleTimeString();
+  }catch(e){ document.getElementById("tree").innerHTML = `<span style="color:var(--red)">hierarchy query failed — is the service up?</span>`; }
+}
+refresh(); setInterval(refresh, 1000);
+</script>
+</body>
+</html>

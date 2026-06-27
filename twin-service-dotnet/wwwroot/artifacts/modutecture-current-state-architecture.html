@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modutecture — Current-State Architecture (As Understood)</title>
+<style>
+  :root{
+    --navy:#16263F; --navy2:#22344f; --gold:#E8A816; --goldk:#C9952F;
+    --ink:#1F2A38; --body:#5B6B7E; --card:#F4F6FA; --line:#DCE3EC; --white:#fff;
+    --known:#3B6EA5; --inf:#C77D2A; --unk:#B23A3A; --green:#1E7A4C;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#EEF1F5; color:var(--ink);
+    font-family:Calibri,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.45;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 22px 60px;}
+  /* header */
+  header{background:linear-gradient(150deg,var(--navy),var(--navy2)); color:#fff; padding:26px 0 22px; margin-bottom:26px;}
+  header .wrap{padding-bottom:0;}
+  .kick{color:var(--gold); font-size:12.5px; font-weight:bold; letter-spacing:3px; text-transform:uppercase; margin:0 0 6px;}
+  h1{font-family:Cambria,Georgia,serif; font-size:31px; margin:0 0 8px; font-weight:bold;}
+  header p{margin:0; color:#C9D6E8; font-size:14px; max-width:880px;}
+  header .src{margin-top:12px; font-size:12px; color:#9fb2c9; font-style:italic;}
+  /* legend */
+  .legend{display:flex; gap:22px; flex-wrap:wrap; margin:0 0 22px; padding:12px 16px; background:#fff; border:1px solid var(--line); border-radius:10px; font-size:13px;}
+  .legend b{font-weight:bold;}
+  .dot{display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:7px; vertical-align:middle;}
+  .d-k{background:var(--known);} .d-i{background:var(--inf);} .d-u{background:var(--unk);}
+  h2{font-family:Cambria,Georgia,serif; color:var(--navy); font-size:21px; margin:30px 0 4px;}
+  .sub{color:var(--body); font-size:13.5px; margin:0 0 16px;}
+  /* layer stack */
+  .layer{display:flex; align-items:stretch; background:#fff; border:1px solid var(--line); border-radius:11px; overflow:hidden; margin-bottom:8px; box-shadow:0 1px 3px rgba(20,40,70,.05);}
+  .layer .lbl{flex:0 0 188px; background:var(--navy); color:#fff; padding:13px 14px; display:flex; flex-direction:column; justify-content:center;}
+  .layer .lbl .n{font-size:13.5px; font-weight:bold;}
+  .layer .lbl .s{font-size:10.5px; color:#A9BBD2; margin-top:3px;}
+  .layer .chips{flex:1; padding:11px 13px; display:flex; flex-wrap:wrap; gap:7px; align-items:center;}
+  .chip{display:inline-flex; align-items:center; gap:0; background:var(--card); border:1px solid var(--line); border-radius:7px; padding:5px 10px; font-size:12px; color:var(--ink);}
+  .chip .dot{width:8px; height:8px; margin-right:6px;}
+  .chip small{color:var(--body); font-size:10.5px; margin-left:5px;}
+  .flow{text-align:center; color:var(--goldk); font-size:11px; font-style:italic; margin:1px 0 3px; letter-spacing:.3px;}
+  .flow.unkflow{color:var(--unk);}
+  .note{font-size:11.5px; color:var(--inf); font-style:italic; margin-left:4px;}
+  /* clarifications */
+  .cgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .qc{background:#fff; border:1px solid var(--line); border-left:4px solid var(--unk); border-radius:9px; padding:13px 15px;}
+  .qc.crit{border-left-color:var(--unk); background:#FCF6F5;}
+  .qc .qt{font-weight:bold; color:var(--navy); font-size:13.5px; margin:0 0 5px;}
+  .qc .qt .tag{display:inline-block; font-size:9px; font-weight:bold; letter-spacing:.5px; color:#fff; background:var(--unk); border-radius:6px; padding:1px 7px; margin-left:7px; vertical-align:middle;}
+  .qc .qd{font-size:12.5px; color:var(--ink); margin:0;}
+  .qc .qd b{color:var(--unk);}
+  .foot{margin-top:26px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:15px 18px; font-size:12.5px; color:var(--body);}
+  .foot b{color:var(--ink);}
+  @media (max-width:760px){ .cgrid{grid-template-columns:1fr;} .layer{flex-direction:column;} .layer .lbl{flex-basis:auto;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="kick">Modutecture · Current-State Architecture — As Understood</p>
+    <h1>What their system most likely looks like today</h1>
+    <p>Reconstructed strictly from the onboarding documentation and direct observation. Nothing here is invented: every <b style="color:#9ec1ff">KNOWN</b> item is stated in their docs, every <b style="color:#f0b97a">INFERRED</b> item is a labeled deduction, and every <b style="color:#f2a39a">UNKNOWN</b> item is a question we confirm on Day 1 — an observation to validate, not a verdict.</p>
+    <p class="src">Sources: Modutecture Team Onboarding Document (§18 System Architecture; role skill profiles; QA &amp; security sections) · Modutecture First-5-Days Onboarding Plan · direct observation of the Moducule Builder.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="legend">
+    <span><span class="dot d-k"></span><b>KNOWN</b> — stated in the onboarding docs</span>
+    <span><span class="dot d-i"></span><b>INFERRED</b> — reasonable deduction (labeled)</span>
+    <span><span class="dot d-u"></span><b>UNKNOWN</b> — confirm Day 1</span>
+  </div>
+
+  <h2>Current-state architecture</h2>
+  <p class="sub">The six layers below are quoted from §18 “System Architecture” of the onboarding document; component and stack detail is drawn from the same doc’s role skill profiles. Inferences and unknowns are marked.</p>
+
+  <!-- L1 -->
+  <div class="layer">
+    <div class="lbl"><span class="n">Unity 3D Experience</span><span class="s">the main user-facing runtime</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>Space Bot / Designer</span>
+      <span class="chip"><span class="dot d-k"></span>Room Builder / Planner</span>
+      <span class="chip"><span class="dot d-k"></span>Catalog UX</span>
+      <span class="chip"><span class="dot d-k"></span>UI Toolkit controls</span>
+      <span class="chip"><span class="dot d-k"></span>C# · Shader/VFX Graph · URP · Addressables</span>
+      <span class="chip"><span class="dot d-k"></span>Reflex DI · multi-scene / sub-scene</span>
+      <span class="chip"><span class="dot d-k"></span>WebGL · OpenXR / XR</span>
+      <span class="chip"><span class="dot d-i"></span>leans “thick” — holds scene/app state<small>inferred</small></span>
+    </div>
+  </div>
+  <div class="flow unkflow">↕ Unity calls GraphQL + REST — but real-time vs request/response vs save-load is UNKNOWN</div>
+
+  <!-- L2 -->
+  <div class="layer">
+    <div class="lbl"><span class="n">Web / App Layer</span><span class="s">interacts with Unity &amp; the API</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>Web/App layer exists<small>§18</small></span>
+      <span class="chip"><span class="dot d-i"></span>Angular / React front-end<small>inferred</small></span>
+      <span class="chip"><span class="dot d-i"></span>.NET (C#) backend<small>inferred</small></span>
+    </div>
+  </div>
+  <div class="flow">↕ GraphQL + REST (Base Moducules Get/Create)</div>
+
+  <!-- L3 -->
+  <div class="layer">
+    <div class="lbl"><span class="n">API Layer</span><span class="s">GraphQL + REST</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>GraphQL service</span>
+      <span class="chip"><span class="dot d-k"></span>REST APIs (Base Moducules Get/Create)</span>
+      <span class="chip"><span class="dot d-k"></span>migrating to Lakebase/Postgres · query-parity</span>
+      <span class="chip"><span class="dot d-u"></span>monolith vs services?<small>unknown</small></span>
+    </div>
+  </div>
+  <div class="flow">↕ reads/writes storage · GraphQL over Postgres/Lakebase</div>
+
+  <!-- L4 -->
+  <div class="layer">
+    <div class="lbl"><span class="n">Data &amp; Processing</span><span class="s">Databricks pipelines / notebooks</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>Databricks pipelines / notebooks</span>
+      <span class="chip"><span class="dot d-k"></span>ASP/SPA: applicable-standards · space-programming · rules</span>
+      <span class="chip"><span class="dot d-k"></span>ingest · validate · dedup · rollback</span>
+      <span class="chip"><span class="dot d-k"></span>Excel → JSON extraction</span>
+      <span class="chip"><span class="dot d-k"></span>Azure Databricks · Delta Lake · Unity Catalog</span>
+      <span class="chip"><span class="dot d-i"></span>validation is BATCH, not inline<small>inferred</small></span>
+    </div>
+  </div>
+  <div class="flow">↓ feeds validated outputs into storage</div>
+
+  <!-- L5 -->
+  <div class="layer">
+    <div class="lbl"><span class="n">Storage</span><span class="s">validated data + GraphQL backend</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>SQL Server / SSMS (validated datasets)</span>
+      <span class="chip"><span class="dot d-k"></span>Lakebase / Postgres (GraphQL backend)</span>
+      <span class="chip"><span class="dot d-k"></span>Excel → JSON config artifacts</span>
+      <span class="chip"><span class="dot d-u"></span>MongoDB?<small>team skill — not in §18</small></span>
+    </div>
+  </div>
+
+  <!-- L6 foundation -->
+  <div class="layer">
+    <div class="lbl"><span class="n">Quality &amp; Governance</span><span class="s">continuous foundation</span></div>
+    <div class="chips">
+      <span class="chip"><span class="dot d-k"></span>AAA — Authentication / Authorization / Access</span>
+      <span class="chip"><span class="dot d-k"></span>multitenant access enforcement</span>
+      <span class="chip"><span class="dot d-k"></span>QA: Selenium/Java · Cucumber BDD · Rest Assured · AltTester</span>
+      <span class="chip"><span class="dot d-k"></span>CI/CD on Azure DevOps</span>
+      <span class="chip"><span class="dot d-k"></span>deletion tests · test-data teardown</span>
+      <span class="chip"><span class="dot d-i"></span>cloud = Azure<small>ADO + Azure Databricks</small></span>
+    </div>
+  </div>
+
+  <p class="sub" style="margin-top:14px;"><b style="color:var(--ink)">Digital twin:</b> the docs state moducules are “integrated with digital twins of rooms and their contents,” and the platform is described as “real-time, data-driven” <span class="note">— but how the twin is represented and persisted, and what is genuinely real-time vs batch, is not specified (see clarifications #3, #5).</span></p>
+
+  <h2 style="margin-top:34px;">What the documentation does <span style="color:var(--unk)">not</span> settle — Pending Tech Clarifications</h2>
+  <p class="sub">These are the architecture questions the onboarding material leaves open. The first two are decisive — they determine the size of the rescue. To be confirmed Day 1.</p>
+
+  <div class="cgrid">
+    <div class="qc crit">
+      <p class="qt">1 · Geometry &amp; state ownership <span class="tag">CRITICAL</span></p>
+      <p class="qd">Where does the <b>authoritative</b> Moducule/room geometry definition live — encapsulated in Unity prefabs/scenes, or in the backend? Decisive test: <i>can a non-Unity client reconstruct a Moducule from backend data alone?</i> This sizes step 0.</p>
+    </div>
+    <div class="qc crit">
+      <p class="qt">2 · Rules authority <span class="tag">CRITICAL</span></p>
+      <p class="qd">Moducules “contain predefined rules and behaviors” (Unity-side) <i>and</i> ASP/SPA validates standards in Databricks (batch). Are rules <b>split</b> across Unity behaviors + the batch pipeline, with no single authority? Where is each rule actually enforced?</p>
+    </div>
+    <div class="qc">
+      <p class="qt">3 · Compliance timing</p>
+      <p class="qd">Is standards validation <b>batch-only</b> (Databricks notebooks), or is any check done <i>inline at design time</i>? How and when do validation results surface back to the Unity user?</p>
+    </div>
+    <div class="qc">
+      <p class="qt">4 · Unity ↔ backend sync</p>
+      <p class="qd">Is the exchange real-time bidirectional, request/response, or save/load/export? Is any live state synchronized, or is the client authoritative between saves?</p>
+    </div>
+    <div class="qc">
+      <p class="qt">5 · Digital-twin representation</p>
+      <p class="qd">Is the “digital twin” a <b>distinct, persisted, versioned</b> model (which store? what schema?), or is it effectively the Unity scene plus DB rows? Is it change-journaled?</p>
+    </div>
+    <div class="qc">
+      <p class="qt">6 · Service topology</p>
+      <p class="qd">Monolith or microservices? How many backend services, and where do Moducule rules execute at runtime? (§18 describes <i>layers</i>, not services.)</p>
+    </div>
+    <div class="qc">
+      <p class="qt">7 · Eventing / async</p>
+      <p class="qd">Is there any message bus or event streaming, or is the system purely request/response + batch? No async backbone is documented.</p>
+    </div>
+    <div class="qc">
+      <p class="qt">8 · Scale &amp; performance</p>
+      <p class="qd">Caching strategy, horizontal scale, concurrency model, multi-region? Not addressed in the documentation.</p>
+    </div>
+    <div class="qc">
+      <p class="qt">9 · Migration state</p>
+      <p class="qd">GraphQL → Lakebase/Postgres: how far along, dual-write or cutover, and which store is the source of truth during the migration?</p>
+    </div>
+    <div class="qc">
+      <p class="qt">10 · Multitenancy model</p>
+      <p class="qd">AAA + “multitenant access enforcement” are stated — but is isolation enforced at the schema, row, or database level?</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>How to read this:</b> every item marked <b style="color:var(--known)">KNOWN</b> is stated in the <i>Modutecture Team Onboarding Document</i> (§18 “System Architecture,” plus the role skill profiles and the QA/security sections) or the <i>First-5-Days Onboarding Plan</i>. <b style="color:var(--inf)">INFERRED</b> items are reasonable deductions from those sources, labeled as such — not asserted as fact. <b style="color:var(--unk)">UNKNOWN</b> items are genuinely not settled by the documentation; they are what we confirm on Day 1. <b>This is a faithful current-state reading, not a critique — and the rescue plan holds regardless of how the unknowns resolve; their answers only size the work.</b>
+  </div>
+
+</div>
+</body>
+</html>

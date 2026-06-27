@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADR-009 · Edge-Feed Layer · Modutecture</title>
+<style>
+  :root{
+    --navy:#16263F; --navy2:#22344f; --gold:#E8A816; --goldk:#C9952F;
+    --ink:#1F2A38; --body:#5B6B7E; --card:#F4F6FA; --line:#D7DFEA;
+    --exist:#3B6EA5; --proto:#1E7A4C; --prop:#C9952F; --proven:#6B4F9E;
+    --ice:#CADCFC;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:#EDF0F4;color:var(--ink);font-family:Calibri,Segoe UI,Arial,sans-serif;line-height:1.5;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 60px;}
+  header{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:30px 0 24px;}
+  header .wrap{padding-bottom:0;}
+  .kick{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  h1{font-family:Cambria,Georgia,serif;font-size:29px;margin:0 0 10px;}
+  header p{margin:0;color:#C9D6E8;font-size:14px;max-width:880px;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{background:var(--navy2);border:1px solid #34496a;color:#cfe0f5;font-size:11.5px;padding:4px 11px;border-radius:20px;}
+  .chip b{color:var(--gold);}
+  .decision{background:var(--navy);color:#fff;border:2px solid var(--gold);border-radius:14px;padding:16px 20px;margin:22px 0 6px;font-size:15px;}
+  .decision b{color:var(--gold);}
+  .tag{margin-top:8px;font-style:italic;color:var(--gold);font-family:Cambria,serif;font-size:14px;}
+  .sec-h{font-family:Cambria,serif;color:var(--navy);font-size:20px;margin:30px 0 6px;font-weight:bold;}
+  .sec-h .n{display:inline-block;background:var(--gold);color:var(--navy);font-weight:bold;width:25px;height:25px;border-radius:50%;text-align:center;line-height:25px;margin-right:10px;font-size:14px;}
+  p.lead{font-size:13.5px;color:var(--body);max-width:880px;margin:0 0 14px;}
+  .cards{display:flex;gap:14px;flex-wrap:wrap;}
+  .card{flex:1;min-width:280px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;box-shadow:0 1px 4px rgba(20,40,70,.05);}
+  .card h3{margin:0 0 3px;font-family:Cambria,serif;font-size:17px;color:var(--navy);}
+  .card .mech{font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+  .m-content .mech{color:var(--exist);} .m-state .mech{color:var(--proto);} .m-brain .mech{color:var(--proven);}
+  .card p{margin:0 0 8px;font-size:12.8px;}
+  .card .pin{background:var(--card);border-radius:7px;padding:7px 10px;font-size:11.5px;color:var(--navy);border:1px solid var(--line);}
+  table{border-collapse:collapse;width:100%;font-size:12.8px;margin-top:8px;}
+  th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+  th{background:var(--navy);color:#fff;}
+  td.tier{font-weight:bold;color:#fff;background:var(--goldk);text-align:center;width:54px;}
+  .inv{background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px 6px 6px 0;margin-top:8px;}
+  .inv ol{margin:6px 0;padding-left:34px;}
+  .inv li{font-size:13px;margin:7px 0;}
+  .inv li b{color:var(--navy);}
+  .two{display:flex;gap:14px;flex-wrap:wrap;}
+  .two .col{flex:1;min-width:280px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 17px;}
+  .col.pos h4{color:var(--proto);} .col.neg h4{color:var(--goldk);} .col.neu h4{color:var(--exist);}
+  .col h4{margin:0 0 7px;font-size:14px;font-family:Cambria,serif;}
+  .col ul{margin:0;padding-left:18px;} .col li{font-size:12.5px;margin:5px 0;}
+  .roll{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+  .ph{flex:1;min-width:160px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:11px 14px;}
+  .ph .pn{font-size:10.5px;font-weight:bold;color:var(--goldk);letter-spacing:1px;text-transform:uppercase;}
+  .ph p{margin:4px 0 0;font-size:12px;}
+  .closing{margin-top:26px;background:var(--navy);color:#fff;border-radius:13px;padding:20px 24px;text-align:center;}
+  .closing .big{font-family:Cambria,serif;font-size:18px;font-weight:bold;color:var(--gold);font-style:italic;}
+  .closing .sub{margin-top:7px;font-size:13px;color:#c9d6e8;}
+  code{font-family:Consolas,monospace;font-size:12px;background:var(--card);padding:1px 6px;border-radius:5px;border:1px solid var(--line);}
+  .footnote{margin-top:20px;font-size:12px;color:var(--body);border-top:1px solid var(--line);padding-top:12px;}
+  .backbar{background:#0e1b2e;padding:8px 16px;}
+  .backbar a{color:#c9d6e8;text-decoration:none;font-size:12px;font-family:Calibri,sans-serif;}
+  .backbar a:hover{color:#e8a816;}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/showcase.html">&larr; Back to Showcase</a> &nbsp;·&nbsp; <a href="/studio.html">Lens Studio</a></div>
+<header><div class="wrap">
+  <p class="kick">Architecture Decision Record · ADR-009</p>
+  <h1>Renderer-agnostic twin, rendering-optimized edge layer</h1>
+  <p>The twin stays the single source of truth and rendering-agnostic. A thin edge/feed layer shapes that same event-sourced truth for each renderer's latency and bandwidth profile — never forking truth, never embedding rendering logic in the twin.</p>
+  <div class="meta">
+    <span class="chip"><b>Status</b> · Proposed</span>
+    <span class="chip"><b>Date</b> · 2026-06-14</span>
+    <span class="chip"><b>Deciders</b> · CTO · Lead Architect · Platform pod</span>
+    <span class="chip"><b>Anchor</b> · four-tier latency model</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <div class="decision">
+    <b>Decision.</b> Keep the twin rendering-agnostic. Insert rendering-optimized edge/feed adapters between the twin and each renderer that shape the same event-sourced truth per consumer — not separate twins, just differently-shaped reads of one event log.
+    <div class="tag">One twin, many edges, many lenses. Truth is shaped at the edge, never forked.</div>
+  </div>
+
+  <div class="sec-h"><span class="n">1</span>Context — what exists, why it doesn't scale</div>
+  <p class="lead">Today every lens talks directly to one GraphQL endpoint and pulls the same full payload <code>twin(room){version instances bindings}</code>. Five renderers (2D canvas, Schematic SVG, 3D Three.js, Twin-Data table, Unity) reconstruct the room from <code>instances[] + bindings[]</code> with zero server-side rendering code. That proves the thesis — the renderer owns nothing, the twin owns the truth — and is the correct demo simplification. It does not scale: one payload shape is forced on every consumer (bytes for a table vs. megabytes of mesh for Unity), and a single central endpoint cannot do the edge prediction that actually kills felt latency.</p>
+
+  <div class="sec-h"><span class="n">2</span>The four-tier latency model (the anchor)</div>
+  <p class="lead">The edge/feed layer is precisely the apparatus that delivers T1 (optimistic + edge confirm) and T0-friendly content delivery. T2/T3 stay twin-side.</p>
+  <table>
+    <tr><th>Tier</th><th>Budget</th><th>Mechanism</th><th>What lives here</th></tr>
+    <tr><td class="tier">T0</td><td>&lt; 16 ms</td><td>Never networked — pure Unity</td><td>Camera, hover, selection, drag preview</td></tr>
+    <tr><td class="tier">T1</td><td>50–150 ms</td><td>Optimistic + edge confirm — snaps instantly, certifies async</td><td>Placement validated against a cached rule subset; authoritative verdict replaces the provisional one</td></tr>
+    <tr><td class="tier">T2</td><td>Seconds</td><td>Streamed, non-blocking overlays</td><td>AI proposals, GraphRAG answers with citations</td></tr>
+    <tr><td class="tier">T3</td><td>Minutes–hours</td><td>Durable workflows; client re-syncs on resume</td><td>HITL approval, flywheel delta capture</td></tr>
+  </table>
+
+  <div class="sec-h"><span class="n">3</span>Three movement mechanisms, deliberately separated</div>
+  <p class="lead">Content is cached · state is synced · the brain is relocated. Three different problems, three different mechanisms — never one pipe.</p>
+  <div class="cards">
+    <div class="card m-content">
+      <h3>Geometry / mesh</h3>
+      <div class="mech">Edge CDN · immutable</div>
+      <p>Render meshes (glTF / USD) are immutable and content-addressed — hash is identity. Served cache-forever from a CDN. Unity / WebGL pull a bundle once; reuse costs zero bytes.</p>
+      <div class="pin">The twin never streams triangles. It emits a reference (typeId + version → hash); the renderer resolves it. Light lenses ignore it.</div>
+    </div>
+    <div class="card m-state">
+      <h3>Mutable twin state</h3>
+      <div class="mech">CQRS snapshot + delta</div>
+      <p>The event-sourced twin is read as a snapshot plus a delta stream, not repeated full polls. Same truth, different envelope per edge — a web lens takes a small JSON diff; Unity may take the same delta over a binary channel.</p>
+      <div class="pin">A read-model projection, not a second truth. Exactly one event log. Regional read replicas serve snapshots locally; the write path stays central.</div>
+    </div>
+    <div class="card m-brain">
+      <h3>The brain (LLM + GraphRAG)</h3>
+      <div class="mech">Co-located regional</div>
+      <p>Keep retrieval and inference together and near the data — a cross-region GraphRAG round-trip costs more than the inference. The local-first posture already is edge inference.</p>
+      <div class="pin">Never on the interaction path. Proposals stream as T2 overlays; they never block T0/T1. It snaps instantly; it certifies asynchronously.</div>
+    </div>
+  </div>
+
+  <div class="sec-h"><span class="n">4</span>Optional AEC differentiator — the jobsite edge node</div>
+  <p class="lead">A small box in the construction trailer runs the viewer payload, a read snapshot, and a local validation worker. It serves an offline-first viewer and confirms optimistic placements locally, syncing to the regional write path when the link returns. Offline-first becomes a product differentiator, not a slide.</p>
+
+  <div class="sec-h"><span class="n">5</span>Invariants — the guardrails truth never crosses</div>
+  <div class="inv"><ol>
+    <li><b>One event log. One source of truth.</b> Edges are projections/caches, never authorities. No edge accepts a write it has not forwarded to the twin.</li>
+    <li><b>No rendering logic in the twin.</b> It emits typed truth (instances, bindings, geometry references). It does not know what a triangle is.</li>
+    <li><b>No truth in the renderer.</b> Unity / WebGL hold ephemeral view state only. The edge does not change that.</li>
+    <li><b>Optimistic ≠ authoritative.</b> An edge-confirmed placement is provisional; the twin's committed verdict replaces it. The deterministic gate still disposes.</li>
+    <li><b>Content-addressed immutability.</b> A mesh bundle is identified by hash, never mutated in place. Cache invalidation is therefore a non-problem.</li>
+  </ol></div>
+
+  <div class="sec-h"><span class="n">6</span>Consequences</div>
+  <div class="two">
+    <div class="col pos"><h4>Positive</h4><ul>
+      <li>Each consumer gets the lightest correct shape: bytes for a table, mesh-once for Unity.</li>
+      <li>Geometry caching + optimistic confirm kill felt latency at T0/T1 without moving the LLM.</li>
+      <li>Offline-first becomes real (jobsite node).</li>
+      <li>The renderer-independence thesis is preserved and strengthened.</li>
+    </ul></div>
+    <div class="col neg"><h4>Cost</h4><ul>
+      <li>Operational surface grows: CDN, read replicas, delta projection, edge workers.</li>
+      <li>A read-model projection must track the event log (a bounded eventual-consistency window on reads).</li>
+      <li>More to monitor — each edge needs health + lag metrics.</li>
+    </ul></div>
+    <div class="col neu"><h4>Neutral</h4><ul>
+      <li>The current direct-to-GraphQL path is not discarded — it is the degenerate case (one edge = the origin).</li>
+      <li>The demo keeps working; the edge layer is additive and reversible.</li>
+    </ul></div>
+  </div>
+
+  <div class="sec-h"><span class="n">7</span>Rollout — incremental, gated, no big bang</div>
+  <div class="roll">
+    <div class="ph"><div class="pn">Phase 0 · today</div><p>Direct-to-GraphQL. Proven. Ship the demo on this.</p></div>
+    <div class="ph"><div class="pn">Phase 1</div><p>CQRS snapshot + delta read model behind the existing subscription. No client change.</p></div>
+    <div class="ph"><div class="pn">Phase 2</div><p>Geometry → content-addressed CDN bundles; twin emits references. Light lenses unaffected.</p></div>
+    <div class="ph"><div class="pn">Phase 3</div><p>Regional read replicas + co-located brain.</p></div>
+    <div class="ph"><div class="pn">Phase 4</div><p>Jobsite edge node — offline-first viewer + local validation worker.</p></div>
+  </div>
+  <p class="lead" style="margin-top:12px">Each phase is independently shippable and reversible. Truth never forks at any phase.</p>
+
+  <div class="closing">
+    <div class="big">Unity becomes the GPU. The twin holds the truth. The edge carries the bytes. The brain stays where the data is.</div>
+    <div class="sub">One twin, many edges, many lenses — truth is shaped at the edge, never forked.</div>
+  </div>
+
+  <div class="footnote">ADR-009 · grounded in the verified current-state contract (<code>twin(room){version instances bindings}</code>, five renderer-agnostic lenses) and the established four-tier latency model. The edge/feed layer is the scale story; the direct-to-GraphQL demo is its Phase-0 degenerate case.</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+# Modutecture Spine — GraphQL contract (the synapse)
+# One schema. Unity, Angular, and the agent all speak exactly this.
+# The renderer owns nothing: it queries `twin`, sends commands, subscribes to changes.
+
+type Port { name: String!  kind: PortKind!  role: PortRole! }
+enum PortKind { MED_GAS  ELECTRICAL  DATA  PLUMBING }
+enum PortRole { PROVIDES  REQUIRES }
+
+# --- the genome: Moducule type definitions (MDS) ---------------------------
+type Mds {
+  typeId: String!
+  name: String!
+  version: String!
+  footprintW: Int!          # mm, local X before rotation
+  footprintD: Int!          # mm, local Y
+  clearance: [Int!]!        # [left, top, right, bottom] mm, local frame
+  ports: [Port!]!
+  geometryRef: String!      # content-addressed glTF/USD pointer (never embedded)
+}
+
+# --- the twin: derived read model (a fold over the event journal) ----------
+type Instance {
+  instanceId: String!
+  typeId: String!
+  x: Float!  y: Float!  rotation: Int!
+}
+type Binding { kind: String!  from: String!  to: String! }   # an EARNED directed edge
+type Room { x0: Float!  y0: Float!  x1: Float!  y1: Float! }
+type Twin {
+  room: Room!
+  instances: [Instance!]!
+  bindings: [Binding!]!     # recomputed from validated state
+  version: Int!             # optimistic-concurrency token (latest event seq)
+}
+
+# --- verdicts ---------------------------------------------------------------
+enum Severity { ERROR  WARNING }
+type Violation { rule: String!  severity: Severity!  message: String!  refs: [String!]! }
+
+# --- the journal (audit / flywheel source) ---------------------------------
+type Event {
+  seq: Int!
+  type: String!             # MODUCULE_PLACED | MODUCULE_REMOVED
+  payloadJson: String!
+  actor: String!
+  ts: Float!
+}
+
+# --- command results --------------------------------------------------------
+type CommandResult {
+  status: CommandStatus!    # ACCEPTED writes an event; REJECTED writes nothing
+  violations: [Violation!]!
+  event: Event              # present only when ACCEPTED
+  version: Int!             # room version after this command
+  rebased: Boolean!         # true if the client's expectedVersion was stale (still judged vs current truth)
+  idempotentReplay: Boolean! # true if a prior command with the same commandId was returned
+}
+enum CommandStatus { ACCEPTED  REJECTED }
+
+# --- the agent: PROPOSES only (HITL gate lives in the UI / human approval) --
+type ProposedPlacement { typeId: String!  x: Float!  y: Float!  rotation: Int! }
+type AgentProposal {
+  proposal: ProposedPlacement   # null if the goal cannot be satisfied
+  rationale: String!
+  citations: [String!]!
+}
+
+input PlaceInput { typeId: String!  x: Float!  y: Float!  rotation: Int! = 0 }
+
+type Query {
+  registry: [Mds!]!
+  medGasReachMm: Int!
+  twin(room: String!): Twin!
+  events(room: String!): [Event!]!
+}
+
+type Mutation {
+  # propose -> validate -> GATE -> commit -> propagate, all inside this resolver
+  # expectedVersion enables optimistic concurrency; commandId makes the call idempotent
+  placeModucule(room: String!, cmd: PlaceInput!, expectedVersion: Int, commandId: String): CommandResult!
+  removeModucule(room: String!, instanceId: String!, expectedVersion: Int, commandId: String): CommandResult!
+  # the agent proposes a command; it does NOT commit
+  agentSuggest(room: String!, goal: String! = "add_bed"): AgentProposal!
+}
+
+type Subscription {
+  # every ACCEPTED command pushes the new twin to all subscribers
+  onTwinChanged(room: String!): Twin!
+}

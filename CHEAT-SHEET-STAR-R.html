@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CTO Interview Cheat Sheet — STAR-R</title>
+<style>
+  @page { size: letter; margin: 0.5in; }
+  :root{
+    --navy:#16263f; --navy2:#23375a; --gold:#c9952f; --goldlt:#e8a816;
+    --ink:#1a222e; --slate:#566273; --line:#d8dee7; --tint:#f4f6f9;
+    --green:#1e7a4c; --purple:#6b4f9e; --exist:#3b6ea5;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    font-family: "Calibri","Segoe UI",system-ui,sans-serif;
+    color:var(--ink); font-size:9.3px; line-height:1.34; background:#fff;
+  }
+  .sheet{ padding:2px 4px; }
+  /* header */
+  .hd{ border-bottom:2.5px solid var(--gold); padding-bottom:5px; margin-bottom:8px; }
+  .hd h1{ font-family:"Cambria",Georgia,serif; font-size:16px; margin:0 0 2px; color:var(--navy); letter-spacing:.2px; }
+  .hd .who{ font-size:9.5px; font-weight:bold; color:var(--gold); margin-bottom:2px; }
+  .hd .leg{ font-size:8px; font-style:italic; color:var(--slate); }
+  /* opener band */
+  .opener{ background:var(--navy); color:#fff; border-radius:6px; padding:7px 10px; margin-bottom:8px; }
+  .opener .lbl{ font-size:8px; font-weight:bold; letter-spacing:1.4px; text-transform:uppercase; color:var(--goldlt); margin-bottom:2px; }
+  .opener p{ margin:0; font-size:9px; line-height:1.4; color:#eaf0f8; }
+  .opener b{ color:#fff; }
+  .opener i{ color:#cfe0d8; }
+  /* section label */
+  .seclbl{ font-family:"Cambria",serif; font-size:10.5px; font-weight:bold; color:var(--navy);
+           border-left:3px solid var(--gold); padding-left:7px; margin:9px 0 5px; }
+  /* story cards */
+  .story{ border:1px solid var(--line); border-radius:6px; padding:6px 9px; margin-bottom:6px; background:var(--tint); break-inside:avoid; }
+  .story .q{ font-size:9.3px; font-weight:bold; color:var(--navy); margin-bottom:3px; }
+  .story .q .co{ color:var(--gold); }
+  .story .row{ margin:1.5px 0; font-size:8.8px; }
+  .story .k{ display:inline-block; min-width:15px; font-weight:bold; color:var(--slate); }
+  .story .r-res{ color:var(--green); font-weight:bold; }
+  .story .r-ref{ font-style:italic; color:var(--purple); }
+  .story .r-ref .k{ color:var(--purple); }
+  /* two-column area for lower sections */
+  .cols{ display:flex; gap:10px; }
+  .col{ flex:1; }
+  /* lists */
+  .demo .step, .qa .item, .hold .item{ font-size:8.8px; margin:2.5px 0; }
+  .demo .n{ display:inline-block; width:13px; font-weight:bold; color:var(--gold); }
+  .demo .say{ font-style:italic; color:var(--navy2); }
+  .thesis-tag{ color:var(--green); font-weight:bold; font-size:7.5px; }
+  .qa .item b{ color:var(--navy); }
+  .hold .item .n{ display:inline-block; width:13px; font-weight:bold; color:var(--gold); }
+  .breakglass{ font-size:8.3px; background:#fdf6e7; border:1px solid #ecd9a8; border-radius:5px; padding:4px 7px; margin-top:3px; }
+  .breakglass code{ background:#efe6cf; padding:0 3px; border-radius:3px; font-family:Consolas,monospace; font-size:7.8px; }
+  .close{ margin-top:8px; background:var(--navy2); color:#fff; border-radius:6px; padding:6px 10px; font-size:9px; font-style:italic; }
+  .close b{ color:var(--goldlt); font-style:normal; }
+  code{ font-family:Consolas,monospace; font-size:8px; }
+  .pagebreak{ break-before:page; }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="hd">
+    <h1>CTO Interview — 2-Page Cheat Sheet · STAR-R</h1>
+    <div class="who">Jeeth Sellamuthu · FDE / Platform Architect · Modutecture</div>
+    <div class="leg">STAR-R = Situation · Task · Action · Result · Reflection. Tell these as stories, not lists. Land the Result, then the Reflection — that's the senior signal.</div>
+  </div>
+
+  <div class="opener">
+    <div class="lbl">⚡ The 90-Second Opener — when "tell me about you"</div>
+    <p><i>"I'm an FDE who ships agentic AI to production. I didn't study the job description — I studied your platform."</i> You've built the twin, Moducules, catalog, Unity — the visionary part. What blocks paying customers: <b>validation has no home</b> — collision is a concept because nothing authoritative computes it. I'd add the <b>governed agentic-AI layer + inline deterministic gate</b> — AI proposes, gate disposes, twin remembers — grounded by a knowledge graph so it cites real codes, never hallucinates. <b>I built a working model on your stack.</b> Then earn FAANG/Autodesk grade one metric at a time → <b>#1 in AEC</b>. <i>"Where would you like me to start — the working model, or the gaps I see?"</i> → <b>STOP.</b></p>
+  </div>
+
+  <div class="seclbl">★ The Five Stories — each answers a question the panel will ask</div>
+
+  <div class="story">
+    <div class="q">1 · <span class="co">"Can you operate at carrier-grade scale?"</span> — QUALCOMM</div>
+    <div class="row"><span class="k">S</span> QIS Push-to-Talk; carriers (Sprint, Nextel, Iusacell) needed VoIP at telco reliability.</div>
+    <div class="row"><span class="k">T</span> Own end-to-end engineering — RFC through deployment — for 40+ forward-deployed engineers across Tier-1 carriers.</div>
+    <div class="row"><span class="k">A</span> Built the turn-key SoW model; led first commercial QChat launch replacing Motorola iDEN; every engineer on-rotation to a carrier.</div>
+    <div class="row r-res"><span class="k">R</span> Carrier-grade VoIP, 40M+ users, 99.999% uptime, never breached; $50M annual run-rate; 17 yrs; U.S. Patent 8,655,833.</div>
+    <div class="row r-ref"><span class="k">R↺</span> Scale isn't a number you claim — it's a discipline you earn per tier. That's why my Modutecture scale story is triggers + metrics, not a deployment I pretend to have.</div>
+  </div>
+
+  <div class="story">
+    <div class="q">2 · <span class="co">"Do you understand healthcare + compliance?"</span> — GE HEALTHCARE</div>
+    <div class="row"><span class="k">S</span> GE Healthcare / API Healthcare; fragmented products across hospital environments.</div>
+    <div class="row"><span class="k">T</span> Unify multi-product integration; be the customer-facing technical authority on EMR/EHR interop.</div>
+    <div class="row"><span class="k">A</span> Architected HL7 v2 / FHIR / Azure interop bridging customer, product, engineering; HIPAA-aligned, SOC 2.</div>
+    <div class="row r-res"><span class="k">R</span> Multi-product unification shipped into live hospital systems with regulated-data discipline.</div>
+    <div class="row r-ref"><span class="k">R↺</span> Healthcare is where "AI proposes, the gate disposes" is non-negotiable. Codes (FGI/ADA/IBC) enforced by a deterministic gate + RAG over real code text — never by model weights.</div>
+  </div>
+
+  <div class="story">
+    <div class="q">3 · <span class="co">"Have you actually built agentic AI?"</span> — STEALTH GENAI</div>
+    <div class="row"><span class="k">S</span> Stealth GenAI startup; greenfield platform for forward-deployed customer environments.</div>
+    <div class="row"><span class="k">T</span> Architect from day one for multi-tenant isolation + per-customer policy.</div>
+    <div class="row"><span class="k">A</span> 80-microservice platform; four-state policy engine; multi-cloud (AWS/Azure/GCP) deploy automation; HIPAA-aligned.</div>
+    <div class="row r-res"><span class="k">R</span> ~213,000 lines of Python/TypeScript in 11 months at ~9 FTE-equivalent throughput.</div>
+    <div class="row r-ref"><span class="k">R↺</span> AI-augmented SDLC is real leverage when governed. That's Track 2 of my blueprint — super-agents in the loop, a human + deterministic gate always above them.</div>
+  </div>
+
+  <div class="story">
+    <div class="q">4 · <span class="co">"Can you run six-nines, zero-breach systems?"</span> — AMAZON</div>
+    <div class="row"><span class="k">S</span> Product Assurance, Risk & Safety; internal customers (Legal, Cyber, Privacy, Compliance), each with bespoke gates.</div>
+    <div class="row"><span class="k">T</span> Serve them FDE-style — bespoke integration + policy gates — at platform scale.</div>
+    <div class="row"><span class="k">A</span> Ran the platform as SDM; per-customer policy gating; reliability + observability bars set hands-on.</div>
+    <div class="row r-res"><span class="k">R</span> Six-nines availability, 50M+ events/day, zero security breaches across 3 years.</div>
+    <div class="row r-ref"><span class="k">R↺</span> Boundaries are credibility. Each customer kept decision rights; I owned the seam. Same model with David — Modutecture keeps strategy/product; I own engineering.</div>
+  </div>
+
+  <div class="story">
+    <div class="q">5 · <span class="co">"Can you transform a fragmented team?"</span> — MITCHELL</div>
+    <div class="row"><span class="k">S</span> Mitchell International; distributed delivery across carrier markets (Progressive, Hartford, Allstate).</div>
+    <div class="row"><span class="k">T</span> Lead 250-engineer org; make engineering predictable and outcome-led.</div>
+    <div class="row"><span class="k">A</span> SAFe Value-Stream architecture across forward-deployed pods; AI/ML Smart Solutions to production per carrier.</div>
+    <div class="row r-res"><span class="k">R</span> Customer Trust Index −80→+80 (Progressive); on-time delivery 70%→95%; defect escape → zero.</div>
+    <div class="row r-ref"><span class="k">R↺</span> This IS the StatusNeo two-track org: value-stream pods, one owner per stream, outcome-led. I've run this exact transformation before.</div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="pagebreak"></div>
+
+  <div class="seclbl">🖱️ The Demo — last 20 min (click order)</div>
+  <div class="demo">
+    <div class="step"><span class="n">1</span> Place legal Moducule → commits, one immutable event. <span class="say">"The renderer owns nothing."</span></div>
+    <div class="step"><span class="n">2</span> Illegal one → REJECTED, cited rule, no trace. <span class="say">"It only snaps if it's legal."</span> <span class="thesis-tag">← THE THESIS</span></div>
+    <div class="step"><span class="n">3</span> Legal bed → earns gold med-gas edge. <span class="say">"An edge the system earned by validation."</span></div>
+    <div class="step"><span class="n">4</span> Agent suggests → you approve. <span class="say">"The brain proposes, the gate disposes."</span></div>
+    <div class="step"><span class="n">5</span> /health → postgres·neo4j·ollama up. <span class="say">"Not mocked. Degrades, never crashes."</span></div>
+    <div class="step"><span class="n">6</span> Hierarchy: stamp ICU rooms → flip COMPLIANT, roll up. <span class="say">"The whole pitch in one click."</span></div>
+    <div class="breakglass"><b>Break-glass:</b> <code>run.ps1 -InMemory</code> · recorded capture · walk <code>dashboard.html</code> (39/39 green). It degrades, never crashes.</div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <div class="seclbl">🔥 Hardest Q — One-Liners</div>
+      <div class="qa">
+        <div class="item"><b>Scale?</b> "Three channels: geometry like Netflix, state like Meta's feed, AI like edge inference — each earned with a metric."</div>
+        <div class="item"><b>Two people edit at once?</b> "Optimistic concurrency, version token. Stale for the eyes, current for the gate. Tested — CC1/CC2."</div>
+        <div class="item"><b>Need a CAD kernel?</b> "Not for v1. Bounding-box + spatial index covers dimensioned layouts. B-rep is a triggered ADR."</div>
+        <div class="item"><b>Why not fix Unity?</b> "Unity isn't the problem — Unity-as-source-of-truth is. GraphRAG can't read a prefab."</div>
+        <div class="item"><b>Real vs demo?</b> "Working vertical slice on your stack. Scale is a plan with triggers. Same spine, extended — never a rewrite."</div>
+        <div class="item"><b>Can't answer?</b> "Good question — here's what I'd measure before deciding." Never bluff.</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="seclbl">🧠 Hold All Hour</div>
+      <div class="hold">
+        <div class="item"><span class="n">1</span> Humble about <b>their</b> build · certain about <b>my</b> diagnosis.</div>
+        <div class="item"><span class="n">2</span> <b>AI proposes; the gate disposes</b> — never blur in healthcare.</div>
+        <div class="item"><span class="n">3</span> Label <b>built / proven / next</b> — overclaiming is the only way to lose.</div>
+        <div class="item"><span class="n">4</span> The pitch earns the demo; the demo earns the contract. Don't rush. Land the close. Then <b>stop talking</b>.</div>
+      </div>
+      <div class="seclbl">🎯 Recon Qs — ask early</div>
+      <div class="hold">
+        <div class="item">• Validation inline at design time, or batch ASP/SPA?</div>
+        <div class="item">• Truth in the data layer, or Unity's scene graph?</div>
+        <div class="item">• Any LLM/agentic in Space Bot today?</div>
+        <div class="item">• How is BIM/Revit/IFC exchanged today?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="close">
+    <b>Close:</b> "Your vision, my disciplined execution, measured proof. Give me one flagship room type and a partner — 60 days, Designer-to-Floor in production. <b>Where would you like to go deep?"</b>
+  </div>
+
+</div>
+</body>
+</html>

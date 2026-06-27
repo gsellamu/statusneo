@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modutecture — Enterprise Architecture · 7 Layers · 4 Pillars</title>
+<style>
+  :root{
+    --navy:#16263F; --navy2:#22344f; --gold:#E8A816; --goldk:#C9952F;
+    --ink:#1F2A38; --body:#5B6B7E; --card:#F6F8FB; --line:#D7DFEA; --white:#fff;
+    --exist:#3B6EA5; --proto:#1E7A4C; --prop:#C9952F; --proven:#6B4E9E;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:#EDF0F4; color:var(--ink);
+    font-family:Calibri,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; line-height:1.4;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 20px 56px;}
+  header{background:linear-gradient(150deg,var(--navy),var(--navy2)); color:#fff; padding:24px 0 20px; margin-bottom:20px;}
+  header .wrap{padding-bottom:0;}
+  .kick{color:var(--gold); font-size:12px; font-weight:bold; letter-spacing:3px; text-transform:uppercase; margin:0 0 6px;}
+  h1{font-family:Cambria,Georgia,serif; font-size:29px; margin:0 0 7px; font-weight:bold;}
+  header p{margin:0; color:#C9D6E8; font-size:13.5px; max-width:920px;}
+  /* legend */
+  .legend{display:flex; gap:20px; flex-wrap:wrap; margin:0 0 16px; padding:11px 15px; background:#fff; border:1px solid var(--line); border-radius:10px; font-size:12.5px;}
+  .dot{display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:7px; vertical-align:middle;}
+  .d-e{background:var(--exist);} .d-pt{background:var(--proto);} .d-pp{background:var(--prop);} .d-pv{background:var(--proven);}
+  .legend b{font-weight:bold;}
+  /* EA frame grid */
+  .ea{display:flex; flex-direction:column; gap:9px;}
+  .mid{display:flex; gap:9px; align-items:stretch;}
+  .pillar{background:linear-gradient(160deg,var(--navy),var(--navy2)); color:#fff; border-radius:11px; padding:11px 13px;}
+  .pillar .pt{font-size:12.5px; font-weight:bold; color:var(--gold); letter-spacing:.5px; margin:0 0 8px; text-transform:uppercase;}
+  .p-left,.p-right{flex:0 0 190px;} .center{flex:1; display:flex; flex-direction:column; gap:9px;}
+  /* pillar chips */
+  .pchip{display:flex; align-items:center; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); border-radius:7px; padding:5px 8px; font-size:10.5px; margin-bottom:6px; color:#E7EEF7;}
+  .pchip .dot{width:8px; height:8px; margin-right:6px; flex:0 0 8px;}
+  .p-top .row, .p-bottom .row{display:flex; flex-wrap:wrap; gap:7px;}
+  .p-top .pchip, .p-bottom .pchip{margin-bottom:0;}
+  /* center layers */
+  .layer{display:flex; align-items:stretch; background:#fff; border:1px solid var(--line); border-radius:11px; overflow:hidden; box-shadow:0 1px 3px rgba(20,40,70,.05);}
+  .layer .lbl{flex:0 0 150px; background:var(--navy); color:#fff; padding:10px 12px; display:flex; flex-direction:column; justify-content:center;}
+  .layer .lbl .ln{font-size:12.5px; font-weight:bold;}
+  .layer .lbl .ls{font-size:9.5px; color:#A9BBD2; margin-top:2px;}
+  .layer.foundation .lbl{background:#2c4368;}
+  .layer .chips{flex:1; padding:9px 11px; display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+  .chip{display:inline-flex; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:7px; padding:4px 9px; font-size:11px; color:var(--ink);}
+  .chip .dot{width:8px; height:8px; margin-right:6px;}
+  .chip.star{border-color:var(--proto); background:#EEF7F1; font-weight:bold;}
+  .chip.future{opacity:.62; font-style:italic;}
+  .star-badge{font-size:8px; font-weight:bold; color:#fff; background:var(--proto); border-radius:5px; padding:1px 5px; margin-right:5px; letter-spacing:.5px;}
+  .foot{margin-top:18px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 17px; font-size:12.5px; color:var(--body);}
+  .foot b{color:var(--ink);}
+  @media (max-width:820px){ .mid{flex-direction:column;} .p-left,.p-right{flex-basis:auto;} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="kick">Modutecture · Enterprise Architecture — Continuous Contextual Construction</p>
+    <h1>7 layers, 4 pillars — domain-first on Kaiser-Permanente</h1>
+    <p>The full target architecture. A domain-agnostic <b>AEC Context Intelligence</b> foundation, specialized first by the <b>Kaiser-Permanente multi-facility hospital</b> vertical, then reused for other building types. Color shows ownership: what Modutecture runs today versus what we deliver.</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="legend">
+    <span><span class="dot d-e"></span><b>Modutecture — existing</b></span>
+    <span><span class="dot d-pt"></span><b>Our working prototype</b></span>
+    <span><span class="dot d-pp"></span><b>Our proposed delivery</b></span>
+    <span><span class="dot d-pv"></span><b>Proven elsewhere (UE5)</b></span>
+  </div>
+
+  <div class="ea">
+
+    <!-- ============ TOP PILLAR ============ -->
+    <div class="pillar p-top">
+      <p class="pt">Pillar · Business &amp; Stakeholder Context</p>
+      <div class="row">
+        <span class="pchip"><span class="dot d-e"></span>Kaiser-Permanente multi-facility hospital program</span>
+        <span class="pchip"><span class="dot d-e"></span>Healthcare facility planning &amp; delivery</span>
+        <span class="pchip"><span class="dot d-pp"></span>Value-stream org + FDE ownership</span>
+        <span class="pchip"><span class="dot d-pp"></span>Outcome: time-to-compliant-design · scalable · sellable</span>
+      </div>
+    </div>
+
+    <div class="mid">
+    <!-- ============ LEFT PILLAR ============ -->
+    <div class="pillar p-left">
+      <p class="pt">Pillar · Security · Identity · Multitenancy</p>
+      <span class="pchip"><span class="dot d-e"></span>AAA — auth / authz / access</span>
+      <span class="pchip"><span class="dot d-e"></span>Multitenant isolation</span>
+      <span class="pchip"><span class="dot d-pp"></span>HIPAA / PHI safeguards</span>
+      <span class="pchip"><span class="dot d-pp"></span>RBAC · least-privilege</span>
+      <span class="pchip"><span class="dot d-pp"></span>Secrets / KMS · encryption</span>
+    </div>
+
+    <!-- ============ CENTER — 7 LAYERS ============ -->
+    <div class="center">
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">1 · Experience &amp; Lenses</span><span class="ls">renderer owns nothing</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-e"></span>Unity: Space Bot · Room Builder/Planner</span>
+          <span class="chip"><span class="dot d-pp"></span>→ thin-client over the twin</span>
+          <span class="chip"><span class="dot d-pt"></span>Web lenses (2D · SVG · 3D · Data)</span>
+          <span class="chip"><span class="dot d-pv"></span>UE5 immersive</span>
+          <span class="chip"><span class="dot d-e"></span>WebGL · XR edge</span>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">2 · Domain Context Twin</span><span class="ls">vertical packs</span></div>
+        <div class="chips">
+          <span class="chip star"><span class="star-badge">FIRST</span>Kaiser-Permanente Hospital</span>
+          <span class="chip"><span class="dot d-pp"></span>Ontology: dept→room→headwall→med-gas (ADJACENT_TO · SUPPLIES)</span>
+          <span class="chip"><span class="dot d-pp"></span>Clinical room types: OR · ICU · MRI · Scrub</span>
+          <span class="chip"><span class="dot d-pp"></span>Code pack: FGI · ADA · IBC</span>
+          <span class="chip"><span class="dot d-pp"></span>Hospital Moducule library</span>
+          <span class="chip"><span class="dot d-pp"></span>Hospital-tuned LoRA (jargon · token-efficiency — not compliance authority)</span>
+          <span class="chip future"><span class="dot d-pp"></span>then School · Mall · Office · Lab</span>
+        </div>
+      </div>
+
+      <div class="layer foundation">
+        <div class="lbl"><span class="ln">3 · AEC Context Intelligence</span><span class="ls">foundation engines · domain-agnostic</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-pp"></span>Geometry &amp; Spatial</span>
+          <span class="chip"><span class="dot d-pt"></span>Semantics &amp; Context (GraphRAG)</span>
+          <span class="chip"><span class="dot d-pp"></span>Similarity (vector + graph)</span>
+          <span class="chip"><span class="dot d-pp"></span>Collision Predict &amp; Avoid</span>
+          <span class="chip"><span class="dot d-pt"></span>Change-Impact (blast-radius)</span>
+          <span class="chip"><span class="dot d-pp"></span>Layout / Recommendation</span>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">4 · Agentic AI Orchestration</span><span class="ls">brain proposes · gate disposes</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-pp"></span>AI Gateway — guardrails · logging · model routing</span>
+          <span class="chip"><span class="dot d-pp"></span>LangGraph + MCP tools</span>
+          <span class="chip"><span class="dot d-pt"></span>Agent roles: planner / reviewer (reflective)</span>
+          <span class="chip"><span class="dot d-pp"></span>Hospital pods (ReAct · LangGraph conditional edges):</span>
+          <span class="chip"><span class="dot d-pp"></span>Clinical Workflow — clean/soiled path separation</span>
+          <span class="chip"><span class="dot d-pp"></span>MEP &amp; MedGas — O₂ / vacuum / HVAC clash</span>
+          <span class="chip"><span class="dot d-pp"></span>Structural &amp; Acoustic — MRI load (OpenSees) · isolation</span>
+          <span class="chip"><span class="dot d-pp"></span>4D Logistics &amp; Cost — phasing · takeoff</span>
+          <span class="chip"><span class="dot d-pp"></span>Reflection + HITL</span>
+          <span class="chip"><span class="dot d-pp"></span>Dual guardrails — input (injection · PHI) + output (gate)</span>
+          <span class="chip"><span class="dot d-pp"></span>Custom mini-LLM + LoRA (language only — gate + RAG enforce codes)</span>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">5 · Twin &amp; Knowledge Core</span><span class="ls">the source of truth</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-pt"></span>Event-sourced Twin — <b>episodic memory</b> · parametric/semantic, versioned</span>
+          <span class="chip"><span class="dot d-pt"></span>Knowledge Graph (Neo4j) — <b>semantic memory</b></span>
+          <span class="chip"><span class="dot d-pp"></span>Vector store (Qdrant) — <b>associative memory</b></span>
+          <span class="chip"><span class="dot d-pp"></span><b>Working memory</b> — managed context window</span>
+          <span class="chip"><span class="dot d-pp"></span>Moducule contract registry (MDS)</span>
+          <span class="chip"><span class="dot d-e"></span>their digital twin (representation TBD)</span>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">6 · Platform Services &amp; APIs</span><span class="ls">contracts &amp; seams</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-e"></span>GraphQL + REST (Base Moducules Get/Create)</span>
+          <span class="chip"><span class="dot d-pp"></span>Domain services</span>
+          <span class="chip"><span class="dot d-pp"></span>CQRS — command / query split</span>
+          <span class="chip"><span class="dot d-pp"></span>Event / command bus</span>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div class="lbl"><span class="ln">7 · Data · Persistence · Processing</span><span class="ls">polyglot by workload</span></div>
+        <div class="chips">
+          <span class="chip"><span class="dot d-e"></span>SQL Server / SSMS</span>
+          <span class="chip"><span class="dot d-e"></span>Lakebase / Postgres</span>
+          <span class="chip"><span class="dot d-e"></span>Databricks ASP/SPA (batch)</span>
+          <span class="chip"><span class="dot d-pp"></span>Neo4j · Qdrant · TimescaleDB</span>
+          <span class="chip"><span class="dot d-pt"></span>Event backbone (Redpanda)</span>
+          <span class="chip"><span class="dot d-pp"></span>Content-addressed geometry · edge/CDN</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============ RIGHT PILLAR ============ -->
+    <div class="pillar p-right">
+      <p class="pt">Pillar · Governance · Safety · Compliance</p>
+      <span class="pchip"><span class="dot d-pp"></span>Deterministic gate — binding authority</span>
+      <span class="pchip"><span class="dot d-pp"></span>Graduated authority — auto / notify / approve</span>
+      <span class="pchip"><span class="dot d-pp"></span>HITL + 80/20 AI:human</span>
+      <span class="pchip"><span class="dot d-pp"></span>Code packs: FGI · ADA · IBC (gate + RAG over code text)</span>
+      <span class="pchip"><span class="dot d-pp"></span>Audit trail + ADRs</span>
+      <span class="pchip"><span class="dot d-pp"></span>AI guardrails + grounded citations</span>
+    </div>
+
+    </div><!-- /mid -->
+
+    <!-- ============ BOTTOM PILLAR ============ -->
+    <div class="pillar p-bottom">
+      <p class="pt">Pillar · DevOps · Observability · Quality</p>
+      <div class="row">
+        <span class="pchip"><span class="dot d-e"></span>CI/CD · Azure DevOps</span>
+        <span class="pchip"><span class="dot d-e"></span>QA: Selenium · Cucumber BDD · Rest Assured · AltTester</span>
+        <span class="pchip"><span class="dot d-pp"></span>Evals + golden sets</span>
+        <span class="pchip"><span class="dot d-pp"></span>Agent-behavior metrics — reasoning · tool-use · safety</span>
+        <span class="pchip"><span class="dot d-pp"></span>OTel · /health · /metrics</span>
+        <span class="pchip"><span class="dot d-pp"></span>DORA / flow · RTM traceability</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="foot">
+    <b>How to read this:</b> the center stack is the <b>seven technical layers</b>; the four <b>pillars</b> (top/left/bottom/right) are cross-cutting concerns that span all of them. <span style="color:var(--exist);font-weight:bold;">Blue</span> = Modutecture’s existing platform · <span style="color:var(--proto);font-weight:bold;">green</span> = our working prototype · <span style="color:var(--prop);font-weight:bold;">gold</span> = our proposed delivery · <span style="color:var(--proven);font-weight:bold;">purple</span> = proven elsewhere. <b>Domain-first:</b> we build the <b>Kaiser-Permanente hospital</b> vertical (layer 2) end-to-end first and <i>extract</i> the domain-agnostic foundation (layer 3) from it — one real vertical earns the platform. The invariant across every layer and pillar: <b>the brain proposes, the deterministic gate disposes, the twin remembers.</b>
+  </div>
+
+  <div class="foot" style="border-left:4px solid var(--gold);">
+    <b>Framework alignment:</b> this architecture maps to the production-grade enterprise agentic-AI pattern — <b>seven agent-system layers</b> (interface · orchestration · runtime · memory · tools · observability · governance) on <b>four pillars</b> (bounded autonomy · contextual grounding · orchestration · governance/explainability). Independently convergent with the current literature: <i>Kellton — Enterprise Agentic AI Architecture (2026)</i>; <i>Fareed Khan / Asimsultan / JIN — The 7 Layers of a Production-Grade Agentic AI System (2025–26)</i>; <i>AIMultiple — Agentic AI Stack</i> moat analysis. <b>Where we deliberately specialize:</b> a <b>deterministic compliance gate</b> — not a probabilistic governance agent — for hospital code-safety, and <b>domain-first verticalization</b>, building moat exactly where the literature says it accrues: cognition, governance, and domain specialization.
+  </div>
+
+</div>
+</body>
+</html>

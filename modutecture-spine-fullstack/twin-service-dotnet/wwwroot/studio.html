@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Lens Studio</title>
+<style>
+  :root{--navy:#16263f;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--red:#b3402f;--amber:#d89a12;--green:#1e7a4c;}
+  *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+  body{margin:0;height:100vh;display:flex;flex-direction:column;background:#eef2f7;color:var(--ink);overflow:hidden;}
+  header{background:var(--navy);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:14px;}
+  header b{color:var(--gold);} header .s{color:#c9d6e8;font-size:12.5px;}
+  #sync{margin-left:auto;font-size:12px;background:#23375a;padding:4px 10px;border-radius:12px;}
+  .live{color:#7ee0a8;font-weight:bold;} .poll{color:#e8c97e;} 
+  #toolbar{background:#fff;border-bottom:1px solid var(--line);padding:8px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .chip{padding:5px 11px;border:1.5px solid var(--navy);border-radius:18px;cursor:pointer;font-size:13px;background:#fff;user-select:none;}
+  .chip.sel{background:var(--navy);color:#fff;} .chip.tool{border-color:var(--slate);color:var(--slate);}
+  .sep{width:1px;height:22px;background:var(--line);margin:0 4px;}
+  .lensToggle{font-size:12.5px;color:var(--slate);display:inline-flex;align-items:center;gap:4px;cursor:pointer;}
+  button{font-size:13px;padding:6px 12px;border:0;border-radius:6px;background:var(--gold);color:var(--navy);font-weight:bold;cursor:pointer;}
+  #grid{flex:1;display:grid;gap:8px;padding:8px;min-height:0;}
+  .pane{background:#fff;border:1px solid var(--line);border-radius:8px;display:flex;flex-direction:column;min-height:0;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .paneHead{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--navy);padding:6px 10px;border-bottom:1px solid var(--line);background:var(--tint);font-weight:bold;}
+  .paneBody{flex:1;min-height:0;position:relative;}
+  .paneBody canvas{display:block;}
+  #status{background:#fff;border-top:1px solid var(--line);padding:7px 16px;font-size:13px;min-height:34px;}
+  .ok{color:var(--green);} .err{color:var(--red);} .warn{color:var(--amber);}
+  table th{background:var(--navy);color:#fff;text-align:left;padding:4px 6px;position:sticky;top:0;}
+  table td{padding:3px 6px;border-bottom:1px solid var(--line);} .m{font-family:Consolas,monospace;font-size:10.5px;} .muted{color:var(--slate);}
+</style>
+</head>
+<body>
+  <header>
+    <b>Modutecture Spine</b><span class="s">Lens Studio — many renderers, one twin (.NET + EF/Postgres · Neo4j · Ollama)</span>
+    <span id="sync"><span class="poll">● connecting…</span></span>
+  </header>
+  <div id="toolbar">
+    <span style="font-size:12px;color:var(--slate)">Place:</span>
+    <div class="chip" data-type="headwall-hw204">Headwall HW-204</div>
+    <div class="chip" data-type="bed-icu">ICU Bed</div>
+    <div class="chip" data-type="sink-clinical">Clinical Sink</div>
+    <div class="chip tool" id="rot">Rotate: 0°</div>
+    <button id="agent">Suggest a bed (agent)</button>
+    <div class="sep"></div>
+    <span style="font-size:12px;color:var(--slate)">Lenses:</span>
+    <label class="lensToggle"><input type="checkbox" data-lens="2d" checked> 2D Plan</label>
+    <label class="lensToggle"><input type="checkbox" data-lens="schematic"> Schematic</label>
+    <label class="lensToggle"><input type="checkbox" data-lens="3d" checked> 3D</label>
+    <label class="lensToggle"><input type="checkbox" data-lens="data"> Data</label>
+    <div class="sep"></div>
+    <span style="font-size:12px;color:var(--slate)">room v<b id="ver">0</b></span>
+  </div>
+  <div id="grid"></div>
+  <div id="status">Place a Moducule in the 2D pane — watch every lens update together from the same twin.</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="studio.js"></script>
+</body>
+</html>

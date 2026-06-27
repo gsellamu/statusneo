@@ -1,0 +1,258 @@
+{
+  "stack": "Python oracle",
+  "build": "n/a (interpreted)",
+  "tests": [
+    {
+      "id": "R1a",
+      "category": "RULES",
+      "name": "Headwall inside room is accepted",
+      "proves": "R1 boundary admits legal footprints",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0.0716
+    },
+    {
+      "id": "R1b",
+      "category": "RULES",
+      "name": "Headwall crossing the wall is rejected",
+      "proves": "R1 boundary blocks out-of-bounds footprints",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0.0244
+    },
+    {
+      "id": "R2a",
+      "category": "RULES",
+      "name": "Physical footprint overlap is rejected (ERROR)",
+      "proves": "R2 collision is a hard stop",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0.0135
+    },
+    {
+      "id": "R2b",
+      "category": "RULES",
+      "name": "Clearance encroachment commits with a WARNING",
+      "proves": "R2 two-tier verdict: snaps-but-flags (the T1 tier)",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0.0748
+    },
+    {
+      "id": "R3a",
+      "category": "RULES",
+      "name": "Bed with no med-gas source is rejected",
+      "proves": "R3 dependency: a requirer needs a provider",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0.0108
+    },
+    {
+      "id": "R3b",
+      "category": "RULES",
+      "name": "Bed beyond med-gas reach is rejected",
+      "proves": "R3 dependency respects the reach limit",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0.0454
+    },
+    {
+      "id": "R3c",
+      "category": "RULES",
+      "name": "Bed within reach earns a med_gas binding",
+      "proves": "R3 a satisfied dependency creates a directed edge",
+      "expected": "med_gas",
+      "actual": "med_gas",
+      "status": "PASS",
+      "ms": 0.0154
+    },
+    {
+      "id": "R4",
+      "category": "RULES",
+      "name": "Rotated bed commits but is flagged",
+      "proves": "R4 advisory rules warn without blocking",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0.0145
+    },
+    {
+      "id": "INV1",
+      "category": "INVARIANTS",
+      "name": "A rejected command writes nothing",
+      "proves": "The gate is real: no event, no edge on rejection",
+      "expected": "1",
+      "actual": "1",
+      "status": "PASS",
+      "ms": 45.4396
+    },
+    {
+      "id": "INV2",
+      "category": "INVARIANTS",
+      "name": "Edges follow state (remove source \u2192 edge gone)",
+      "proves": "Connections are earned, never promiscuous",
+      "expected": "(1, 0)",
+      "actual": "(1, 0)",
+      "status": "PASS",
+      "ms": 50.3684
+    },
+    {
+      "id": "INV3",
+      "category": "INVARIANTS",
+      "name": "Clients hold no domain rules (thin-client)",
+      "proves": "Validation lives only server-side; renderer owns nothing",
+      "expected": "[]",
+      "actual": "[]",
+      "status": "PASS",
+      "ms": 1.4309
+    },
+    {
+      "id": "ES1",
+      "category": "EVENT-SOURCING",
+      "name": "Replay is deterministic",
+      "proves": "Folding a journal is a pure, repeatable function",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0.1111
+    },
+    {
+      "id": "ES2",
+      "category": "EVENT-SOURCING",
+      "name": "State rebuilds from the journal after restart",
+      "proves": "Truth survives because the log does (audit-grade)",
+      "expected": "2",
+      "actual": "2",
+      "status": "PASS",
+      "ms": 25.203
+    },
+    {
+      "id": "AG1",
+      "category": "AGENT-HITL",
+      "name": "Agent proposes but never commits",
+      "proves": "HITL: AI suggests, only a human approval writes",
+      "expected": "1",
+      "actual": "1",
+      "status": "PASS",
+      "ms": 22.6208
+    },
+    {
+      "id": "AG2",
+      "category": "AGENT-HITL",
+      "name": "Approving the agent's proposal is accepted & cited",
+      "proves": "Agent output is grounded and commit-ready",
+      "expected": "(True, True)",
+      "actual": "(True, True)",
+      "status": "PASS",
+      "ms": 28.6689
+    },
+    {
+      "id": "CC1",
+      "category": "CONCURRENCY",
+      "name": "Concurrent edit is judged against current truth",
+      "proves": "Stale-for-eyes, current-for-the-gate: no stale-approval",
+      "expected": "REJECTED",
+      "actual": "REJECTED",
+      "status": "PASS",
+      "ms": 25.1359
+    },
+    {
+      "id": "CC2",
+      "category": "CONCURRENCY",
+      "name": "Stale-but-legal edit rebases, never corrupts",
+      "proves": "Optimism is UX on top of one truth, not a second truth",
+      "expected": "(True, True)",
+      "actual": "(True, True)",
+      "status": "PASS",
+      "ms": 24.2929
+    },
+    {
+      "id": "RES1",
+      "category": "RESILIENCE",
+      "name": "Idempotent command retry never double-writes",
+      "proves": "A retried command after a blip places once, not twice",
+      "expected": "(1, 1, True)",
+      "actual": "(1, 1, True)",
+      "status": "PASS",
+      "ms": 21.1847
+    },
+    {
+      "id": "SCH1",
+      "category": "SCHEMA",
+      "name": "Placed instance pins its exact type version",
+      "proves": "A later type bump can't silently mutate an approved design",
+      "expected": "2.3.0",
+      "actual": "2.3.0",
+      "status": "PASS",
+      "ms": 19.1663
+    },
+    {
+      "id": "PERF1",
+      "category": "PERFORMANCE",
+      "name": "Validation (gate) latency",
+      "proves": "Gate is sub-millisecond \u2192 'snaps instantly' is real (T0/T1)",
+      "expected": "p99 < 1ms",
+      "actual": "p50=0.0112ms p95=0.0229ms p99=0.0507ms",
+      "status": "PASS",
+      "ms": 0.0112
+    },
+    {
+      "id": "PERF2",
+      "category": "PERFORMANCE",
+      "name": "Full commit latency (validate+append+fold)",
+      "proves": "End-to-end command path stays interactive",
+      "expected": "p95 < 50ms",
+      "actual": "p50=1.6721ms p95=3.7509ms p99=4.8186ms",
+      "status": "PASS",
+      "ms": 1.6721
+    }
+  ],
+  "perf": {
+    "validate": {
+      "n": 5000,
+      "p50_ms": 0.0112,
+      "p95_ms": 0.0229,
+      "p99_ms": 0.0507,
+      "max_ms": 4.3703
+    },
+    "commit": {
+      "n": 500,
+      "p50_ms": 1.6721,
+      "p95_ms": 3.7509,
+      "p99_ms": 4.8186,
+      "max_ms": 27.0977
+    }
+  },
+  "canonical": {
+    "step1": "ACCEPTED",
+    "step2": "REJECTED",
+    "step2_rules": [
+      "R1-boundary",
+      "R3-medgas"
+    ],
+    "step3": "ACCEPTED",
+    "step3_binding": "med_gas",
+    "step3_warn": [
+      "R2-clearance"
+    ],
+    "instances_after": 2,
+    "bindings_after": 1,
+    "events_after": 2,
+    "after_remove_instances": 1,
+    "after_remove_bindings": 0,
+    "rebuilt_instances": 1,
+    "version_after_remove": 3
+  },
+  "summary": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0,
+    "pass_rate": 1.0
+  }
+}

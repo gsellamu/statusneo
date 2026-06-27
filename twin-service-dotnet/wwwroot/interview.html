@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — AI-Assisted Interview</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--ice:#cadcfc;
+        --exist:#3b6ea5;--proto:#1e7a4c;--proven:#6b4f9e;--bubble:#eef3fa;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 90px;}
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:30px 0 26px;}
+  .hero .wrap{padding-bottom:0;}
+  .kick{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  .hero h1{font-family:Cambria,Georgia,serif;font-size:29px;margin:0 0 9px;}
+  .hero p{margin:0;color:#c9d6e8;font-size:14px;max-width:830px;}
+  .hero .sub{margin-top:9px;font-size:12.5px;color:#9fb6d4;}
+  /* layout */
+  .panel{display:flex;gap:18px;margin-top:22px;flex-wrap:wrap;}
+  .left{flex:1 1 320px;min-width:300px;}
+  .right{flex:2 1 520px;min-width:340px;}
+  .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  .box h3{margin:0 0 10px;font-family:Cambria,serif;font-size:15px;color:var(--navy);}
+  /* topic groups + chips */
+  .grp{margin-bottom:13px;}
+  .grp .gh{font-size:9.5px;font-weight:bold;letter-spacing:1.3px;text-transform:uppercase;color:var(--goldk);margin:0 0 6px;}
+  .chip{display:block;width:100%;text-align:left;background:var(--tint);border:1px solid var(--line);color:var(--ink);
+        font-family:inherit;font-size:12.7px;padding:8px 11px;border-radius:9px;cursor:pointer;margin-bottom:6px;transition:all .1s;}
+  .chip:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateX(2px);}
+  /* conversation */
+  #convo{min-height:240px;}
+  .msg{margin-bottom:16px;}
+  .q{font-weight:bold;color:var(--navy);font-size:14px;margin-bottom:7px;display:flex;align-items:flex-start;gap:8px;}
+  .q .who{flex:0 0 auto;font-size:9px;font-weight:bold;letter-spacing:.5px;background:var(--navy);color:#fff;padding:3px 7px;border-radius:6px;text-transform:uppercase;margin-top:1px;}
+  .a{background:var(--bubble);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;padding:13px 15px;font-size:13.5px;}
+  .a .who{font-size:9px;font-weight:bold;letter-spacing:.5px;color:var(--goldk);text-transform:uppercase;margin-bottom:6px;}
+  .a p{margin:0 0 9px;} .a p:last-child{margin:0;}
+  .a .pull{font-family:Cambria,serif;font-style:italic;color:var(--navy);font-size:13px;border-top:1px solid var(--line);margin-top:10px;padding-top:9px;}
+  .a code{font-family:Consolas,monospace;font-size:12px;background:#e3e9f2;padding:1px 5px;border-radius:4px;}
+  .tags{margin-top:9px;display:flex;gap:6px;flex-wrap:wrap;}
+  .t{font-size:9.5px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:9px;}
+  .t-built{background:#e3f3ea;color:var(--green);} .t-proven{background:#efe9f6;color:var(--proven);} .t-next{background:#fdf2dc;color:var(--goldk);}
+  .empty{color:var(--slate);font-size:13px;text-align:center;padding:40px 16px;}
+  .empty b{color:var(--navy);}
+  /* ask box */
+  .ask{margin-top:14px;display:flex;gap:9px;align-items:center;}
+  .ask input{flex:1;font-family:inherit;font-size:13.5px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;}
+  .ask input:focus{outline:none;border-color:var(--gold);}
+  .ask button{font-family:inherit;font-size:13px;font-weight:bold;padding:10px 16px;border:0;border-radius:10px;cursor:pointer;background:var(--gold);color:var(--navy);}
+  .ask button:hover{background:#f0b020;}
+  /* live toggle */
+  .live{margin-top:11px;display:flex;align-items:center;gap:9px;font-size:12px;color:var(--slate);flex-wrap:wrap;}
+  .switch{position:relative;width:42px;height:23px;flex:0 0 auto;}
+  .switch input{opacity:0;width:0;height:0;}
+  .sl{position:absolute;cursor:pointer;inset:0;background:#c3ccd8;border-radius:23px;transition:.2s;}
+  .sl:before{content:"";position:absolute;height:17px;width:17px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.2s;}
+  .switch input:checked + .sl{background:var(--goldk);}
+  .switch input:checked + .sl:before{transform:translateX(19px);}
+  .live .lbl b{color:var(--goldk);}
+  .live .state{font-weight:bold;}
+  .disclaim{margin-top:7px;font-size:11px;color:#8090a4;}
+  .footnote{margin-top:30px;font-size:11.5px;color:var(--slate);border-top:1px solid var(--line);padding-top:13px;}
+  .thinking{font-style:italic;color:var(--slate);font-size:13px;}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="kick">Modutecture Spine · Mental Model, Interrogated Live</p>
+  <h1>AI-Assisted Interview — ask the architecture anything</h1>
+  <p>This isn't a slideshow of answers — it's the reasoning behind the build, organized so you can probe it. Click a question, or type your own. Every answer is the actual thinking that shaped the spine: what's <b style="color:#7ee0a8">built</b>, what's <b style="color:#c9aef0">proven elsewhere</b>, and what's <b style="color:#f0c870">deliberately next</b>.</p>
+  <div class="sub">Curated from the architecture of record (CONSENSUS.md) and the demo script — grounded, not generated. Live-model mode is opt-in below.</div>
+</div></header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="left">
+      <div class="box">
+        <h3>Ask about…</h3>
+        <div id="chips"></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="box">
+        <h3>The conversation</h3>
+        <div id="convo"><div class="empty"><b>Pick a question on the left</b> — or type one below.<br>The architecture answers in its own words.</div></div>
+        <div class="ask">
+          <input id="askInput" type="text" placeholder="Type any question about the platform..." autocomplete="off"/>
+          <button id="askBtn">Ask</button>
+        </div>
+        <div class="live">
+          <label class="switch"><input type="checkbox" id="liveToggle"/><span class="sl"></span></label>
+          <span class="lbl">⚡ <b>Ask the live model</b> — route free-text to local Ollama (<span class="state" id="liveState">off · curated</span>)</span>
+        </div>
+        <div class="disclaim" id="liveDisclaim">Curated mode: answers are pre-authored from the architecture of record — bulletproof, on-message, offline. Flip the toggle to route typed questions to the live local LLM (mistral-nemo) instead.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footnote">Grounded in CONSENSUS.md (architecture of record) + DEMO_SCRIPT.md + ADR-009. Curated answers are the speaker's actual reasoning, verbatim where possible. Live mode calls <code>/agent/ask</code> → local Ollama; if that route isn't wired, it falls back to the closest curated answer. Nothing here is faked.</div>
+</div>
+
+<script>
+/* ============================================================================
+   KNOWLEDGE BASE — Jeeth's mental model, grounded in CONSENSUS.md + DEMO_SCRIPT.md.
+   Each entry: { id, group, q, keywords[], answer:[paras], pull, tags[] }
+   Answers are the speaker's actual reasoning. Verbatim where possible.
+============================================================================ */
+var KB = [
+  // ---------- THE OPENER ----------
+  { id:"about-me", group:"Start here", q:"Tell me about you for this FDE role.",
+    keywords:["about you","about me","yourself","who are you","tell me","introduce","background","fit","why you","fde"],
+    answer:[
+      "I'm a forward-deployed engineer who builds AI platforms that ship \u2014 I've taken agentic, real-time systems from whiteboard to production, including a clinical product with live biometric-driven avatars on Unreal. But the reason I'm here isn't my r\u00e9sum\u00e9 \u2014 it's that I didn't study the job description. I studied your platform.",
+      "You've already done the hard, visionary part: the digital twin as single source of truth, the rule-bearing Moducules, the reusable catalog, the Unity experience. You're solving a massive data problem for serial owners and builders \u2014 eliminating fragmentation and waste by modularizing customer data for continuous reuse, vendor-neutral, through gamification and visual wayfinding. That bet is right: buildings should compound, not restart.",
+      "But what's blocking production with paying customers is that the product lives between the tools, and there's nothing there yet. Your own docs show collision as a concept \u2014 because validation has no home: it can't be authoritative in the Unity client, and nothing server-side computes it. So the Designer-to-Space-Bot-to-Room-to-Floor chain stalls exactly where correctness should live.",
+      "So I'd add the one layer your roadmap doesn't show yet: a governed agentic-AI layer and an inline deterministic correctness gate \u2014 the AI proposes, a deterministic gate disposes, the twin remembers \u2014 grounded by a knowledge graph so it cites real codes and never hallucinates. That turns your twin from a system that stores truth into one that reasons and stays correct-by-construction. And I built a working model of it, running on your stack. Then we earn FAANG-grade scale and Autodesk-grade geometry one metric at a time \u2014 to make Modutecture the #1 contextual-intelligence platform in AEC."
+    ],
+    pull:"I didn't study the job description \u2014 I studied your platform. Where would you like me to start: the working model, or the gaps I think I see?",
+    tags:["built","proven","next"] },
+
+  // ---------- THESIS ----------
+  { id:"thesis", group:"The thesis", q:"What is the core thesis of the platform?",
+    keywords:["thesis","core","idea","point","whole","truth","source","graph","compound","why"],
+    answer:[
+      "A directed, state-and-event-driven graph is the source of truth; the renderer — Unity or web — owns nothing. Every operation is propose, validate, gate, commit, propagate.",
+      "Edges, like a med-gas binding, exist only when validation permits them — connected, never promiscuous. The twin is a fold over an append-only journal.",
+      "The reason your Designer to Space Bot to Room to Floor chain doesn't hold together yet is that the product lives between the tools, and validation has no home: it can't be authoritative in the Unity client, and nothing server-side computes it. I built that missing piece."
+    ],
+    pull:"Unity is the GPU; the twin holds the truth; the edge carries the bytes; the brain stays where the data is.",
+    tags:["built"] },
+
+  { id:"gate", group:"The thesis", q:"What makes the validation gate the heart of it?",
+    keywords:["gate","validate","validation","reject","legal","rule","cited","snap","heart"],
+    answer:[
+      "A click isn't a mutation — it's an intent. The server validates against current truth, and only then writes one immutable event. An illegal placement leaves no trace, and the error cites the rule by name — a med-gas dependency, for example, not a generic failure.",
+      "It only snaps if it's legal. And when it commits with a warning instead of a block, that's the snaps-instantly, certify-asynchronously tier: the provisional verdict renders immediately, the authoritative one replaces it when the server commits.",
+      "The gate runs in about 15 microseconds — p99 of 0.0149 milliseconds, measured, not claimed. That's why it feels instant."
+    ],
+    pull:"Stale for the eyes, current for the gate.",
+    tags:["built"] },
+
+  // ---------- UNITY ----------
+  { id:"unity", group:"Unity & rendering", q:"Why not just fix Unity in place?",
+    keywords:["unity","fix","engine","scene","graph","render","prefab","lens","replace"],
+    answer:[
+      "Unity isn't the problem — Unity-as-the-source-of-truth is. A scene graph is where domain truth goes to become invisible to your AI: GraphRAG can't read a prefab.",
+      "Invert it — the twin owns truth, Unity renders it and emits intents — and Unity becomes a swappable lens and your XR authoring differentiator. The same payload already drives the web viewer. Your Unity team keeps the rich authoring experience; it just gets thinner and more powerful because it sheds the domain logic a scene graph was never meant to hold.",
+      "That's the engine bake-off, decided by evidence, not opinion."
+    ],
+    pull:"Unity isn't the problem — Unity-as-the-source-of-truth is.",
+    tags:["built"] },
+
+  { id:"renderer", group:"Unity & rendering", q:"How do many renderers stay consistent over one twin?",
+    keywords:["renderer","lens","consistent","independence","many","four","five","studio","sync","same"],
+    answer:[
+      "One contract, many lenses. Clients receive twin payloads and emit intents; they never mutate truth locally. The same GraphQL drives a 2D plan, a schematic, a 3D Three.js view, a data table, and Unity.",
+      "Place a Moducule in one and every lens updates together, because none of them owns the truth. The renderer is swappable — that's the whole architecture in one screen.",
+      "Live sync is a subscription with a polling fallback. Reconnect is snapshot-then-resume: re-query the twin, then resubscribe, so no delta is missed."
+    ],
+    pull:"Same twin, many renderers, none owns a rule. The renderer is swappable.",
+    tags:["built"] },
+
+  // ---------- SCALE ----------
+  { id:"scale", group:"Scale & performance", q:"It's a desktop demo. How does it scale?",
+    keywords:["scale","desktop","demo","many","hospitals","concurrent","cloud","grow","big","production"],
+    answer:[
+      "Three channels, three playbooks, because each has different physics. Geometry scales like Netflix Open Connect — immutable, content-addressed glTF/USD at the edge, LOD as adaptive bitrate. State scales like Meta's TAO and feed fan-out — regional read replicas plus edge working-set views; instance-changes push, type-changes invalidate-not-fan-out. AI scales like edge inference — model and grounding co-located with the data, warm and pre-fetched, never on the frame path.",
+      "I earn each tier with a metric: CDN first, read replicas when geographic read-latency hurts, edge working-sets for a second continent, predictive pre-warm last. Each one is an ADR with a trigger and a revisit date."
+    ],
+    pull:"Earn each tier with a metric — CDN first, pre-warm last.",
+    tags:["next"] },
+
+  { id:"latency", group:"Scale & performance", q:"How do you keep it feeling instant — the four latency tiers?",
+    keywords:["latency","instant","fast","tiers","t0","t1","t2","t3","feel","slow","16ms","speed"],
+    answer:[
+      "Four tiers. T0, under 16 milliseconds, never networked — camera, hover, selection, drag preview, pure Unity. T1, 50 to 150 milliseconds — optimistic placement against a cached rule subset, the edge confirms. T2, seconds — AI proposals and GraphRAG answers streamed in as non-blocking overlays. T3, minutes to hours — durable HITL workflows; the client just re-syncs on resume.",
+      "Most perceived latency dies at T0 and T1 — by prediction and immutable-asset caching — not by moving the LLM closer. The LLM never sits on the interaction path."
+    ],
+    pull:"It snaps instantly; it certifies asynchronously.",
+    tags:["built","next"] },
+
+  { id:"consistency", group:"Scale & performance", q:"What about consistency when two people edit at once?",
+    keywords:["consistency","concurrent","two","edit","conflict","stale","version","collision","same time","concurrency"],
+    answer:[
+      "Optimistic concurrency with a version token. The client may render stale, but every command is re-validated against current truth before commit — stale-but-legal rebases, a real conflict rejects.",
+      "A clash-check against a stale twin would be a code violation in concrete; we never allow it. That's tested — CC1 and CC2 on the dashboard."
+    ],
+    pull:"Stale for the eyes, current for the gate.",
+    tags:["built"] },
+
+  { id:"spikes", group:"Scale & performance", q:"What about spikes — a whole team before a deadline?",
+    keywords:["spike","load","team","deadline","burst","storm","launch","traffic","peak"],
+    answer:[
+      "The load is wildly asymmetric: interactions far exceed reads, which far exceed writes, and geometry bytes dwarf state bytes. So the common case never touches the authoritative store — the CDN absorbs geometry, optimistic T0/T1 absorbs interaction, and the only real bottleneck, the per-room write path, gets a stateless validator pool and a per-room queue with backpressure.",
+      "The type-change cascade is handled by invalidate-not-fan-out, so one standards revision can't melt the platform — that's the celebrity-write problem, solved."
+    ],
+    pull:"The common case must never touch the authoritative store.",
+    tags:["next"] },
+
+  // ---------- GEOMETRY ----------
+  { id:"geometry", group:"Geometry & precision", q:"Don't you need a real CAD geometry kernel?",
+    keywords:["geometry","kernel","cad","brep","b-rep","collision","clash","precision","curved","kernel"],
+    answer:[
+      "Not for v1, and I wouldn't buy one yet. Your docs show no kernel, and collision as a concept. For dimensioned room layouts, server-side bounding-box clash plus a spatial index covers it — which is what the reference does.",
+      "A B-rep kernel is a triggered ADR — for curved walls, true booleans, or parametric mating — with floating-point precision at building coordinates handled by a local-origin transform. That last part is the Autodesk-hard problem.",
+      "I'd want your eyes on that decision and on the tenant-isolation tier first — they're the two hardest to retrofit."
+    ],
+    pull:"Knowing what NOT to build yet is the part I'd want you to hold me to.",
+    tags:["next"] },
+
+  // ---------- AI SAFETY ----------
+  { id:"aisafety", group:"AI & safety", q:"How is the AI agent kept safe in a healthcare context?",
+    keywords:["ai","agent","safe","safety","healthcare","hallucinate","gate","propose","commit","hitl","llm","grounded"],
+    answer:[
+      "The graph grounds the rules, a local LLM proposes using only those facts — no hallucinated parts or codes — and the deterministic rule gate validates what it proposed before a human ever sees it.",
+      "The agent cannot write. Approval is the only path to a commit. If the model proposes something illegal, the gate rejects it and tells you which rule.",
+      "Even in the reflective mode — a planner drafts, a reviewer critiques and corrects — the LLM reviewer is advisory; the deterministic gate is authoritative. AI reasoning improves the proposal; it never becomes the safety mechanism. In healthcare, that distinction is everything."
+    ],
+    pull:"The brain proposes, the deterministic gate disposes, the twin remembers.",
+    tags:["built"] },
+
+  { id:"context-spine", group:"AI & safety", q:"What is the Context Spine, concretely?",
+    keywords:["context","spine","grounding","neo4j","graph","rag","graphrag","knowledge","ground"],
+    answer:[
+      "It's the live grounding layer: Neo4j holds the space-planning rules and standards as a queryable graph. When the agent proposes, those facts plus the live twin state are sent to the model, so it reasons over real rules — FGI med-gas reach, clearances — not its training-data guesses.",
+      "The citations you see on a proposal, like R3-medgas or FGI 2.1-8.4, came from the graph, not the model. That's what makes it grounded: the knowledge is external, inspectable, and versioned."
+    ],
+    pull:"The graph grounds; the model proposes; the gate validates.",
+    tags:["built"] },
+
+  { id:"edge-feed", group:"AI & safety", q:"How does the twin stay rendering-agnostic at scale? (ADR-009)",
+    keywords:["edge","feed","adr","009","agnostic","cqrs","cdn","payload","envelope","adr-009","fork"],
+    answer:[
+      "Today the twin is rendering-agnostic and every lens pulls the same payload — that proves renderer-independence, but it doesn't scale: a data table needs hundreds of bytes, a Unity scene needs megabytes of mesh.",
+      "Production inserts rendering-optimized edge adapters between the agnostic twin and each renderer. Content is cached — immutable content-addressed geometry on a CDN. State is synced — a CQRS snapshot plus delta stream, same truth, different envelope per edge. The brain is relocated — co-located regional, off the render path.",
+      "These aren't separate twins. They're differently-shaped reads of one event log. The current direct-to-GraphQL wiring is the Phase-0 degenerate case — one edge equals the origin. It's ADR-009, marked Proposed."
+    ],
+    pull:"One twin, many edges, many lenses — truth is shaped at the edge, never forked.",
+    tags:["next"] },
+
+  // ---------- COMPOSITION ----------
+  { id:"moducule", group:"Composition model", q:"What is a Moducule, and how does reuse work?",
+    keywords:["moducule","reuse","stamp","template","lego","catalog","room","compose","block"],
+    answer:[
+      "A Moducule is a reusable, rule-bearing lego block at three levels — content like a headwall or bed, a whole room template like a Standard ICU Room, and layout. A room is itself a Moducule.",
+      "The relationship model: a tree for containment — Building, Floor, Room, component; a composition DAG for reusable types, where shared types have many parents — that's the blast radius; and validated directed edges for relationships like med-gas.",
+      "When I stamp a Standard ICU Room into three rooms, each one runs through the identical propose-validate-gate-commit path. Reuse the design, re-earn the compliance. That's the difference between a CAD macro and a contextual platform."
+    ],
+    pull:"Trees where you own, DAGs where you reuse, edges where you connect.",
+    tags:["built"] },
+
+  { id:"hierarchy", group:"Composition model", q:"How does compliance roll up Room to Floor to Building?",
+    keywords:["hierarchy","rollup","roll-up","floor","building","propagate","blast","radius","portfolio","compliance"],
+    answer:[
+      "Each room's compliance is computed from its twin; floors and the building roll up from their children, in real time. Place a headwall and a bed that earns its med-gas edge, and the room turns compliant, the floor updates, the building badge changes.",
+      "And the operational payoff: every Moducule version is mapped to the rooms using it. Revise Headwall HW-204 to v2.4, and exactly those rooms flag for review — not a guess, a query. That's how a standards change propagates through a portfolio without melting it: invalidate-and-review, scoped to the blast radius."
+    ],
+    pull:"Not a guess — a query. Invalidate-and-review, scoped to the blast radius.",
+    tags:["built"] },
+
+  // ---------- HONESTY ----------
+  { id:"honesty", group:"What's real", q:"What's actually built versus what's a plan?",
+    keywords:["real","built","plan","stub","mock","honest","production","fake","actually","versus","vs"],
+    answer:[
+      "To be straight: this is a working vertical slice on your stack, not a production cloud deployment — nobody should hand you that at this stage. What it proves is the architecture and the engineering discipline.",
+      "Built, running on your stack now: the twin, the gate, five lenses, the grounded agent, the hierarchy roll-up, the operational telemetry POC. Proven elsewhere: the UE5 immersive layer — Sophia, biometric avatars, Quest-3, Meta TRIBE v2 — shipped in a sibling product. Next, earned with a metric: the scale tiers, the geometry kernel, the CDN, multi-axis authz.",
+      "The scale story is a plan with triggers, not a thing I'm pretending to have already deployed."
+    ],
+    pull:"Smaller promise, delivered.",
+    tags:["built","proven","next"] },
+
+  { id:"tests", group:"What's real", q:"How do I know the architecture actually works?",
+    keywords:["test","tests","proof","prove","parity","39","dashboard","work","evidence","reference"],
+    answer:[
+      "39 tests, both stacks, green. The .NET service behaves identically to a Python reference implementation, field-for-field — so it's the architecture that works, not one lucky codebase.",
+      "The validation gate runs at p99 of about 15 microseconds. Categories cover the rules, the consistency boundary, idempotent retries, type-version pinning, event-sourced rebuild, and the HITL agent. Every test names the claim it proves, and you can re-run all of it with one command.",
+      "The one I'd lose sleep over if it were wrong is the consistency boundary: two people editing the same room can never produce a stale-approval, because validation always runs against current truth."
+    ],
+    pull:"It's the architecture that works, not one lucky codebase.",
+    tags:["built"] },
+
+  { id:"connected", group:"What's real", q:"Is this really connected, or mocked?",
+    keywords:["connected","mocked","health","postgres","neo4j","ollama","live","fallback","degraded","real infra"],
+    answer:[
+      "Not mocked. The health endpoint shows journal postgres up, grounding neo4j up, brain ollama up. And if any of these drops, it degrades to a labeled fallback instead of crashing — Neo4j down means in-memory rules with the same content, Ollama down means a deterministic proposer.",
+      "The service is also reporting to your Grafana right now — metrics are being scraped by your Prometheus. The production-stack claim is honest because it runs on real Postgres, not an in-memory store."
+    ],
+    pull:"It degrades to a labeled fallback — it never crashes.",
+    tags:["built"] },
+
+  // ---------- THE TWO DECISIONS ----------
+  { id:"cto-decisions", group:"For your judgment", q:"What would you want my judgment on first?",
+    keywords:["judgment","decide","decision","first","unsure","confident","least","your call","two","flag"],
+    answer:[
+      "Two decisions I'd flag as least confident and want your eyes on first. One: the geometry kernel and precision strategy — it's the hardest to retrofit, it's CAD-deep, and your docs confirm there's nothing there yet. Two: the tenant-isolation tier — row-security versus schema-per-tenant versus database-per-tenant — because a wrong choice is both a painful migration and a security and sales risk.",
+      "Naming these as least-confident is deliberate: decision rights stay with you. The reference proves the spine; first-week discovery — where does overlap run today, are Moducules fixed or parametric — calibrates the rest."
+    ],
+    pull:"Boundaries as credibility — decision rights stay with the client.",
+    tags:["next"] },
+
+  { id:"plan", group:"For your judgment", q:"What's the 30 to 60 day plan?",
+    keywords:["plan","30","60","day","days","timeline","roadmap","first","month","deliver","ship"],
+    answer:[
+      "Days 0 to 15: sign a one-page authority charter — each system's authoritative-for and must-never-own; stand up the composition service on your Postgres; freeze the contracts — MDS, twin payload, command set — as ADRs; measure the baseline time-to-compliant-design on one real room.",
+      "Days 16 to 35: validation service v1 with golden tests; the Room Planner reads and writes via the twin payload — same screens, new data path; client snap plus live subscription; instrument correction deltas so the flywheel has data from day one.",
+      "Days 36 to 60: end-to-end on one flagship room type with a partner's real program data — Designer to registry to Room to Floor aggregate, validated, data-sheet exported; Space Bot v1 as a thin HITL agent; publish the scorecard versus baseline."
+    ],
+    pull:"Give me one flagship room type and a design partner, and in 60 days Designer-to-Floor runs end-to-end.",
+    tags:["next"] },
+];
+
+/* ---------- build chips grouped ---------- */
+(function(){
+  var groups={}; KB.forEach(function(k){ (groups[k.group]=groups[k.group]||[]).push(k); });
+  var host=document.getElementById("chips");
+  Object.keys(groups).forEach(function(g){
+    var d=document.createElement("div"); d.className="grp";
+    var h=document.createElement("p"); h.className="gh"; h.textContent=g; d.appendChild(h);
+    groups[g].forEach(function(k){
+      var b=document.createElement("button"); b.className="chip"; b.textContent=k.q;
+      b.onclick=function(){ answer(k.q, k); };
+      d.appendChild(b);
+    });
+    host.appendChild(d);
+  });
+})();
+
+/* ---------- render an answer ---------- */
+var convo=document.getElementById("convo"); var first=true;
+function tagHtml(tags){
+  var map={built:["t-built","BUILT — running now"],proven:["t-proven","PROVEN elsewhere"],next:["t-next","NEXT — earned with a metric"]};
+  return '<div class="tags">'+tags.map(function(t){return '<span class="t '+map[t][0]+'">'+map[t][1]+'</span>';}).join("")+'</div>';
+}
+function scrollEnd(){ var w=document.scrollingElement||document.documentElement; window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}); }
+function addQ(q){
+  if(first){ convo.innerHTML=""; first=false; }
+  var m=document.createElement("div"); m.className="msg";
+  m.innerHTML='<div class="q"><span class="who">CTO</span><span>'+q+'</span></div>';
+  convo.appendChild(m); return m;
+}
+function addA(html){
+  var a=document.createElement("div"); a.className="a";
+  a.innerHTML='<div class="who">Jeeth · mental model</div>'+html;
+  convo.lastChild.appendChild(a); scrollEnd();
+}
+function answer(q, k){
+  addQ(q);
+  var html=k.answer.map(function(p){return "<p>"+p+"</p>";}).join("");
+  if(k.pull) html+='<div class="pull">"'+k.pull+'"</div>';
+  if(k.tags) html+=tagHtml(k.tags);
+  addA(html);
+}
+
+/* ---------- free-text: keyword match to best curated answer ---------- */
+function bestMatch(text){
+  var t=text.toLowerCase(); var best=null, score=0;
+  KB.forEach(function(k){
+    var s=0;
+    k.keywords.forEach(function(w){ if(t.indexOf(w)>=0) s+=2; });
+    // light word overlap with the question too
+    k.q.toLowerCase().split(/\W+/).forEach(function(w){ if(w.length>3 && t.indexOf(w)>=0) s+=1; });
+    if(s>score){ score=s; best=k; }
+  });
+  return score>=2 ? best : null;
+}
+function gracefulFallback(q, near){
+  addQ(q);
+  var lead = near
+    ? "That's exactly the kind of question I'd dig into live. Here's my mental model on the closest topic — "+near.q.toLowerCase().replace(/\?$/,"")+":"
+    : "That's exactly the kind of question I'd dig into live — and I'd rather reason it through with you than give you a canned line. Here's the principle I'd start from:";
+  var html='<p>'+lead+'</p>';
+  if(near){ html+=near.answer.map(function(p){return "<p>"+p+"</p>";}).join(""); if(near.pull) html+='<div class="pull">"'+near.pull+'"</div>'; if(near.tags) html+=tagHtml(near.tags); }
+  else { html+='<p>Truth lives in one event-sourced graph; the renderer owns nothing; the AI proposes and a deterministic gate disposes; and I label what\u2019s built versus proven versus next. Point me at the specific angle and I\u2019ll go deep.</p>'; }
+  addA(html);
+}
+
+/* ---------- live model (opt-in) ---------- */
+var live=false;
+var toggle=document.getElementById("liveToggle"), stateEl=document.getElementById("liveState"), disc=document.getElementById("liveDisclaim");
+toggle.onchange=function(){
+  live=toggle.checked;
+  stateEl.textContent = live ? "ON · live local LLM" : "off · curated";
+  disc.innerHTML = live
+    ? "<b>Live mode ON.</b> Typed questions route to your local Ollama (mistral-nemo) via <code>/agent/ask</code>. Responses are generated live and clearly labeled. If the route isn't wired, it falls back to the closest curated answer. Chips always stay curated."
+    : "Curated mode: answers are pre-authored from the architecture of record — bulletproof, on-message, offline. Flip the toggle to route typed questions to the live local LLM (mistral-nemo) instead.";
+};
+
+function askLive(q){
+  addQ(q);
+  var a=document.createElement("div"); a.className="a";
+  a.innerHTML='<div class="who">live model · mistral-nemo</div><div class="thinking">thinking\u2026</div>';
+  convo.lastChild.appendChild(a); scrollEnd();
+  var sys="You are the architect of the Modutecture Spine. Answer concisely in first person, grounded in: event-sourced twin as single source of truth; renderer owns nothing; AI proposes and a deterministic gate disposes; built vs proven vs next honesty. Never claim production cloud scale as done.";
+  fetch("/agent/ask",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({system:sys,question:q})})
+   .then(function(r){ if(!r.ok) throw new Error("no route"); return r.json(); })
+   .then(function(d){
+      var txt=(d.answer||d.text||d.response||"").trim();
+      if(!txt) throw new Error("empty");
+      a.innerHTML='<div class="who">live model · mistral-nemo (generated)</div><p>'+txt.replace(/\n+/g,"</p><p>")+'</p>'+
+        '<div class="pull">Live-generated — verify against the curated answers, which are the source of record.</div>';
+      scrollEnd();
+   })
+   .catch(function(){
+      // graceful: fall back to curated closest
+      var near=bestMatch(q);
+      a.innerHTML='<div class="who">live route unavailable \u2014 curated fallback</div>'+
+        (near? near.answer.map(function(p){return "<p>"+p+"</p>";}).join("") + (near.pull?'<div class="pull">"'+near.pull+'"</div>':"")
+             : '<p>The live model route isn\u2019t wired here \u2014 but the curated answers cover the architecture in full. Try a question chip.</p>');
+      scrollEnd();
+   });
+}
+
+/* ---------- ask handlers ---------- */
+function submitAsk(){
+  var q=document.getElementById("askInput").value.trim();
+  if(!q) return;
+  document.getElementById("askInput").value="";
+  if(live){ askLive(q); return; }
+  var k=bestMatch(q);
+  if(k) answer(q,k); else gracefulFallback(q, null);
+}
+document.getElementById("askBtn").onclick=submitAsk;
+document.getElementById("askInput").addEventListener("keydown",function(e){ if(e.key==="Enter") submitAsk(); });
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Viability Dashboard</title>
+<style>
+ :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;
+        --tint:#f3f6fa;--line:#e2e8f0;--red:#b3402f;--amber:#d89a12;--green:#1e7a4c;}
+ *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+ body{margin:0;background:#eef2f7;color:var(--ink);}
+ header{background:var(--navy);color:#fff;padding:20px 28px;display:flex;align-items:center;gap:20px;}
+ header h1{margin:0;font-family:Cambria,Georgia,serif;font-size:22px;}
+ header .sub{color:#c9d6e8;font-size:13px;}
+ .verdict{margin-left:auto;padding:10px 22px;border-radius:10px;font-weight:bold;font-size:20px;letter-spacing:1px;}
+ .verdict.go{background:var(--green);color:#fff;} .verdict.no{background:var(--red);color:#fff;}
+ .wrap{padding:22px 28px;max-width:1180px;margin:0 auto;}
+ .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+ .kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+ .kpi .n{font-size:30px;font-weight:bold;color:var(--navy);font-family:Cambria,serif;}
+ .kpi .l{font-size:12px;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;}
+ .kpi .s{font-size:12px;color:var(--green);margin-top:2px;}
+ .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+ .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+ .card h2{margin:0 0 12px;font-size:15px;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;}
+ .sc{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;}
+ .sc:last-child{border-bottom:0;} .sc .dot{width:12px;height:12px;border-radius:50%;}
+ .sc.ok .dot{background:var(--green);} .sc.no .dot{background:var(--red);}
+ .sc .ev{margin-left:auto;font-size:12px;color:var(--slate);font-family:monospace;}
+ table{width:100%;border-collapse:collapse;font-size:12.5px;}
+ th{text-align:left;background:var(--navy);color:#fff;padding:7px 9px;position:sticky;top:0;}
+ td{padding:6px 9px;border-bottom:1px solid var(--line);vertical-align:top;}
+ tr.pass .st{color:var(--green);font-weight:bold;} tr.fail .st{color:var(--red);font-weight:bold;}
+ tr:nth-child(even){background:#fafcfe;}
+ .mono{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;} .muted{color:var(--slate);}
+ .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:bold;}
+ .badge.go{background:#dff3e7;color:var(--green);} .badge.no{background:#f6dcd7;color:var(--red);}
+ .bt{font-size:11px;fill:var(--navy);font-weight:bold;} .bl{font-size:10px;fill:var(--slate);}
+ .scroll{max-height:420px;overflow:auto;border:1px solid var(--line);border-radius:8px;}
+ .foot{color:var(--slate);font-size:12px;margin-top:8px;}
+ .legend{font-size:11px;color:var(--slate);margin-top:6px;}
+ .legend b.g{color:var(--green);} .legend b.a{color:var(--amber);} .legend b.r{color:var(--red);}
+</style></head><body>
+<header>
+  <div><h1>Modutecture Spine — Reference Implementation Viability</h1>
+  <div class="sub">place-a-Moducule slice · proposed stack (.NET + Hot Chocolate + EF/Postgres) · Unity & Angular lenses · Python oracle</div></div>
+  <div class="verdict go">VIABLE</div>
+</header>
+<div class="wrap">
+
+  <div class="kpis">
+    <div class="kpi"><div class="n">39/39</div><div class="l">Tests passed</div><div class="s">across both stacks</div></div>
+    <div class="kpi"><div class="n">MATCH</div><div class="l">.NET ≡ Python parity</div><div class="s">13 fields compared</div></div>
+    <div class="kpi"><div class="n">0.113ms</div><div class="l">Gate latency p99 (.NET)</div><div class="s">"snaps instantly" proven</div></div>
+    <div class="kpi"><div class="n">2.5323ms</div><div class="l">Commit p95 (.NET)</div><div class="s">end-to-end command</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h2>Feasibility scorecard — every claim, with evidence</h2>
+      <div class="sc ok"><span class="dot"></span>Validation gate is real (rejects write nothing)<span class="ev">✓ INV1</span></div>
+<div class="sc ok"><span class="dot"></span>Connections are earned, not free (edge follows state)<span class="ev">✓ INV2</span></div>
+<div class="sc ok"><span class="dot"></span>Concurrent edits judged against current truth<span class="ev">✓ CC1</span></div>
+<div class="sc ok"><span class="dot"></span>Stale clients rebase, never corrupt<span class="ev">✓ CC2</span></div>
+<div class="sc ok"><span class="dot"></span>Commands are idempotent (safe retries)<span class="ev">✓ RES1</span></div>
+<div class="sc ok"><span class="dot"></span>Instances pin their type version (schema-safe)<span class="ev">✓ SCH1</span></div>
+<div class="sc ok"><span class="dot"></span>Truth is durable &amp; auditable (rebuild from journal)<span class="ev">✓ ES2</span></div>
+<div class="sc ok"><span class="dot"></span>Renderer owns nothing (thin-client, static check)<span class="ev">✓ INV3</span></div>
+<div class="sc ok"><span class="dot"></span>AI proposes, human commits (HITL)<span class="ev">✓ AG1</span></div>
+<div class="sc ok"><span class="dot"></span>Same architecture on .NET as on the oracle (parity)<span class="ev">✓ verified</span></div>
+<div class="sc ok"><span class="dot"></span>Gate fast enough to feel instant (p99 &lt; 1ms)<span class="ev">✓ PERF1</span></div>
+<div class="sc ok"><span class="dot"></span>Runs on the proposed stack (.NET + Hot Chocolate + EF/PG)<span class="ev">✓ verified</span></div>
+      <div class="foot">Each line is backed by a named test in this run (id shown) or a computed check.</div>
+    </div>
+    <div class="card">
+      <h2>Latency — p50 / p95 / p99 (ms)</h2>
+      <svg viewBox="0 0 600 184" width="100%"><rect x="190" y="8" width="0.8" height="9" fill="#1e7a4c" rx="2"/><text x="195.8" y="16" class="bl">0.0113ms</text><rect x="190" y="20" width="1.1" height="9" fill="#d89a12" rx="2"/><text x="196.1" y="28" class="bl">0.0167ms</text><rect x="190" y="32" width="2.9" height="9" fill="#b3402f" rx="2"/><text x="197.9" y="40" class="bl">0.0436ms</text><text x="0" y="18" class="bt">Validate · Python</text><rect x="190" y="52" width="0.3" height="9" fill="#1e7a4c" rx="2"/><text x="195.3" y="60" class="bl">0.0048ms</text><rect x="190" y="64" width="4.8" height="9" fill="#d89a12" rx="2"/><text x="199.8" y="72" class="bl">0.0715ms</text><rect x="190" y="76" width="7.6" height="9" fill="#b3402f" rx="2"/><text x="202.6" y="84" class="bl">0.113ms</text><text x="0" y="62" class="bt">Validate · .NET</text><rect x="190" y="96" width="84.6" height="9" fill="#1e7a4c" rx="2"/><text x="279.6" y="104" class="bl">1.261ms</text><rect x="190" y="108" width="239.1" height="9" fill="#d89a12" rx="2"/><text x="434.1" y="116" class="bl">3.5652ms</text><rect x="190" y="120" width="313.0" height="9" fill="#b3402f" rx="2"/><text x="508.0" y="128" class="bl">4.6685ms</text><text x="0" y="106" class="bt">Commit · Python</text><rect x="190" y="140" width="16.0" height="9" fill="#1e7a4c" rx="2"/><text x="211.0" y="148" class="bl">0.2383ms</text><rect x="190" y="152" width="169.8" height="9" fill="#d89a12" rx="2"/><text x="364.8" y="160" class="bl">2.5323ms</text><rect x="190" y="164" width="255.8" height="9" fill="#b3402f" rx="2"/><text x="450.8" y="172" class="bl">3.815ms</text><text x="0" y="150" class="bt">Commit · .NET</text></svg>
+      <div class="legend"><b class="g">■</b> p50 &nbsp; <b class="a">■</b> p95 &nbsp; <b class="r">■</b> p99 &nbsp;
+      — validate = the gate (reflex check); commit = validate+append+fold.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Cross-stack parity — canonical scenario, field by field
+      <span class="badge go">IDENTICAL</span></h2>
+    <table><tr><th>Field</th><th>Python oracle</th><th>.NET service</th><th>Result</th></tr>
+    <tr class="pass"><td class="mono">after_remove_bindings</td><td class="mono">0</td><td class="mono">0</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">after_remove_instances</td><td class="mono">1</td><td class="mono">1</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">bindings_after</td><td class="mono">1</td><td class="mono">1</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">events_after</td><td class="mono">2</td><td class="mono">2</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">instances_after</td><td class="mono">2</td><td class="mono">2</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">rebuilt_instances</td><td class="mono">1</td><td class="mono">1</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step1</td><td class="mono">&quot;ACCEPTED&quot;</td><td class="mono">&quot;ACCEPTED&quot;</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step2</td><td class="mono">&quot;REJECTED&quot;</td><td class="mono">&quot;REJECTED&quot;</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step2_rules</td><td class="mono">[&quot;R1-boundary&quot;, &quot;R3-medgas&quot;]</td><td class="mono">[&quot;R1-boundary&quot;, &quot;R3-medgas&quot;]</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step3</td><td class="mono">&quot;ACCEPTED&quot;</td><td class="mono">&quot;ACCEPTED&quot;</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step3_binding</td><td class="mono">&quot;med_gas&quot;</td><td class="mono">&quot;med_gas&quot;</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">step3_warn</td><td class="mono">[&quot;R2-clearance&quot;]</td><td class="mono">[&quot;R2-clearance&quot;]</td><td class="st">MATCH</td></tr>
+<tr class="pass"><td class="mono">version_after_remove</td><td class="mono">3</td><td class="mono">3</td><td class="st">MATCH</td></tr></table>
+    <div class="foot">Same operation, two independent implementations, identical observable behaviour →
+      the architecture — not one codebase — is what works.</div>
+  </div>
+
+  <div class="card">
+    <h2>Test results — Python oracle (21/21)</h2>
+    <div class="scroll"><table>
+      <tr><th>ID</th><th>Category</th><th>Test</th><th>Proves</th><th>Observed</th><th>Status</th></tr>
+      <tr class="pass">
+          <td class="mono">R1a</td><td>RULES</td>
+          <td>Headwall inside room is accepted</td><td class="muted">R1 boundary admits legal footprints</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R1b</td><td>RULES</td>
+          <td>Headwall crossing the wall is rejected</td><td class="muted">R1 boundary blocks out-of-bounds footprints</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R2a</td><td>RULES</td>
+          <td>Physical footprint overlap is rejected (ERROR)</td><td class="muted">R2 collision is a hard stop</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R2b</td><td>RULES</td>
+          <td>Clearance encroachment commits with a WARNING</td><td class="muted">R2 two-tier verdict: snaps-but-flags (the T1 tier)</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3a</td><td>RULES</td>
+          <td>Bed with no med-gas source is rejected</td><td class="muted">R3 dependency: a requirer needs a provider</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3b</td><td>RULES</td>
+          <td>Bed beyond med-gas reach is rejected</td><td class="muted">R3 dependency respects the reach limit</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3c</td><td>RULES</td>
+          <td>Bed within reach earns a med_gas binding</td><td class="muted">R3 a satisfied dependency creates a directed edge</td>
+          <td class="mono">med_gas</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R4</td><td>RULES</td>
+          <td>Rotated bed commits but is flagged</td><td class="muted">R4 advisory rules warn without blocking</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">INV1</td><td>INVARIANTS</td>
+          <td>A rejected command writes nothing</td><td class="muted">The gate is real: no event, no edge on rejection</td>
+          <td class="mono">1</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">INV2</td><td>INVARIANTS</td>
+          <td>Edges follow state (remove source → edge gone)</td><td class="muted">Connections are earned, never promiscuous</td>
+          <td class="mono">(1, 0)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">INV3</td><td>INVARIANTS</td>
+          <td>Clients hold no domain rules (thin-client)</td><td class="muted">Validation lives only server-side; renderer owns nothing</td>
+          <td class="mono">[]</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">ES1</td><td>EVENT-SOURCING</td>
+          <td>Replay is deterministic</td><td class="muted">Folding a journal is a pure, repeatable function</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">ES2</td><td>EVENT-SOURCING</td>
+          <td>State rebuilds from the journal after restart</td><td class="muted">Truth survives because the log does (audit-grade)</td>
+          <td class="mono">2</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">AG1</td><td>AGENT-HITL</td>
+          <td>Agent proposes but never commits</td><td class="muted">HITL: AI suggests, only a human approval writes</td>
+          <td class="mono">1</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">AG2</td><td>AGENT-HITL</td>
+          <td>Approving the agent&#x27;s proposal is accepted &amp; cited</td><td class="muted">Agent output is grounded and commit-ready</td>
+          <td class="mono">(True, True)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">CC1</td><td>CONCURRENCY</td>
+          <td>Concurrent edit is judged against current truth</td><td class="muted">Stale-for-eyes, current-for-the-gate: no stale-approval</td>
+          <td class="mono">REJECTED</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">CC2</td><td>CONCURRENCY</td>
+          <td>Stale-but-legal edit rebases, never corrupts</td><td class="muted">Optimism is UX on top of one truth, not a second truth</td>
+          <td class="mono">(True, True)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">RES1</td><td>RESILIENCE</td>
+          <td>Idempotent command retry never double-writes</td><td class="muted">A retried command after a blip places once, not twice</td>
+          <td class="mono">(1, 1, True)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">SCH1</td><td>SCHEMA</td>
+          <td>Placed instance pins its exact type version</td><td class="muted">A later type bump can&#x27;t silently mutate an approved design</td>
+          <td class="mono">2.3.0</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">PERF1</td><td>PERFORMANCE</td>
+          <td>Validation (gate) latency</td><td class="muted">Gate is sub-millisecond → &#x27;snaps instantly&#x27; is real (T0/T1)</td>
+          <td class="mono">p50=0.0113ms p95=0.0167ms p99=0.0436ms</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">PERF2</td><td>PERFORMANCE</td>
+          <td>Full commit latency (validate+append+fold)</td><td class="muted">End-to-end command path stays interactive</td>
+          <td class="mono">p50=1.261ms p95=3.5652ms p99=4.6685ms</td>
+          <td class="st">PASS</td></tr></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Test results — .NET twin service (18/18) · build pass (0 warnings)</h2>
+    <div class="scroll"><table>
+      <tr><th>ID</th><th>Category</th><th>Test</th><th>Proves</th><th>Observed</th><th>Status</th></tr>
+      <tr class="pass">
+          <td class="mono">R1a</td><td>RULES</td>
+          <td>Headwall inside room is accepted</td><td class="muted">R1 boundary admits legal footprints</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R1b</td><td>RULES</td>
+          <td>Headwall crossing the wall is rejected</td><td class="muted">R1 boundary blocks out-of-bounds</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R2a</td><td>RULES</td>
+          <td>Physical footprint overlap is rejected (ERROR)</td><td class="muted">R2 collision is a hard stop</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R2b</td><td>RULES</td>
+          <td>Clearance encroachment commits with a WARNING</td><td class="muted">R2 two-tier verdict (T1 snaps-but-flags)</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3a</td><td>RULES</td>
+          <td>Bed with no med-gas source is rejected</td><td class="muted">R3 dependency needs a provider</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3b</td><td>RULES</td>
+          <td>Bed beyond med-gas reach is rejected</td><td class="muted">R3 respects the reach limit</td>
+          <td class="mono">False</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R3c</td><td>RULES</td>
+          <td>Bed within reach earns a med_gas binding</td><td class="muted">R3 satisfied dependency = directed edge</td>
+          <td class="mono">med_gas</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">R4</td><td>RULES</td>
+          <td>Rotated bed commits but is flagged</td><td class="muted">R4 advisory warns without blocking</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">INV1</td><td>INVARIANTS</td>
+          <td>A rejected command writes nothing</td><td class="muted">The gate is real: no event on rejection</td>
+          <td class="mono">1</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">INV2</td><td>INVARIANTS</td>
+          <td>Edges follow state (remove source -&gt; edge gone)</td><td class="muted">Connections earned, never promiscuous</td>
+          <td class="mono">(1,0)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">ES1</td><td>EVENT-SOURCING</td>
+          <td>Replay is deterministic</td><td class="muted">Folding a journal is pure &amp; repeatable</td>
+          <td class="mono">True</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">ES2</td><td>EVENT-SOURCING</td>
+          <td>State rebuilds from the journal after restart</td><td class="muted">Truth survives because the log does</td>
+          <td class="mono">2</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">CC1</td><td>CONCURRENCY</td>
+          <td>Concurrent edit is judged against current truth</td><td class="muted">Stale-for-eyes, current-for-the-gate</td>
+          <td class="mono">REJECTED</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">CC2</td><td>CONCURRENCY</td>
+          <td>Stale-but-legal edit rebases, never corrupts</td><td class="muted">Optimism is UX on one truth, not a second</td>
+          <td class="mono">(ACCEPTED,True)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">RES1</td><td>RESILIENCE</td>
+          <td>Idempotent command retry never double-writes</td><td class="muted">A retried command places once, not twice</td>
+          <td class="mono">(1,True)</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">SCH1</td><td>SCHEMA</td>
+          <td>Placed instance pins its exact type version</td><td class="muted">A later type bump can&#x27;t silently mutate an approved design</td>
+          <td class="mono">2.3.0</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">PERF1</td><td>PERFORMANCE</td>
+          <td>Validation (gate) latency</td><td class="muted">Gate sub-ms -&gt; &#x27;snaps instantly&#x27; is real (T0/T1)</td>
+          <td class="mono">p99=0.113ms</td>
+          <td class="st">PASS</td></tr>
+<tr class="pass">
+          <td class="mono">PERF2</td><td>PERFORMANCE</td>
+          <td>Full commit latency (validate+append+fold)</td><td class="muted">Command path stays interactive</td>
+          <td class="mono">p95=2.5323ms</td>
+          <td class="st">PASS</td></tr></table></div>
+  </div>
+
+  <div class="foot">Generated 2026-06-14 00:52 from results_python.json + results_dotnet.json. Every figure is read from real harness output.</div>
+</div></body></html>

@@ -1,0 +1,146 @@
+/* nav.js — shared top navigation injected into every Spine page.
+ * One script, linked from each wwwroot page. A single "Menu" button opens a
+ * click-dropdown listing every surface + artifact, grouped. Brand + health
+ * pip stay visible. Highlights the current page. Closes on outside-click/Esc. */
+(function () {
+  // grouped link model: [href, label, optional download flag]
+  var GROUPS = [
+    ["Live surfaces", [
+      ["/showcase.html", "★ Showcase"],
+      ["/interview.html", "⚡ AI Interview"],
+      ["/index.html", "Planner"],
+      ["/studio.html", "Lens Studio"],
+      ["/hierarchy.html", "Hierarchy"],
+      ["/telemetry.html", "Operational"],
+      ["/architecture.html", "Architecture"],
+      ["/ai-engine.html", "AI Engine"],
+      ["/ecosystem.html", "Ecosystem"],
+      ["/vision.html", "Vision"],
+      ["/two-track-org.html", "Two-Track Org"],
+      ["/statusneo.html", "★ StatusNeo FDE"],
+    ]],
+    ["StatusNeo · Agentic FDE suite", [
+      ["/statusneo.html", "FDE Practice — overview"],
+      ["/artifacts/statusneo/StatusNeo-Agentic-FDE-MASTER.pdf", "Master Reference (.pdf)", true],
+      ["/artifacts/statusneo/01-FDE-CHARTER-PROPOSAL.pdf", "FDE Charter (.pdf)", true],
+      ["/artifacts/statusneo/StatusNeo_FDE_Charter.pptx", "Board Deck (.pptx)", true],
+      ["/artifacts/statusneo/StatusNeo_FDE_PR-FAQ_Playbook.pdf", "PR-FAQ Playbook (.pdf)", true],
+      ["/artifacts/statusneo/FDE-80-20-Roles-and-Lifecycle.pdf", "80:20 Roles & Lifecycle (.pdf)", true],
+      ["/artifacts/statusneo/Agentic-FDE-Lifecycle.pdf", "Agentic FDE Lifecycle (.pdf)", true],
+      ["/artifacts/statusneo/Multi-Cloud-Agentic-FDE-Tooling-Directory.pdf", "Multi-Cloud Tooling Directory (.pdf)", true],
+      ["/artifacts/statusneo/AEC-Modutecture-FDE-UseCase.pdf", "AEC / Modutecture Use Case (.pdf)", true],
+      ["/artifacts/statusneo/09-FDE-30-60-90-OKR-STAR.pdf", "30/60/90 OKR & STAR (.pdf)", true],
+      ["/artifacts/statusneo/10-FDE-OKR-SCORECARD.pdf", "OKR Scorecard (.pdf)", true],
+    ]],
+    ["Architecture artifacts", [
+      ["/artifacts/ADR-009-edge-feed-layer.html", "ADR-009 · Edge-Feed (page)"],
+      ["/artifacts/ADR-009-edge-feed-layer.pptx", "ADR-009 · Deck (.pptx)", true],
+      ["/artifacts/ADR-009-edge-feed-layer.docx", "ADR-009 · Doc (.docx)", true],
+      ["/artifacts/ADR-009-edge-feed-layer.md", "ADR-009 · Markdown (.md)", true],
+    ]],
+  ];
+
+  var here = location.pathname.replace(/\/$/, "/index.html") || "/index.html";
+  if (here === "/") here = "/index.html";
+
+  // ---- bar ----
+  var bar = document.createElement("nav");
+  bar.setAttribute("data-spine-nav", "1");
+  bar.style.cssText =
+    "display:flex;gap:10px;align-items:center;background:#0e1b2e;" +
+    "padding:6px 14px;font-family:Calibri,Segoe UI,system-ui,sans-serif;" +
+    "border-bottom:1px solid #22344f;position:sticky;top:0;z-index:1000;";
+
+  var brand = document.createElement("span");
+  brand.textContent = "Modutecture Spine";
+  brand.style.cssText =
+    "color:#e8a816;font-weight:bold;font-size:12.5px;letter-spacing:.5px;";
+  bar.appendChild(brand);
+
+  // ---- menu button + dropdown wrapper (position:relative anchor) ----
+  var wrap = document.createElement("div");
+  wrap.style.cssText = "position:relative;";
+
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.setAttribute("aria-haspopup", "true");
+  btn.setAttribute("aria-expanded", "false");
+  // label shows current page so the bar still tells you where you are
+  var hereLabel = "Menu";
+  GROUPS.forEach(function (g) { g[1].forEach(function (p) { if (p[0] === here) hereLabel = p[1]; }); });
+  btn.innerHTML = "&#9776;&nbsp; " + hereLabel + " &#9662;";
+  btn.style.cssText =
+    "font-family:inherit;font-size:12px;cursor:pointer;color:#16263f;background:#e8a816;" +
+    "border:0;border-radius:8px;padding:5px 12px;font-weight:bold;";
+  btn.onmouseover = function () { btn.style.background = "#f0b020"; };
+  btn.onmouseout = function () { btn.style.background = "#e8a816"; };
+  wrap.appendChild(btn);
+
+  var menu = document.createElement("div");
+  menu.setAttribute("role", "menu");
+  menu.style.cssText =
+    "display:none;position:absolute;left:0;top:calc(100% + 6px);min-width:268px;" +
+    "background:#14233c;border:1px solid #2c456c;border-radius:12px;" +
+    "box-shadow:0 12px 34px rgba(0,0,0,.42);padding:8px;z-index:1001;";
+
+  GROUPS.forEach(function (group, gi) {
+    var hd = document.createElement("div");
+    hd.textContent = group[0];
+    hd.style.cssText =
+      "color:#7f97b8;font-size:9.5px;font-weight:bold;letter-spacing:1.4px;" +
+      "text-transform:uppercase;padding:" + (gi ? "10px 10px 4px" : "4px 10px 4px") + ";";
+    menu.appendChild(hd);
+
+    group[1].forEach(function (p) {
+      var a = document.createElement("a");
+      a.href = p[0];
+      if (p[2]) a.setAttribute("download", "");
+      var active = here === p[0];
+      a.textContent = p[1];
+      a.setAttribute("role", "menuitem");
+      a.style.cssText =
+        "display:block;text-decoration:none;font-size:12.5px;padding:7px 10px;border-radius:8px;" +
+        "color:" + (active ? "#16263f" : "#d6e2f2") + ";" +
+        "background:" + (active ? "#e8a816" : "transparent") + ";" +
+        "font-weight:" + (active ? "bold" : "normal") + ";";
+      a.onmouseover = function () { if (!active) a.style.background = "#1f3559"; };
+      a.onmouseout = function () { if (!active) a.style.background = "transparent"; };
+      menu.appendChild(a);
+    });
+  });
+  wrap.appendChild(menu);
+  bar.appendChild(wrap);
+
+  // ---- open/close logic ----
+  var open = false;
+  function setOpen(v) {
+    open = v;
+    menu.style.display = v ? "block" : "none";
+    btn.setAttribute("aria-expanded", v ? "true" : "false");
+  }
+  btn.onclick = function (e) { e.stopPropagation(); setOpen(!open); };
+  document.addEventListener("click", function (e) {
+    if (open && !wrap.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && open) setOpen(false);
+  });
+
+  // ---- health pip (right) ----
+  var pip = document.createElement("span");
+  pip.style.cssText = "margin-left:auto;font-size:11px;color:#9fc3e8;";
+  pip.textContent = "● …";
+  bar.appendChild(pip);
+  fetch("/health").then(function (r) { return r.json(); }).then(function (h) {
+    var ok = h.status === "healthy";
+    pip.textContent = (ok ? "● healthy" : "● degraded");
+    pip.style.color = ok ? "#7ee0a8" : "#e8c97e";
+  }).catch(function () { pip.textContent = "● offline"; pip.style.color = "#e08a7e"; });
+
+  function inject() {
+    if (document.querySelector("nav[data-spine-nav]")) return;
+    document.body.insertBefore(bar, document.body.firstChild);
+  }
+  if (document.body) inject();
+  else document.addEventListener("DOMContentLoaded", inject);
+})();

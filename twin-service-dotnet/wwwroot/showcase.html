@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Showcase &amp; Guided Demo</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--ice:#cadcfc;
+        --exist:#3b6ea5;--proto:#1e7a4c;--proven:#6b4f9e;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 70px;}
+  /* hero */
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:34px 0 30px;}
+  .hero .wrap{padding-bottom:0;}
+  .kick{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  .hero h1{font-family:Cambria,Georgia,serif;font-size:33px;margin:0 0 10px;}
+  .hero p{margin:0;color:#c9d6e8;font-size:14.5px;max-width:820px;}
+  .tagline{margin-top:14px;font-style:italic;color:var(--gold);font-family:Cambria,serif;font-size:15px;}
+  /* tour control bar */
+  .tourbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:22px;
+           background:var(--navy2);border:1px solid #34496a;border-radius:14px;padding:14px 18px;}
+  .tourbar .lead{color:#fff;font-size:13.5px;}
+  .tourbar .lead b{color:var(--gold);}
+  button{font-size:13.5px;padding:9px 16px;border:0;border-radius:9px;cursor:pointer;font-weight:bold;font-family:inherit;}
+  .btn-go{background:var(--gold);color:var(--navy);}
+  .btn-go:hover{background:#f0b020;}
+  .btn-ghost{background:transparent;color:#c9d6e8;border:1px solid #44597a;font-weight:normal;}
+  .btn-ghost:hover{background:#1c2f4a;color:#fff;}
+  .vselect{margin-left:auto;display:flex;align-items:center;gap:7px;color:#9fb6d4;font-size:12px;}
+  select{font-family:inherit;font-size:12px;padding:5px 8px;border-radius:7px;border:1px solid #44597a;background:#15243c;color:#dce7f5;max-width:240px;}
+  /* section heads */
+  .sec-h{font-family:Cambria,serif;color:var(--navy);font-size:21px;margin:34px 0 4px;font-weight:bold;}
+  .sec-sub{color:var(--slate);font-size:13px;margin:0 0 16px;}
+  /* card grid */
+  .grid{display:flex;gap:16px;flex-wrap:wrap;}
+  .card{flex:1 1 270px;max-width:370px;background:#fff;border:1px solid var(--line);border-radius:14px;
+        padding:18px 20px;box-shadow:0 1px 5px rgba(20,40,70,.05);text-decoration:none;color:var(--ink);
+        display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s;position:relative;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,40,70,.12);border-color:var(--gold);}
+  .card .ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+             font-size:19px;font-weight:bold;color:#fff;margin-bottom:11px;font-family:Cambria,serif;}
+  .card h3{margin:0 0 4px;font-family:Cambria,serif;font-size:17px;color:var(--navy);}
+  .card p{margin:0;font-size:12.7px;color:var(--slate);flex:1;}
+  .card .tag{margin-top:11px;font-size:10.5px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:var(--goldk);}
+  .badge{position:absolute;top:14px;right:16px;font-size:9.5px;font-weight:bold;letter-spacing:.6px;
+         text-transform:uppercase;padding:3px 8px;border-radius:10px;}
+  .b-live{background:#e3f3ea;color:var(--green);}
+  .b-art{background:#fdf2dc;color:var(--goldk);}
+  .b-soon{background:#eef1f5;color:var(--slate);}
+  /* now-playing toast */
+  #np{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);max-width:760px;width:calc(100% - 40px);
+      background:var(--navy);color:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:14px 18px;
+      box-shadow:0 8px 30px rgba(0,0,0,.3);display:none;z-index:2000;}
+  #np.show{display:block;}
+  #np .step{font-size:11px;color:var(--gold);font-weight:bold;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+  #np .txt{font-size:13.5px;color:#e8eef7;}
+  #np .ctl{display:flex;gap:8px;margin-top:11px;align-items:center;}
+  #np .ctl button{font-size:12px;padding:6px 12px;}
+  #np .prog{margin-left:auto;font-size:11px;color:#9fb6d4;}
+  .speakerwarn{font-size:11.5px;color:#9fb6d4;margin-top:6px;}
+  .footnote{margin-top:40px;font-size:12px;color:var(--slate);border-top:1px solid var(--line);padding-top:14px;}
+  code{font-family:Consolas,monospace;font-size:11.5px;background:#eef1f5;padding:1px 6px;border-radius:5px;}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="kick">Modutecture Spine · Continuous Contextual Construction</p>
+  <h1>One twin, many lenses — the whole platform, in one place</h1>
+  <p>Every live surface and every architecture artifact, from the running room-planner to the slide decks and decision records. Take the self-guided voice tour, or jump straight to any piece.</p>
+  <div class="tagline">Unity becomes the GPU. The twin holds the truth. The edge carries the bytes. The brain stays where the data is.</div>
+
+  <div class="tourbar">
+    <span class="lead"><b>Guided voice tour</b> — sit back; it narrates and walks the whole site.</span>
+    <button class="btn-go" id="startTour">▶ Start voice tour</button>
+    <button class="btn-ghost" id="startSilent">Tour without voice</button>
+    <span class="vselect">voice <select id="voicePick"><option>loading…</option></select></span>
+  </div>
+  <div class="speakerwarn" id="spkwarn"></div>
+</div></header>
+
+<div class="wrap">
+
+  <div class="sec-h">Live surfaces</div>
+  <p class="sec-sub">Running right now against the real stack — .NET twin · Postgres journal · Neo4j grounding · Ollama brain.</p>
+  <div class="grid" id="liveGrid"></div>
+
+  <div class="sec-h">Architecture artifacts</div>
+  <p class="sec-sub">The decision records and decks behind the build. ADR-009 (the edge-feed layer) opens in-browser; decks and docs download.</p>
+  <div class="grid" id="artGrid"></div>
+
+  <div class="footnote" id="artnote"></div>
+</div>
+
+<!-- now-playing tour toast -->
+<div id="np">
+  <div class="step" id="npStep">Step</div>
+  <div class="txt" id="npTxt">…</div>
+  <div class="ctl">
+    <button class="btn-ghost" id="npPrev" style="border-color:#44597a;color:#c9d6e8">‹ Prev</button>
+    <button class="btn-go" id="npPause">Pause</button>
+    <button class="btn-ghost" id="npNext" style="border-color:#44597a;color:#c9d6e8">Next ›</button>
+    <button class="btn-ghost" id="npGo" style="border-color:var(--gold);color:var(--gold)">Open this page ↗</button>
+    <button class="btn-ghost" id="npStop" style="border-color:#7e4a44;color:#e0a89e">Stop</button>
+    <span class="prog" id="npProg"></span>
+  </div>
+</div>
+
+<script>
+/* ---------- data: every surface + artifact ---------- */
+var LIVE = [
+  ["/index.html","Planner","P","var(--navy)","Room Planner — place Moducules on a 2D canvas; the server validates every placement against current truth.","Thin client · one twin"],
+  ["/studio.html","Lens Studio","L","var(--gold)","Five renderers over one twin — 2D, Schematic, 3D, Twin-Data, and the Unity lens — all updating together.","Renderer independence"],
+  ["/interview.html","AI Interview","⚡","var(--proven)","Ask the architecture anything — curated mental model with question chips, graceful free-text, and an opt-in live-model toggle.","Mental model, live"],
+  ["/hierarchy.html","Hierarchy","H","var(--exist)","Moducule → Room → Floor → Building roll-up, with blast-radius impact when a Moducule changes.","Compounding context"],
+  ["/telemetry.html","Operational","O","var(--proto)","Live occupied-room telemetry over the same twin, via Redpanda — the operational twin POC.","Operational twin"],
+  ["/architecture.html","Architecture","A","var(--navy2)","The platform describes itself — live wiring, plug-points, and what's real vs. fallback right now.","Self-describing"],
+  ["/ai-engine.html","AI Engine","AI","var(--proven)","The agentic AI stack — grounding, brain, gate. The brain proposes; the deterministic gate disposes.","Brain + gate"],
+  ["/ecosystem.html","Ecosystem","E","var(--goldk)","The master AEC ecosystem blueprint — where each capability lives and who owns what.","Master blueprint"],
+  ["/vision.html","Vision","V","var(--exist)","The Context Intelligence roadmap — from design twin to operational twin to the compounding flywheel.","Roadmap"],
+  ["/two-track-org.html","Two-Track Org","2T","var(--goldk)","The FDE operating model — tech org + execution org, the ownership boundary, and the pod-based transition. The org that delivers the platform.","Operating model"],
+];
+var ART = [
+  ["/artifacts/90-SECOND-PITCH-AND-BLUEPRINT.md","90-Second Pitch + Blueprint","\u2605","var(--gold)","The opening pitch and 5-movement blueprint walkthrough \u2014 the most important 90 seconds of the meeting.","Game-day script","md"],
+  ["/artifacts/Modutecture_Rescue_Steps.pptx","Rescue Steps","R","var(--proto)","The rescue-to-launch playbook \u2014 how to pull Modutecture out of the woods to paying customers.","Rescue deck","pptx"],
+  ["/artifacts/Modutecture_Core_Differentiators.pptx","Core Differentiators","D","var(--exist)","What makes Modutecture #1 \u2014 contextual intelligence, vendor-neutral, modular reuse.","Differentiators","pptx"],
+  ["/artifacts/Modutecture_CTO_Two-Track_Blueprint.pptx","CTO Two-Track Blueprint","2T","var(--navy2)","The platform + SDLC transformation deck \u2014 the full two-track plan for the CTO.","Transformation deck","pptx"],
+  ["/artifacts/who-owns-what.pdf","Who Owns What","W","var(--proven)","The honesty map \u2014 what's Modutecture's, what StatusNeo hardens, what I'd add. Boundaries as credibility.","Delineation","pdf"],
+  ["/artifacts/modutecture-kaiser-hospital-reference-architecture.html","Kaiser Hospital Reference","K","var(--goldk)","The 7-layer agentic reference architecture for a Kaiser-Permanente hospital. Opens in-browser.","Domain showpiece","html"],
+  ["/artifacts/Jithendran_FDE_Equivalence_OnePager.docx","FDE Equivalence \u2014 28 Years","FDE","var(--navy)","Every role mapped to the forward-deployed pattern \u2014 Qualcomm carrier-grade, GE Healthcare, Amazon six-nines. The title changed; the work did not.","Who I am","docx"],
+  ["/artifacts/StatusNeoPro.pdf","StatusNeo \u00d7 Modutecture","SN","var(--goldk)","The engagement blueprint \u2014 cost center to growth engine, the FDE singular-ownership model, pod-based transition.","Engagement","pdf"],
+  ["/artifacts/ADR-009-edge-feed-layer.html","ADR-009 \u00b7 Edge-Feed Layer","ADR","var(--gold)","The renderer-agnostic twin + rendering-optimized edge layer. Opens in-browser.","Decision record","html"],
+  ["/artifacts/ADR-009-edge-feed-layer.pptx","ADR-009 \u00b7 Deck","PPT","var(--goldk)","Five-slide deck of the edge-feed decision, navy/gold, with speaker notes.","Presentation","pptx"],
+  ["/artifacts/ADR-009-edge-feed-layer.docx","ADR-009 \u00b7 Document","DOC","var(--exist)","The formal ADR as a Word document for the architecture record.","Document","docx"],
+  ["/artifacts/ADR-009-edge-feed-layer.md","ADR-009 \u00b7 Markdown","MD","var(--navy2)","The canonical source of the ADR, plain markdown for the repo.","Source","md"],
+];
+
+/* ---------- render cards ---------- */
+function card(item, kind){
+  var a=document.createElement("a"); a.href=item[0]; a.className="card";
+  if(kind==="art" && item[6]!=="html"){ a.setAttribute("download",""); }
+  var badge = kind==="live" ? '<span class="badge b-live">live</span>' :
+              (item[6]==="html" ? '<span class="badge b-art">open</span>' : '<span class="badge b-art">download</span>');
+  a.innerHTML =
+    badge +
+    '<div class="ico" style="background:'+item[3]+'">'+item[2]+'</div>'+
+    '<h3>'+item[1]+'</h3>'+
+    '<p>'+item[4]+'</p>'+
+    '<div class="tag">'+item[5]+'</div>';
+  return a;
+}
+LIVE.forEach(function(it){ document.getElementById("liveGrid").appendChild(card(it,"live")); });
+ART.forEach(function(it){ document.getElementById("artGrid").appendChild(card(it,"art")); });
+
+/* ---------- artifact availability note ---------- */
+(function(){
+  // probe whether artifact files are present; show a hint only for what's actually missing.
+  var bins=["/artifacts/ADR-009-edge-feed-layer.pptx",
+            "/artifacts/ADR-009-edge-feed-layer.docx",
+            "/artifacts/ADR-009-edge-feed-layer.md"];
+  var missing=[];
+  Promise.all(bins.map(function(u){
+    return fetch(u,{method:"HEAD"}).then(function(r){ if(!r.ok) missing.push(u.split("/").pop()); }).catch(function(){ missing.push(u.split("/").pop()); });
+  })).then(function(){
+    var n=document.getElementById("artnote");
+    if(missing.length){
+      n.innerHTML="Note: "+missing.length+" ADR-009 export(s) not yet in <code>wwwroot/artifacts/</code> ("+missing.join(", ")+"). "+
+        "Every other card resolves; copy the ADR deck/doc/markdown in to complete the set.";
+    } else {
+      n.textContent="All artifacts present and served.";
+    }
+  });
+})();
+
+/* ---------- TOUR ENGINE ---------- */
+var TOUR = [
+  ["Welcome","Welcome to Modutecture Spine — Continuous Contextual Construction. This is one digital twin, viewed through many lenses, with an agentic A.I. engine that proposes and a deterministic gate that disposes. I'll walk you through the whole platform. The core idea to hold onto: the twin holds the truth; every renderer is just a lens onto it.",null],
+  ["The Planner","First, the Room Planner. This is a thin client. When you place a Moducule — a headwall, a bed, a sink — the client doesn't decide anything. It asks the server, and the server validates that placement against current truth before it commits. The renderer owns nothing.","/index.html"],
+  ["Lens Studio","Now the heart of the renderer-independence story: Lens Studio. The same twin, drawn five different ways at once — a two-D plan, a schematic, a three-D scene, the raw twin data, and Modutecture's own Unity engine. Place a Moducule in one, and every lens updates together, because there is only one source of truth underneath.","/studio.html"],
+  ["Hierarchy","The Hierarchy view shows how context compounds. A Moducule rolls up into a Room, a Room into a Floor, a Floor into a Building. And when one Moducule changes, you can see its blast radius — everything upstream that's affected. This is how local edits gain global meaning.","/hierarchy.html"],
+  ["Operational twin","The same twin doesn't stop at design. Here, live telemetry from occupied rooms flows over the very same twin, through Redpanda. The design twin and the operational twin are one continuous model — that's the 'continuous' in Continuous Contextual Construction.","/telemetry.html"],
+  ["Architecture","This page is the platform describing itself. It shows the live wiring — what's actually connected right now, what's running on the real stack, and what's falling back. No slideware: the system reports its own truth.","/architecture.html"],
+  ["AI Engine","The agentic A.I. engine. Bounded agents propose placements, grounded in real code and standards through retrieval. But — and this is the guardrail — the model is never the authority. A deterministic gate validates every proposal against the rules. The brain proposes; the gate disposes; the twin remembers.","/ai-engine.html"],
+  ["Ecosystem","The master ecosystem blueprint — the whole A.E.C. picture, showing where each capability lives and, just as importantly, who owns what. Boundaries are credibility.","/ecosystem.html"],
+  ["Vision","The roadmap: from design twin, to operational twin, to the compounding-context flywheel where operational insight feeds back into better design. This is where the platform is going.","/vision.html"],
+  ["ADR-009","Finally, the architecture behind the scale story: A.D.R. zero-zero-nine, the edge-feed layer. The twin stays rendering-agnostic; a thin edge layer shapes that same truth for each renderer's latency and bandwidth profile — content is cached, state is synced, the brain is relocated. One twin, many edges, many lenses; truth is shaped at the edge, never forked.","/artifacts/ADR-009-edge-feed-layer.html"],
+  ["Close","That's the platform: one twin, many lenses, an A.I. engine bounded by a deterministic gate, and a clear path to telco-grade scale. Everything you just heard is running on the real stack — Postgres, Neo4j, and a local Ollama brain. Thank you for taking the tour.",null],
+];
+
+var synth = window.speechSynthesis;
+var voices=[], chosenVoice=null, idx=0, playing=false, useVoice=true, paused=false;
+
+function loadVoices(){
+  voices = synth ? synth.getVoices() : [];
+  var sel=document.getElementById("voicePick"); sel.innerHTML="";
+  if(!voices.length){ sel.innerHTML="<option>no voices</option>"; return; }
+  // prefer an English voice
+  var preferred = voices.filter(function(v){return /en[-_]/i.test(v.lang);});
+  (preferred.length?preferred:voices).forEach(function(v,i){
+    var o=document.createElement("option"); o.value=v.name; o.textContent=v.name+" ("+v.lang+")"; sel.appendChild(o);
+  });
+  chosenVoice = (preferred[0]||voices[0]);
+  sel.value = chosenVoice.name;
+  sel.onchange=function(){ chosenVoice = voices.find(function(v){return v.name===sel.value;}); };
+}
+if(synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
+(function(){
+  var w=document.getElementById("spkwarn");
+  if(!synth){ w.textContent="Heads up: this browser has no speech synthesis — the tour will run silently with on-screen narration."; }
+  else { w.textContent="Tip: voice uses your browser's built-in speech — no internet needed. Make sure your speakers are on."; }
+})();
+
+function speak(text, onEnd){
+  if(!useVoice || !synth){ if(onEnd){ window._tourTimer=setTimeout(onEnd, Math.min(9000, 1800+text.length*32)); } return; }
+  synth.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  if(chosenVoice) u.voice=chosenVoice;
+  u.rate=0.98; u.pitch=1.0;
+  u.onend=function(){ if(onEnd && playing && !paused) onEnd(); };
+  synth.speak(u);
+}
+
+function showStep(){
+  var s=TOUR[idx];
+  document.getElementById("np").classList.add("show");
+  document.getElementById("npStep").textContent="Step "+(idx+1)+" of "+TOUR.length+" · "+s[0];
+  document.getElementById("npTxt").textContent=s[1];
+  document.getElementById("npProg").textContent=(idx+1)+" / "+TOUR.length;
+  var go=document.getElementById("npGo");
+  if(s[2]){ go.style.display="inline-block"; go.onclick=function(){ window.open(s[2],"_blank"); }; }
+  else { go.style.display="none"; }
+}
+function playStep(){
+  showStep();
+  var s=TOUR[idx];
+  speak(s[1], function(){
+    if(playing && !paused && idx < TOUR.length-1){ idx++; playStep(); }
+    else if(idx>=TOUR.length-1){ /* end */ }
+  });
+}
+function startTour(withVoice){
+  useVoice=withVoice; playing=true; paused=false; idx=0;
+  // some browsers require a user gesture to unlock audio; this handler IS that gesture.
+  if(withVoice && synth){ synth.cancel(); }
+  document.getElementById("npPause").textContent="Pause";
+  playStep();
+  document.getElementById("np").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function stopTour(){
+  playing=false; paused=false;
+  if(synth) synth.cancel();
+  if(window._tourTimer) clearTimeout(window._tourTimer);
+  document.getElementById("np").classList.remove("show");
+}
+document.getElementById("startTour").onclick=function(){ startTour(true); };
+document.getElementById("startSilent").onclick=function(){ startTour(false); };
+document.getElementById("npStop").onclick=stopTour;
+document.getElementById("npNext").onclick=function(){ if(idx<TOUR.length-1){ idx++; if(synth)synth.cancel(); if(window._tourTimer)clearTimeout(window._tourTimer); paused=false; playStep(); } };
+document.getElementById("npPrev").onclick=function(){ if(idx>0){ idx--; if(synth)synth.cancel(); if(window._tourTimer)clearTimeout(window._tourTimer); paused=false; playStep(); } };
+document.getElementById("npPause").onclick=function(){
+  var b=document.getElementById("npPause");
+  if(!paused){ paused=true; if(synth)synth.pause(); if(window._tourTimer)clearTimeout(window._tourTimer); b.textContent="Resume"; }
+  else { paused=false; b.textContent="Pause"; if(synth && useVoice){ synth.resume(); } else { playStep(); } }
+};
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

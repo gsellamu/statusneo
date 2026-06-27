@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Two-Track Top-Level Proposal — Tech + Execution Org</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--ice:#cadcfc;
+        --exist:#3b6ea5;--proto:#1e7a4c;--proven:#6b4f9e;--modu:#2a3f8f;--sn:#e8a816;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.5;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 22px 70px;}
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:30px 0 26px;}
+  .hero .wrap{padding-bottom:0;}
+  .kick{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  .hero h1{font-family:Cambria,Georgia,serif;font-size:30px;margin:0 0 9px;}
+  .hero p{margin:0;color:#c9d6e8;font-size:14px;max-width:840px;}
+  .tagline{margin-top:13px;font-style:italic;color:var(--gold);font-family:Cambria,serif;font-size:14.5px;}
+  .legend{display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;font-size:12px;color:#c9d6e8;}
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .sec-h{font-family:Cambria,serif;color:var(--navy);font-size:21px;margin:32px 0 4px;font-weight:bold;}
+  .sec-h .n{display:inline-block;background:var(--gold);color:var(--navy);font-weight:bold;width:26px;height:26px;border-radius:50%;text-align:center;line-height:26px;margin-right:10px;font-size:14px;}
+  .sec-sub{color:var(--slate);font-size:13px;margin:0 0 16px;}
+  /* ownership split */
+  .split{display:flex;gap:16px;flex-wrap:wrap;}
+  .own{flex:1 1 340px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  .own h3{margin:0 0 3px;font-family:Cambria,serif;font-size:18px;}
+  .own.modu h3{color:var(--modu);} .own.sn h3{color:var(--goldk);}
+  .own .role{font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;margin-bottom:11px;}
+  .own.modu .role{color:var(--modu);} .own.sn .role{color:var(--goldk);}
+  .own ul{margin:0;padding-left:18px;} .own li{font-size:13px;margin:6px 0;}
+  /* org tree */
+  .tier{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
+  .tier .lab{flex:0 0 150px;font-size:10.5px;font-weight:bold;letter-spacing:.8px;text-transform:uppercase;color:var(--slate);}
+  .tier .boxes{display:flex;gap:10px;flex-wrap:wrap;flex:1;}
+  .pbox{border-radius:9px;padding:9px 14px;font-size:13px;font-weight:bold;color:#fff;flex:1;min-width:150px;text-align:center;}
+  .pbox small{display:block;font-weight:normal;font-size:11px;opacity:.85;margin-top:2px;}
+  .b-modu{background:var(--modu);} .b-sn{background:var(--goldk);} .b-fde{background:var(--navy);border:2px solid var(--gold);}
+  .b-pod{background:var(--navy2);}
+  /* track cards */
+  .tracks{display:flex;gap:16px;flex-wrap:wrap;}
+  .track{flex:1 1 420px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  .track .th{padding:15px 20px;color:#fff;}
+  .track.t1 .th{background:linear-gradient(120deg,var(--navy),var(--navy2));}
+  .track.t2 .th{background:linear-gradient(120deg,var(--goldk),#d8a93a);}
+  .track .th .tk{font-size:10.5px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;opacity:.9;}
+  .track .th h3{margin:3px 0 0;font-family:Cambria,serif;font-size:19px;}
+  .track .body{padding:16px 20px;}
+  .track .body h4{margin:0 0 7px;font-size:12px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase;color:var(--goldk);}
+  .track.t1 .body h4{color:var(--exist);}
+  .track .body ul{margin:0 0 14px;padding-left:18px;} .track .body li{font-size:12.8px;margin:5px 0;}
+  .track .body li b{color:var(--navy);}
+  /* outcomes */
+  .outs{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
+  .out{flex:1 1 200px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 15px;}
+  .out .big{font-family:Cambria,serif;font-size:18px;font-weight:bold;color:var(--goldk);}
+  .out .lbl{font-size:12px;color:var(--slate);margin-top:2px;}
+  .callout{margin-top:26px;background:var(--navy);color:#fff;border-radius:13px;padding:18px 22px;text-align:center;}
+  .callout .big{font-family:Cambria,serif;font-size:17px;font-weight:bold;color:var(--gold);font-style:italic;}
+  .callout .sub{margin-top:6px;font-size:13px;color:#c9d6e8;}
+  .note{margin-top:14px;font-size:12px;color:var(--slate);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 15px;}
+  .note b{color:var(--navy);}
+  .footnote{margin-top:30px;font-size:11.5px;color:var(--slate);border-top:1px solid var(--line);padding-top:13px;}
+  .backbar{background:#0e1b2e;padding:8px 16px;}
+  .backbar a{color:#c9d6e8;text-decoration:none;font-size:12px;} .backbar a:hover{color:#e8a816;}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/showcase.html">&larr; Showcase</a> &nbsp;·&nbsp; <a href="/interview.html">AI Interview</a></div>
+<header class="hero"><div class="wrap">
+  <p class="kick">StatusNeo × Modutecture · FDE Operating Model</p>
+  <h1>Two-Track Top-Level Proposal — Tech &amp; Execution Org</h1>
+  <p>How the engagement is structured so engineering becomes a growth engine, not a cost center: one FDE owning the technical architecture, an offshore AI-ready squad owning delivery, and a clean ownership boundary with Modutecture's leadership. Two tracks — the technical org and the execution org — that together make the platform shippable and the team self-driving.</p>
+  <div class="tagline">One pod. Always on. One FDE, full context, end-to-end accountability.</div>
+  <div class="legend">
+    <span><span class="dot" style="background:#2a3f8f"></span> Modutecture (retains)</span>
+    <span><span class="dot" style="background:#c9952f"></span> StatusNeo (owns)</span>
+    <span><span class="dot" style="background:#16263f;border:2px solid #e8a816"></span> FDE / Architect — the single point of ownership</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <!-- OWNERSHIP BOUNDARY -->
+  <div class="sec-h"><span class="n">0</span>The ownership boundary (the foundation)</div>
+  <p class="sec-sub">Boundaries as credibility. Modutecture keeps strategy and the customer; StatusNeo owns the engineering system end-to-end. No ambiguity, no handoffs.</p>
+  <div class="split">
+    <div class="own modu">
+      <h3>Modutecture</h3>
+      <div class="role">Retains</div>
+      <ul>
+        <li>Strategy &amp; vision</li>
+        <li>Customer relationships</li>
+        <li>Product strategy &amp; requirements</li>
+        <li>Technical strategy (with the FDE as partner)</li>
+        <li>Onsite Tech + Product leadership (CTO, VP Product, Client Solution Architect)</li>
+      </ul>
+    </div>
+    <div class="own sn">
+      <h3>StatusNeo</h3>
+      <div class="role">Owns</div>
+      <ul>
+        <li>Design</li>
+        <li>Architecture</li>
+        <li>Engineering</li>
+        <li>Delivery</li>
+        <li>Support</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note"><b>One Pod. Always On.</b> Feature delivery + production support — the same team, no handoffs. The shift: Augmentation (vendors execute tasks) &rarr; AI-Native (engineers + AI copilots deliver outcomes) &rarr; Growth Engine (engineering drives business velocity).</div>
+
+  <!-- TRACK 1 + 2 -->
+  <div class="sec-h"><span class="n">1+2</span>The two tracks</div>
+  <p class="sec-sub">Track 1 designs the technical organization (who owns which part of the platform). Track 2 designs the execution organization (how work flows, with AI in the loop). Both report through one FDE.</p>
+  <div class="tracks">
+    <div class="track t1">
+      <div class="th"><div class="tk">Track 1 · Technical Org</div><h3>Platform ownership by value stream</h3></div>
+      <div class="body">
+        <h4>The shape</h4>
+        <ul>
+          <li><b>FDE / Platform Architect (onsite)</b> — single point of technical ownership; owns the architecture of record, the ADRs, and the twin/agent/gate spine.</li>
+          <li><b>Offshore execution pods</b> — Platform, App, UX, Unity (3D), Data &amp; AI, Cloud — each a bounded value stream with clear authoritative-for boundaries.</li>
+          <li><b>Technical Engineering Anchor (offshore)</b> — holds SDLC discipline and quality bars across pods.</li>
+        </ul>
+        <h4>What it fixes</h4>
+        <ul>
+          <li>Distributed ownership &rarr; <b>one named owner</b> per value stream.</li>
+          <li>Truth split across Unity + batch pipeline &rarr; <b>one twin owns truth</b>; Unity renders.</li>
+          <li>No AI/agentic layer &rarr; <b>governed agentic AI + inline gate</b>, owned by the FDE.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="track t2">
+      <div class="th"><div class="tk">Track 2 · Execution Org</div><h3>AI-augmented delivery, outcome-led</h3></div>
+      <div class="body">
+        <h4>The shape</h4>
+        <ul>
+          <li><b>Engineering Lead</b> over <b>Scrum Master</b> + <b>Product Owner</b>, driving roadmap-based iterative delivery.</li>
+          <li><b>AI-DLC loops</b>, not projects: Define &rarr; Design &rarr; Engineer &rarr; Automate &rarr; Govern, continuously running.</li>
+          <li><b>Super-agents in the SDLC</b> — planning, PR review, test generation, QA — augmenting humans, never replacing the gate.</li>
+        </ul>
+        <h4>What it fixes</h4>
+        <ul>
+          <li>Task-driven &rarr; <b>outcome-led</b> engineering.</li>
+          <li>Manual SDLC &rarr; <b>AI-augmented SDLC</b> (Spec &rarr; BDD &rarr; ATDD).</li>
+          <li>Bottom-up planning &rarr; <b>roadmap-based</b>, predictable 2-week cycles.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORG STRUCTURE -->
+  <div class="sec-h"><span class="n">3</span>The way-forward org structure</div>
+  <p class="sec-sub">Product owned by Modutecture on top; engineering owned by StatusNeo below; the FDE is the seam that joins them.</p>
+  <div class="tier"><div class="lab">Product · Modutecture</div><div class="boxes">
+    <div class="pbox b-modu">CTO<small>Modutecture</small></div>
+    <div class="pbox b-modu">VP Product<small>Modutecture</small></div>
+    <div class="pbox b-modu">Client Solution Architect<small>Modutecture</small></div>
+  </div></div>
+  <div class="tier"><div class="lab">The seam · SPOC</div><div class="boxes">
+    <div class="pbox b-fde">FDE / Architect — onsite single point of ownership<small>StatusNeo · AI &amp; platform architect · technical strategy partner to the CTO</small></div>
+  </div></div>
+  <div class="tier"><div class="lab">Engineering · StatusNeo</div><div class="boxes">
+    <div class="pbox b-sn">VP Engineering</div>
+    <div class="pbox b-sn">Engineering Lead</div>
+    <div class="pbox b-sn">Scrum Master</div>
+    <div class="pbox b-sn">Product Owner</div>
+  </div></div>
+  <div class="tier"><div class="lab">Offshore pods</div><div class="boxes">
+    <div class="pbox b-pod">Platform</div>
+    <div class="pbox b-pod">App</div>
+    <div class="pbox b-pod">UX</div>
+    <div class="pbox b-pod">Unity (3D)</div>
+    <div class="pbox b-pod">Data &amp; AI</div>
+    <div class="pbox b-pod">Cloud</div>
+  </div></div>
+
+  <!-- OUTCOMES -->
+  <div class="sec-h"><span class="n">4</span>The outcomes this org produces</div>
+  <p class="sec-sub">The structure isn't the goal — these are. Targets from the engagement model.</p>
+  <div class="outs">
+    <div class="out"><div class="big">2–3×</div><div class="lbl">faster time to market</div></div>
+    <div class="out"><div class="big">2-week</div><div class="lbl">release cycles</div></div>
+    <div class="out"><div class="big">+40–60%</div><div class="lbl">feature throughput</div></div>
+    <div class="out"><div class="big">1.5×</div><div class="lbl">feature velocity</div></div>
+  </div>
+
+  <!-- TRANSITION -->
+  <div class="sec-h"><span class="n">5</span>How we get there — pod-based, phased (not big-bang)</div>
+  <p class="sec-sub">Lower delivery risk, faster proof of value. Start with a high-visibility pilot pod, prove outcomes, then scale with a repeatable playbook. ~8-week pod transition.</p>
+  <div class="tier"><div class="lab">8-week arc</div><div class="boxes">
+    <div class="pbox b-pod">Wk 1 · Mobilize<small>scope, RACI, plan</small></div>
+    <div class="pbox b-pod">Wk 2–3 · KT<small>arch, codebase, releases</small></div>
+    <div class="pbox b-pod">Wk 4 · Shadow<small>observe live ops</small></div>
+    <div class="pbox b-pod">Wk 5–6 · Reverse shadow<small>lead with oversight</small></div>
+    <div class="pbox b-pod">Wk 7–8 · Hypercare<small>stabilize, BAU</small></div>
+  </div></div>
+  <div class="note"><b>This is not a replacement.</b> It's a structured transition to an integrated model — retaining the strengths of the current team while bringing in governance, predictability, and scale. The existing members (Deepak, Shubham, Nikunj, Avi, Yash, Lloyd) integrate into the pods; their domain knowledge is retained, not lost.</div>
+
+  <div class="callout">
+    <div class="big">From delivery capacity to engineering system design.</div>
+    <div class="sub">Vendors execute tasks &rarr; engineers + AI copilots deliver outcomes &rarr; engineering drives business velocity. One FDE owns the seam.</div>
+  </div>
+
+  <div class="footnote">Grounded in the StatusNeo × Modutecture engagement blueprint (transformation principles, way-forward org, pod-based transition, AI-DLC). The technical-architecture two-track (twin / agent / gate spine, ADRs, scale tiers) lives in the CTO Two-Track Blueprint deck and ADR-009; this page is the organizational two-track that delivers it.</div>
+
+</div>
+<script src="/nav.js"></script>
+</body>
+</html>

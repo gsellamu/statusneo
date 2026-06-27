@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Room Planner (thin client)</title>
+<style>
+  :root{--navy:#16263f;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;
+        --tint:#f3f6fa;--line:#dfe6ee;--red:#b3402f;--amber:#d89a12;--green:#1e7a4c;}
+  *{box-sizing:border-box;font-family:Calibri,system-ui,Segoe UI,sans-serif;}
+  body{margin:0;background:#fff;color:var(--ink);display:flex;height:100vh;}
+  #left{flex:1;display:flex;flex-direction:column;min-width:0;}
+  #right{width:360px;border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--tint);}
+  header{padding:10px 16px;background:var(--navy);color:#fff;}
+  header b{color:var(--gold);}
+  header span{color:#c9d6e8;font-size:13px;}
+  #palette{padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .chip{padding:6px 12px;border:1.5px solid var(--navy);border-radius:18px;cursor:pointer;font-size:13px;background:#fff;}
+  .chip.sel{background:var(--navy);color:#fff;}
+  .chip.tool{border-color:var(--slate);color:var(--slate);}
+  #canvasWrap{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;}
+  canvas{background:#fbfcfe;border:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.06);cursor:crosshair;}
+  #status{padding:8px 16px;font-size:13px;border-top:1px solid var(--line);min-height:36px;}
+  .ok{color:var(--green);} .err{color:var(--red);} .warn{color:var(--amber);}
+  #right h3{margin:0;padding:10px 16px;font-size:13px;letter-spacing:.5px;color:var(--navy);
+            border-bottom:1px solid var(--line);text-transform:uppercase;}
+  #log{flex:1;overflow:auto;padding:8px 12px;font-size:12px;}
+  .ev{padding:6px 8px;border-left:3px solid var(--green);background:#fff;margin-bottom:6px;border-radius:3px;}
+  .ev.rm{border-left-color:var(--slate);}
+  .ev .t{font-weight:bold;color:var(--navy);}
+  .ev .m{color:var(--slate);}
+  #agent{padding:10px 16px;border-top:1px solid var(--line);}
+  button{font-size:13px;padding:7px 12px;border:0;border-radius:6px;background:var(--gold);color:var(--navy);font-weight:bold;cursor:pointer;}
+  button.ghost{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:normal;}
+  .hint{font-size:12px;color:var(--slate);margin-top:6px;}
+</style>
+</head>
+<body>
+  <div id="left">
+    <header><b>Modutecture Spine</b> &nbsp; Room Planner — <span>thin client: renders server truth, emits commands, owns nothing</span></header>
+    <div id="palette">
+      <span style="font-size:12px;color:var(--slate)">Place:</span>
+      <div class="chip" data-type="headwall-hw204">Headwall HW-204</div>
+      <div class="chip" data-type="bed-icu">ICU Bed</div>
+      <div class="chip" data-type="sink-clinical">Clinical Sink</div>
+      <div class="chip tool" id="rotate">Rotate ghost: 0°</div>
+      <div class="chip tool" id="removeMode">Remove: off</div>
+    </div>
+    <div id="canvasWrap"><canvas id="c" width="800" height="600"></canvas></div>
+    <div id="status">Pick a Moducule, then click in the room. Server validates every placement.</div>
+  </div>
+  <div id="right">
+    <h3>Event journal (append-only)</h3>
+    <div id="log"></div>
+    <div id="agent">
+      <button id="suggest">Suggest a bed (agent)</button>
+      <div class="hint">Agent proposes; you approve. It never commits directly.</div>
+      <div id="proposal"></div>
+    </div>
+  </div>
+
+<script>
+const ROOM_ID="exam-12", MM_W=4000, MM_H=3000;
+const c=document.getElementById("c"), ctx=c.getContext("2d");
+const SX=c.width/MM_W, SY=c.height/MM_H;            // mm -> px
+let registry=null, twin=null, sel=null, ghostRot=0, removeMode=false, mouse=null;
+
+const px=(x,y)=>[x*SX,y*SY];
+const COLORS={"headwall-hw204":"#23375a","bed-icu":"#3b6ea5","sink-clinical":"#6b8fb5"};
+
+async function boot(){
+  registry=await (await fetch("/api/registry")).json();
+  const ws=new WebSocket(`ws://${location.host}/ws/${ROOM_ID}`);
+  ws.onmessage=e=>{const m=JSON.parse(e.data); twin=m.twin; draw(); refreshLog();};
+  draw();
+}
+
+// ---- rendering: pure function of server state -----------------------------
+function rectMM(cx,cy,w,d){const[x,y]=px(cx-w/2,cy-d/2);return[x,y,w*SX,d*SY];}
+function dimsOf(t,rot){const m=registry[t];return (rot%180)?[m.footprint_d,m.footprint_w]:[m.footprint_w,m.footprint_d];}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  // room
+  ctx.strokeStyle="#16263f";ctx.lineWidth=2;ctx.strokeRect(1,1,c.width-2,c.height-2);
+  if(!twin){return;}
+  // med-gas bindings (edges earned by validation) drawn under parts
+  twin.bindings.forEach(b=>{
+    const f=twin.instances.find(i=>i.instance_id===b.from), t=twin.instances.find(i=>i.instance_id===b.to);
+    if(!f||!t)return;const[fx,fy]=px(f.x,f.y),[tx,ty]=px(t.x,t.y);
+    ctx.strokeStyle="#e8a816";ctx.lineWidth=2;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle="#c78f0d";ctx.font="11px Calibri";
+    ctx.fillText("med-gas",(fx+tx)/2+4,(fy+ty)/2-4);
+  });
+  // instances
+  twin.instances.forEach(i=>{
+    const[w,d]=dimsOf(i.type_id,i.rotation);
+    const[x,y,pw,ph]=rectMM(i.x,i.y,w,d);
+    ctx.fillStyle=COLORS[i.type_id]||"#888";ctx.fillRect(x,y,pw,ph);
+    ctx.strokeStyle="#0d1626";ctx.strokeRect(x,y,pw,ph);
+    ctx.fillStyle="#fff";ctx.font="11px Calibri";
+    ctx.fillText(registry[i.type_id].name,x+4,y+14);
+  });
+  // ghost preview with optimistic (reflex-arc) validation
+  if(sel&&mouse&&!removeMode){
+    const[w,d]=dimsOf(sel,ghostRot);
+    const[x,y,pw,ph]=rectMM(mouse.x,mouse.y,w,d);
+    const legal=optimistic(sel,mouse.x,mouse.y,ghostRot);
+    ctx.globalAlpha=.5;ctx.fillStyle=legal?"#1e7a4c":"#b3402f";ctx.fillRect(x,y,pw,ph);
+    ctx.globalAlpha=1;
+  }
+}
+
+// cheap client-side rule subset = the reflex arc (server stays authoritative)
+function fp(t,cx,cy,rot){const[w,d]=dimsOf(t,rot);return[cx-w/2,cy-d/2,cx+w/2,cy+d/2];}
+function overlap(a,b){return a[0]<b[2]-1&&a[2]>b[0]+1&&a[1]<b[3]-1&&a[3]>b[1]+1;}
+function optimistic(t,cx,cy,rot){
+  const f=fp(t,cx,cy,rot);
+  if(f[0]<0||f[1]<0||f[2]>MM_W||f[3]>MM_H)return false;       // R1
+  if(twin) for(const i of twin.instances)                      // R2 collision only
+    if(overlap(f,fp(i.type_id,i.x,i.y,i.rotation)))return false;
+  return true;                                                 // R3 is server-side
+}
+
+// ---- commands (efferent) ---------------------------------------------------
+async function send(cmd){
+  const r=await fetch(`/api/commands/${ROOM_ID}`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify(cmd)});
+  return r.json();
+}
+function showResult(res){
+  const s=document.getElementById("status");
+  if(res.status==="ACCEPTED"){
+    const warns=(res.violations||[]).filter(v=>v.severity==="WARNING");
+    s.innerHTML=`<span class="ok">✓ COMMITTED</span> seq #${res.event.seq}`+
+      (warns.length?` &nbsp;<span class="warn">⚠ ${warns.map(w=>w.message).join("; ")}</span>`:``);
+  }else{
+    const errs=(res.violations||[]).map(v=>`[${v.rule}] ${v.message}`).join("  ");
+    s.innerHTML=`<span class="err">✗ REJECTED — nothing written.</span> ${errs}`;
+  }
+}
+
+c.addEventListener("mousemove",e=>{const r=c.getBoundingClientRect();
+  mouse={x:(e.clientX-r.left)/SX,y:(e.clientY-r.top)/SY};draw();});
+c.addEventListener("mouseleave",()=>{mouse=null;draw();});
+c.addEventListener("click",async e=>{
+  const r=c.getBoundingClientRect();
+  const x=(e.clientX-r.left)/SX, y=(e.clientY-r.top)/SY;
+  if(removeMode){
+    const hit=[...(twin?.instances||[])].reverse().find(i=>{
+      const[w,d]=dimsOf(i.type_id,i.rotation);const f=fp(i.type_id,i.x,i.y,i.rotation);
+      return x>=f[0]&&x<=f[2]&&y>=f[1]&&y<=f[3];});
+    if(hit)showResult(await send({type:"REMOVE",instance_id:hit.instance_id}));
+    return;
+  }
+  if(!sel){document.getElementById("status").textContent="Pick a Moducule first.";return;}
+  showResult(await send({type:"PLACE",type_id:sel,x:Math.round(x),y:Math.round(y),rotation:ghostRot}));
+});
+
+// ---- palette / tools -------------------------------------------------------
+document.querySelectorAll(".chip[data-type]").forEach(ch=>ch.onclick=()=>{
+  document.querySelectorAll(".chip[data-type]").forEach(x=>x.classList.remove("sel"));
+  ch.classList.add("sel");sel=ch.dataset.type;removeMode=false;
+  document.getElementById("removeMode").textContent="Remove: off";
+});
+document.getElementById("rotate").onclick=()=>{ghostRot=(ghostRot+90)%360;
+  document.getElementById("rotate").textContent=`Rotate ghost: ${ghostRot}°`;draw();};
+document.getElementById("removeMode").onclick=()=>{removeMode=!removeMode;
+  document.getElementById("removeMode").textContent=`Remove: ${removeMode?"ON":"off"}`;
+  if(removeMode){sel=null;document.querySelectorAll(".chip[data-type]").forEach(x=>x.classList.remove("sel"));}};
+
+// ---- journal panel ---------------------------------------------------------
+async function refreshLog(){
+  const evs=await (await fetch(`/api/events/${ROOM_ID}`)).json();
+  document.getElementById("log").innerHTML = evs.slice().reverse().map(e=>{
+    const placed=e.type==="MODUCULE_PLACED";
+    const name=placed?(registry[e.payload.type_id]?.name||e.payload.type_id):e.payload.instance_id;
+    const extra=placed?`(${Math.round(e.payload.x)},${Math.round(e.payload.y)}) rot ${e.payload.rotation}°`
+                      :"removed";
+    return `<div class="ev ${placed?'':'rm'}"><span class="t">#${e.seq} ${e.type.replace('MODUCULE_','')}</span>
+            &nbsp;${name}<div class="m">${extra} · by ${e.actor}</div></div>`;}).join("")
+    || `<div class="m" style="color:var(--slate)">No events yet — the journal is empty.</div>`;
+}
+
+// ---- agent (propose -> human approves) -------------------------------------
+document.getElementById("suggest").onclick=async()=>{
+  const res=await (await fetch(`/api/agent/suggest/${ROOM_ID}`,{method:"POST",
+    headers:{"Content-Type":"application/json"},body:JSON.stringify({goal:"add_bed"})})).json();
+  const box=document.getElementById("proposal");
+  if(!res.proposal){box.innerHTML=`<div class="hint err">${res.rationale}</div>`;return;}
+  box.innerHTML=`<div class="hint">${res.rationale}<br><i>cites: ${res.citations.join(", ")}</i></div>
+    <div style="margin-top:6px"><button id="approve">Approve & commit</button>
+    <button class="ghost" id="reject">Reject</button></div>`;
+  document.getElementById("approve").onclick=async()=>{
+    showResult(await send(res.proposal));box.innerHTML="";};
+  document.getElementById("reject").onclick=()=>box.innerHTML="";
+};
+
+boot();
+</script>
+</body>
+</html>

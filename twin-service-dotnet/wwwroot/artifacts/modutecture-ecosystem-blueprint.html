@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Master Agentic AI · AEC Ecosystem Blueprint</title>
+<style>
+  :root{
+    --navy:#16263F; --navy2:#23375A; --navy3:#2C4368; --gold:#E8A816; --ink:#1F2A38;
+    --slate:#5B6B7E; --line:#D7E0EA; --tint:#F4F7FB; --white:#FFFFFF;
+    --built:#1E7A4C; --proven:#6B4F9E; --modu:#3B6EA5; --std:#5B6B7E; --road:#E8A816;
+    --paper:#EEF2F7;
+  }
+  *{box-sizing:border-box; font-family:Calibri,'Segoe UI',system-ui,sans-serif;}
+  body{margin:0; background:var(--paper); color:var(--ink);}
+  /* ---------- header ---------- */
+  header{background:linear-gradient(120deg,var(--navy),var(--navy2)); color:#fff; padding:18px 30px 16px;}
+  header .k{color:var(--gold); font-size:12px; font-weight:bold; letter-spacing:3px; margin:0 0 4px;}
+  header h1{margin:0; font-family:Cambria,Georgia,serif; font-size:26px;}
+  header h1 b{color:var(--gold);}
+  header .vm{margin-top:8px; font-size:13.5px; color:#CFDCEC; max-width:1050px; line-height:1.5;}
+  header .vm b{color:#fff;}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px; font-size:12px;}
+  .legend span{display:inline-flex; align-items:center; gap:6px; color:#D7E2F0; cursor:pointer; user-select:none; opacity:.95;}
+  .legend span:hover{color:#fff;}
+  .legend i{width:11px; height:11px; border-radius:50%; display:inline-block;}
+  .legend .d-built{background:var(--built);} .legend .d-proven{background:var(--proven);}
+  .legend .d-modu{background:var(--modu);} .legend .d-std{background:var(--std);} .legend .d-road{background:var(--road);}
+  /* ---------- stage ---------- */
+  #scaler{padding:18px 10px 30px;}
+  #stageHolder{position:relative; margin:0 auto; width:1360px; height:910px;}
+  #stage{position:absolute; top:0; left:0; width:1360px; height:910px; transform-origin:top left;}
+  svg#wires{position:absolute; inset:0; width:1360px; height:910px; z-index:0; pointer-events:none;}
+  .wire{stroke:var(--gold); stroke-width:2.5; fill:none; stroke-dasharray:7 6; animation:flow 1.1s linear infinite; opacity:.85;}
+  @keyframes flow{to{stroke-dashoffset:-13;}}
+  .wlabel{position:absolute; z-index:2; background:#fff; border:1px solid var(--line); border-radius:11px;
+          font-size:11px; color:var(--navy); font-weight:bold; padding:3px 9px; white-space:nowrap;
+          box-shadow:0 1px 4px rgba(0,0,0,.07);}
+  .region{position:absolute; z-index:1; background:#fff; border:1px solid var(--line); border-radius:14px;
+          box-shadow:0 2px 10px rgba(20,40,70,.07); padding:12px 14px;}
+  .region h2{margin:0 0 3px; font-size:13px; color:var(--navy); text-transform:uppercase; letter-spacing:.6px;}
+  .region .sub{font-size:11px; color:var(--slate); margin:0 0 9px; font-style:italic;}
+  .chips{display:flex; flex-direction:column; gap:7px;}
+  .chip{display:flex; align-items:flex-start; gap:8px; background:var(--tint); border:1px solid var(--line);
+        border-radius:9px; padding:7px 9px; cursor:default; transition:transform .12s, box-shadow .12s, background .12s;}
+  .chip:hover{transform:translateY(-1px); box-shadow:0 3px 10px rgba(20,40,70,.13); background:#fff;}
+  .chip .dot{width:10px; height:10px; border-radius:50%; margin-top:3px; flex:0 0 auto;}
+  .chip .tx{font-size:12.5px; color:var(--ink); font-weight:bold; line-height:1.2;}
+  .chip .tx small{display:block; font-weight:normal; color:var(--slate); font-size:10.5px; margin-top:1px;}
+  .d-built{background:var(--built);} .d-proven{background:var(--proven);}
+  .d-modu{background:var(--modu);} .d-std{background:var(--std);} .d-road{background:var(--road);}
+  .dim{opacity:.22; filter:grayscale(.4);}
+  /* ---------- CORE ---------- */
+  #core{position:absolute; z-index:3; left:500px; top:284px; width:360px; height:344px;
+        background:linear-gradient(150deg,var(--navy),var(--navy2)); border:2px solid var(--gold);
+        border-radius:16px; box-shadow:0 8px 26px rgba(20,40,70,.32); padding:14px 15px; color:#fff;}
+  #core .badge{position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--gold);
+        color:var(--navy); font-size:10.5px; font-weight:bold; letter-spacing:1px; padding:3px 12px; border-radius:11px; white-space:nowrap;}
+  #core h2{margin:6px 0 2px; font-size:16px; color:#fff; text-align:center; font-family:Cambria,serif;}
+  #core .sub{font-size:10.5px; color:var(--gold); text-align:center; margin:0 0 10px; font-style:italic;}
+  #core .cgrid{display:grid; grid-template-columns:1fr 1fr; gap:7px;}
+  #core .cell{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:9px; padding:7px 8px;}
+  #core .cell .mb{font-size:8px; font-weight:bold; letter-spacing:.4px; padding:1px 6px; border-radius:7px; display:inline-block; margin-bottom:4px;}
+  #core .cell .mb.them{background:#3B6EA5; color:#fff;}
+  #core .cell .mb.prop{background:var(--gold); color:var(--navy);}
+  #core .cell .t{font-size:12px; font-weight:bold; color:#fff;}
+  #core .cell .d{font-size:10px; color:#B9C9DD; margin-top:2px; line-height:1.2;}
+  #core .flow{position:absolute; bottom:9px; left:0; width:100%; text-align:center; font-size:10px; color:#9FB3CC; font-style:italic;}
+  /* ---------- governance band ---------- */
+  #gov{position:absolute; z-index:1; left:30px; top:820px; width:1300px; height:72px;
+       background:var(--navy); border-radius:13px; padding:10px 18px; color:#fff; display:flex; align-items:center; gap:10px;}
+  #gov .lbl{font-size:12px; font-weight:bold; color:var(--gold); letter-spacing:1px; text-transform:uppercase; white-space:nowrap; margin-right:6px;}
+  #gov .g{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18); border-radius:18px; padding:5px 13px; font-size:12px; color:#E7EEF7;}
+  /* ---------- tooltip + footer ---------- */
+  #tip{position:fixed; z-index:50; background:var(--navy); color:#fff; font-size:12px; padding:7px 11px; border-radius:8px;
+       max-width:280px; line-height:1.35; box-shadow:0 6px 20px rgba(0,0,0,.3); pointer-events:none; opacity:0; transition:opacity .1s;}
+  footer{padding:6px 30px 26px; max-width:1360px; margin:0 auto;}
+  footer .mark{background:#fff; border:1px solid var(--line); border-left:0; border-radius:12px; padding:14px 18px; box-shadow:0 1px 6px rgba(0,0,0,.05);}
+  footer .mark b{color:var(--navy);} footer .mark .g{color:var(--built); font-weight:bold;}
+</style>
+</head>
+<body>
+<header>
+  <p class="k">STATUSNEO  ×  MODUTECTURE</p>
+  <h1>Master <b>Agentic AI</b> · AEC Ecosystem Blueprint</h1>
+  <div class="vm"><b>Our value-mark:</b> <b>Modutecture's digital twin is the foundation</b> — it already holds the truth, the Moducules, and the Base Moducules catalog. What we propose to add is the layer their roadmap doesn't show yet: a <b>governed agentic-AI engine</b>, an <b>inline correctness gate</b>, and <b>GraphRAG grounding</b> that make the twin <b>reason</b> and stay <b>correct-by-construction</b>. Every existing product, lens, BIM tool, and data system plugs into it in real time. <b>We don't replace the twin — we make it agentic and safe for healthcare.</b></div>
+  <div class="legend" id="legend">
+    <span data-f="modu"><i class="d-modu"></i> Modutecture — existing platform</span>
+    <span data-f="built"><i class="d-built"></i> Proposed — working prototype (our demo)</span>
+    <span data-f="road"><i class="d-road"></i> Proposed — roadmap</span>
+    <span data-f="proven"><i class="d-proven"></i> Proven elsewhere (UE5)</span>
+    <span data-f="std"><i class="d-std"></i> Open AEC standard</span>
+  </div>
+</header>
+
+<div id="scaler">
+<div id="stageHolder">
+<div id="stage">
+  <svg id="wires" viewBox="0 0 1360 910">
+    <path class="wire" d="M680,240 L680,300"/>            <!-- north -> core -->
+    <path class="wire" d="M360,460 L500,452"/>            <!-- west -> core -->
+    <path class="wire" d="M1000,460 L860,452"/>           <!-- east -> core -->
+    <path class="wire" d="M680,666 L680,630"/>            <!-- south -> core -->
+  </svg>
+
+  <div class="wlabel" style="left:583px; top:255px;">real-time subscriptions</div>
+  <div class="wlabel" style="left:372px; top:432px;">GraphQL + REST</div>
+  <div class="wlabel" style="left:892px; top:432px;">IBimAdapter</div>
+  <div class="wlabel" style="left:600px; top:636px;">events · CQRS · GraphRAG</div>
+
+  <!-- ===================== CORE (the spine) ===================== -->
+  <div id="core">
+    <div class="badge">MODUTECTURE TWIN  +  OUR PROPOSED AI LAYER</div>
+    <h2>Contextual Twin, made Agentic</h2>
+    <div class="sub">their foundation · our governed intelligence — the brain proposes, the gate disposes</div>
+    <div class="cgrid">
+      <div class="cell" data-tip="Modutecture's existing digital twin — the single source of truth for room/floor/building state, the Moducules, and the Base Moducules catalog. We propose hardening it with an event-sourced, versioned discipline (prototyped)."><span class="mb them">MODUTECTURE</span><div class="t">Digital Twin</div><div class="d">their truth · event-sourcing proposed</div></div>
+      <div class="cell" data-tip="PROPOSED (prototyped). A deterministic rule engine (FGI / NFPA) that validates inline at placement time — not only in the batch ASP/SPA pipeline. The only authority that may write the twin; it can veto the LLM. Healthcare-grade safety."><span class="mb prop">PROPOSED</span><div class="t">Deterministic Gate</div><div class="d">inline validation · veto</div></div>
+      <div class="cell" data-tip="PROPOSED (prototyped). A Neo4j knowledge graph of rules, ports, codes. GraphRAG grounds the agent in the actual constraints — relational, not just vector similarity. New layer alongside their SQL/Lakebase store."><span class="mb prop">PROPOSED</span><div class="t">GraphRAG Grounding</div><div class="d">Neo4j · codes · ports</div></div>
+      <div class="cell" data-tip="PROPOSED (prototyped). LangGraph + MCP tools: retrieve -> plan -> review -> validate -> approve -> commit. Reflection + HITL. Turns Space Bot from a designer UI into a governed AI copilot. Proposes only; never owns truth."><span class="mb prop">PROPOSED</span><div class="t">Agentic AI Engine</div><div class="d">LangGraph · MCP · custom LLM</div></div>
+    </div>
+  </div>
+
+  <!-- ===================== NORTH: Experience & Lenses ===================== -->
+  <div class="region" style="left:430px; top:60px; width:500px; height:170px;">
+    <h2>Experience &amp; Lenses</h2>
+    <p class="sub">interchangeable renderers — the renderer owns nothing</p>
+    <div class="chips" style="flex-direction:row; flex-wrap:wrap; gap:7px;">
+      <div class="chip" style="flex:1 1 46%;" data-status="built" data-tip="Our prototype: 2D plan, schematic SVG, 3D (Three.js), live data table — all rendering the same twin, switchable split-screen. Demonstrates renderer-independence."><span class="dot d-built"></span><span class="tx">Web Lenses (demo)<small>2D · SVG · 3D · Data</small></span></div>
+      <div class="chip" style="flex:1 1 46%;" data-status="modu" data-tip="Modutecture's existing Unity 3D experience (Space Bot, Room Builder/Planner) is the main runtime today. We propose making it a thin client over the twin — Unity as the GPU, the twin as truth."><span class="dot d-modu"></span><span class="tx">Unity Experience<small>theirs · thin-client proposed</small></span></div>
+      <div class="chip" style="flex:1 1 96%;" data-status="proven" data-tip="Immersive real-time avatar experience — already shipped in UE5 for ResilientMind (Sophia: gaze, breathing, lip-sync, TRIBE v2). Becomes an immersive lens onto the operational twin."><span class="dot d-proven"></span><span class="tx">UE5 Immersive Monitoring<small>proven prior art · occupied-room avatars</small></span></div>
+    </div>
+  </div>
+
+  <!-- ===================== WEST: Modutecture Products ===================== -->
+  <div class="region" style="left:30px; top:280px; width:330px; height:360px;">
+    <h2>Modutecture Products</h2>
+    <p class="sub">the execution lens — made intelligent by the spine, in real time</p>
+    <div class="chips">
+      <div class="chip" data-status="modu" data-tip="Where rule-bearing modular blocks are authored. Plugs into the twin so Moducules carry the gate's rules + version pinning + blast-radius."><span class="dot d-modu"></span><span class="tx">Moducule Builder<small>BaseModucules (Get/Create)</small></span></div>
+      <div class="chip" data-status="modu" data-tip="Compose Moducules into rooms / floors / buildings. The twin provides live roll-up compliance and the reusable Room Moducule stamp."><span class="dot d-modu"></span><span class="tx">Room / Space Builder<small>Room Planner</small></span></div>
+      <div class="chip" data-status="modu" data-tip="Conversational/agentic assistant. Becomes a governed agent: it proposes via GraphRAG, the deterministic gate validates, a human approves."><span class="dot d-modu"></span><span class="tx">Space Bot<small>agentic assistant</small></span></div>
+      <div class="chip" data-status="road" data-tip="Real-time link: Builders &amp; Space Bot read versioned twin payloads and emit intents over GraphQL + subscriptions — they light up with compliance and AI as you design."><span class="dot d-road"></span><span class="tx">Real-time Integration<small>GraphQL + WS · intents</small></span></div>
+    </div>
+  </div>
+
+  <!-- ===================== EAST: BIM Federation ===================== -->
+  <div class="region" style="left:1000px; top:280px; width:330px; height:360px;">
+    <h2>BIM Federation</h2>
+    <p class="sub">design &amp; geometry authority — we federate, never replace</p>
+    <div class="chips">
+      <div class="chip" data-status="road" data-tip="Autodesk Platform Services. AEC Data Model API is GraphQL -> graph-to-graph federation. Model Derivative turns .rvt into glTF for the 3D/Unity/UE5 lenses."><span class="dot d-road"></span><span class="tx">Revit / Autodesk APS<small>AEC Data Model (GraphQL) · glTF</small></span></div>
+      <div class="chip" data-status="std" data-tip="ISO 16739 open BIM. Its spatial tree = our containment; IfcDistributionPort = our ports; IfcRelConnectsPorts = our earned edges. We're already aligned."><span class="dot d-std"></span><span class="tx">IFC<small>ISO 16739 · vendor-neutral</small></span></div>
+      <div class="chip" data-status="std" data-tip="BIM Collaboration Format. The agentic feedback loop made standard: a gate violation becomes a BCF issue inside Revit/Navisworks, with the rule cited."><span class="dot d-std"></span><span class="tx">BCF<small>issue round-trip to Revit</small></span></div>
+      <div class="chip" data-status="modu" data-tip="Modutecture's proprietary BIM is just another adapter behind the identical IBimAdapter contract — no special-casing in the core."><span class="dot d-modu"></span><span class="tx">Proprietary BIM<small>same adapter contract</small></span></div>
+      <div class="chip" data-status="road" data-tip="Integrate the AEC industry's AI: Autodesk Forma generative design, Scan-to-BIM reality capture, ML clash detection. The twin ingests their outputs and grounds the agent; our gate validates. We ride the industry's AI, not reinvent it."><span class="dot d-road"></span><span class="tx">AEC Industry AI<small>Forma · Scan-to-BIM · gen design</small></span></div>
+    </div>
+  </div>
+
+  <!-- ===================== SOUTH: Data & Operations ===================== -->
+  <div class="region" style="left:380px; top:670px; width:600px; height:148px;">
+    <h2>Data &amp; Operations Foundation</h2>
+    <p class="sub">polyglot persistence · the operational twin · the event backbone</p>
+    <div class="chips" style="flex-direction:row; flex-wrap:wrap; gap:7px;">
+      <div class="chip" style="flex:1 1 31%;" data-status="modu" data-tip="Modutecture's existing storage: Lakebase / Postgres + SQL Server / SSMS hold validated data; Databricks runs the ASP/SPA standards pipelines. Theirs today."><span class="dot d-modu"></span><span class="tx">Lakebase · SQL · Databricks<small>their storage + ASP/SPA</small></span></div>
+      <div class="chip" style="flex:1 1 31%;" data-status="built" data-tip="Proposed (prototyped): Neo4j knowledge graph + Qdrant vectors for relationships, blast-radius, and GraphRAG grounding — a new layer alongside their relational store."><span class="dot d-built"></span><span class="tx">Graph + Vectors<small>Neo4j · Qdrant (proposed)</small></span></div>
+      <div class="chip" style="flex:1 1 31%;" data-status="built" data-tip="Proposed (prototyped): Redpanda event backbone carries twin deltas + live room telemetry. Realizes their operational-twin vision — design twin and operational twin as one spine."><span class="dot d-built"></span><span class="tx">Event Bus + IoT<small>Redpanda · operational twin</small></span></div>
+    </div>
+  </div>
+
+  <!-- ===================== GOVERNANCE (cross-cutting) ===================== -->
+  <div id="gov">
+    <span class="lbl">Governance &amp; Quality<br/>(cross-cutting)</span>
+    <span class="g">Deterministic Gate</span>
+    <span class="g">39 tests · .NET≡Python parity</span>
+    <span class="g">Human-in-the-loop approval</span>
+    <span class="g">Observability · /health · /metrics · OTel</span>
+    <span class="g">CI/CD · Azure DevOps</span>
+    <span class="g">80/20 AI : HITL</span>
+  </div>
+</div>
+</div>
+</div>
+
+<div id="tip"></div>
+
+<footer>
+  <div class="mark">
+    <b>How to read this:</b> the <span style="color:#3B6EA5;font-weight:bold;">blue</span> pieces are <b>Modutecture's existing platform</b> — the twin, the Moducules, Base Moducules, Space Bot, the Unity experience, the ASP/SPA standards pipeline, the data plane. The <span class="g">green</span> and <b>gold</b> pieces are <b>what we propose to add</b>: a governed agentic-AI engine, an inline correctness gate, a knowledge graph + GraphRAG, and BIM federation — with a <b>working prototype</b> (green) of the core layer already running over a faithful slice of their domain. <b>Our role is the connective intelligence on top of their twin:</b> the AI reasons across BIM, codes, and live state, and the deterministic gate keeps it correct-by-construction. <i>Revit owns the geometry; their twin owns the rules and the truth; we add the agent that reasons and the gate that can't place something illegal.</i>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // scale the fixed stage to fit the viewport; size the holder to the SCALED box
+  // so the footer always flows below it (no negative margins)
+  function fit(){
+    var holder=document.getElementById('stageHolder'), scaler=document.getElementById('scaler');
+    var avail=scaler.clientWidth-20, s=Math.min(1, avail/1360);
+    document.getElementById('stage').style.transform='scale('+s+')';
+    holder.style.width=(1360*s)+'px';
+    holder.style.height=(910*s)+'px';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  // tooltip on any element with data-tip
+  var tip=document.getElementById('tip');
+  function showTip(e){ var t=e.currentTarget.getAttribute('data-tip'); if(!t) return;
+    tip.textContent=t; tip.style.opacity='1';
+    var x=e.clientX+14, y=e.clientY+14;
+    if(x+290>window.innerWidth) x=e.clientX-294;
+    tip.style.left=x+'px'; tip.style.top=y+'px'; }
+  function moveTip(e){ if(tip.style.opacity==='1'){ var x=e.clientX+14,y=e.clientY+14;
+    if(x+290>window.innerWidth) x=e.clientX-294; tip.style.left=x+'px'; tip.style.top=y+'px'; } }
+  function hideTip(){ tip.style.opacity='0'; }
+  document.querySelectorAll('[data-tip]').forEach(function(el){
+    el.addEventListener('mouseenter', showTip);
+    el.addEventListener('mousemove', moveTip);
+    el.addEventListener('mouseleave', hideTip);
+  });
+
+  // legend filter: click a status to highlight only that status
+  var active=null;
+  document.querySelectorAll('#legend span').forEach(function(sp){
+    sp.addEventListener('click', function(){
+      var f=sp.getAttribute('data-f');
+      active=(active===f)?null:f;
+      document.querySelectorAll('.chip').forEach(function(c){
+        var on=!active || c.getAttribute('data-status')===active;
+        c.classList.toggle('dim', !on);
+      });
+      document.querySelectorAll('#legend span').forEach(function(s2){
+        s2.style.opacity=(!active||s2.getAttribute('data-f')===active)?'1':'.45';
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+# ---- secrets: never commit ----
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+appsettings.*.Local.json
+
+# ---- .NET ----
+bin/
+obj/
+*.user
+
+# ---- Python (agentic-graph) ----
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ---- Node (deck/doc generators) ----
+node_modules/
+
+# ---- Unity ----
+unity-moducule-lens/Library/
+unity-moducule-lens/Temp/
+unity-moducule-lens/Obj/
+unity-moducule-lens/Build/
+unity-moducule-lens/Logs/
+unity-moducule-lens/UserSettings/
+unity-client/Library/
+unity-client/Temp/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.vs/
+.idea/

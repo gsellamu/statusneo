@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Operational Twin (live telemetry · POC)</title>
+<style>
+  :root{--navy:#16263f;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;
+        --green:#1e7a4c;--amber:#d89a12;--red:#b3402f;--blue:#3b6ea5;--grey:#9aa7b4;}
+  *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+  body{margin:0;background:#eef2f7;color:var(--ink);}
+  header{background:var(--navy);color:#fff;padding:16px 26px;display:flex;align-items:center;gap:14px;}
+  header h1{margin:0;font-family:Cambria,Georgia,serif;font-size:20px;} header h1 b{color:var(--gold);}
+  header .s{color:#c9d6e8;font-size:12.5px;} #bus{margin-left:auto;font-size:11px;padding:3px 10px;border-radius:10px;background:#3a4f78;}
+  .poc{background:#fff4d6;border:1px solid #e8c97e;color:#7a5b00;font-size:12px;padding:8px 14px;text-align:center;}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px 26px;}
+  .rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+  .room{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .room .rh{display:flex;align-items:center;gap:8px;} .room .rn{font-weight:bold;font-size:15px;color:var(--navy);}
+  .pill{display:inline-block;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:bold;color:#fff;margin-left:auto;}
+  .p-OCCUPIED{background:var(--blue);} .p-VACANT{background:var(--grey);}
+  .metrics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
+  .m{text-align:center;border:1px solid var(--line);border-radius:8px;padding:8px 4px;}
+  .m .v{font-size:20px;font-weight:bold;color:var(--navy);font-family:Cambria,serif;} .m .l{font-size:10px;color:var(--slate);text-transform:uppercase;}
+  .comfort{margin-top:10px;font-size:12px;padding:5px 9px;border-radius:8px;text-align:center;font-weight:bold;}
+  .c-OK{background:#dff3e7;color:var(--green);} .c-ATTENTION{background:#f9e3c2;color:#9a6700;}
+  .occ{margin-top:8px;height:8px;background:#eef2f7;border-radius:4px;overflow:hidden;}
+  .occ > div{height:100%;background:var(--blue);}
+  .muted{color:var(--slate);} .empty{text-align:center;color:var(--slate);padding:40px;}
+  .ts{font-size:10px;color:var(--grey);margin-top:8px;text-align:right;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Modutecture Spine — <b>Operational Twin</b></h1>
+  <span class="s">live occupied-room telemetry over the same twin · occupancy · environment</span>
+  <span id="bus">bus: …</span>
+</header>
+<div class="poc">⚙️ <b>POC</b> — operational-telemetry layer: the same twin that validates designs also carries live room signals. Distributed path runs over Redpanda; HTTP ingest is the robust path. Immersive avatar monitoring (UE5) is the roadmap — see <b>/vision.html</b>.</div>
+<div class="wrap">
+  <div class="rooms" id="rooms"><div class="empty">waiting for sensor telemetry… run <span class="muted">.\\scripts\\telemetry-sim.ps1</span></div></div>
+</div>
+<script>
+async function refresh(){
+  try{
+    const d = await (await fetch("/telemetry")).json();
+    document.getElementById("bus").textContent = "bus: " + (d.busEnabled ? "Redpanda ●" : "HTTP ingest");
+    const rooms = d.readings || [];
+    if(!rooms.length){ return; }
+    document.getElementById("rooms").innerHTML = rooms.map(r => `
+      <div class="room">
+        <div class="rh"><span class="rn">${r.room}</span><span class="pill p-${r.status}">${r.status}</span></div>
+        <div class="occ"><div style="width:${Math.min(100,(r.occupancy||0)*25)}%"></div></div>
+        <div class="metrics">
+          <div class="m"><div class="v">${r.occupancy}</div><div class="l">people</div></div>
+          <div class="m"><div class="v">${r.tempC?.toFixed?.(1) ?? r.tempC}°</div><div class="l">temp C</div></div>
+          <div class="m"><div class="v">${r.co2Ppm}</div><div class="l">CO₂ ppm</div></div>
+        </div>
+        <div class="comfort c-${r.comfort}">${r.comfort==="OK"?"✓ comfort nominal":"⚠ needs attention"}</div>
+      </div>`).join("");
+  }catch(e){ document.getElementById("bus").textContent = "bus: service down?"; }
+}
+refresh(); setInterval(refresh, 1000);
+</script>
+</body>
+</html>

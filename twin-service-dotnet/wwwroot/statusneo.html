@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>StatusNeo × Modutecture — Agentic FDE Practice</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--ice:#cadcfc;
+        --exist:#3b6ea5;--proto:#1e7a4c;--proven:#6b4f9e;--aiblue:#2e5a88;--human:#b07a1e;
+        --clarity:#2c7d8c;--build:#2e5a88;--velocity:#7a5ba8;--improve:#1e7a4c;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.5;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px 70px;}
+  /* hero */
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:34px 0 30px;}
+  .hero .wrap{padding-bottom:0;}
+  .kick{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  .hero h1{font-family:Cambria,Georgia,serif;font-size:33px;margin:0 0 10px;}
+  .hero p{margin:0;color:#c9d6e8;font-size:14.5px;max-width:860px;}
+  .tagline{margin-top:14px;font-style:italic;color:var(--gold);font-family:Cambria,serif;font-size:15px;}
+  /* split bar in hero */
+  .splitwrap{margin-top:20px;max-width:680px;}
+  .splitlbl{font-size:10.5px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase;color:#9fb6d4;margin-bottom:6px;}
+  .splitbar{display:flex;height:30px;border-radius:8px;overflow:hidden;border:1px solid #34496a;}
+  .splitbar .ai{background:var(--aiblue);color:#fff;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:bold;flex:0 0 80%;}
+  .splitbar .hu{background:var(--human);color:#fff;display:flex;align-items:center;padding-left:12px;font-size:12px;font-weight:bold;flex:1;}
+  /* section heads */
+  .sec-h{font-family:Cambria,serif;color:var(--navy);font-size:22px;margin:36px 0 4px;font-weight:bold;}
+  .sec-h .n{display:inline-block;background:var(--gold);color:var(--navy);font-weight:bold;width:27px;height:27px;border-radius:50%;text-align:center;line-height:27px;margin-right:11px;font-size:14px;}
+  .sec-sub{color:var(--slate);font-size:13px;margin:0 0 16px;max-width:880px;}
+  /* card grid */
+  .grid{display:flex;gap:16px;flex-wrap:wrap;}
+  .card{flex:1 1 300px;max-width:374px;background:#fff;border:1px solid var(--line);border-radius:14px;
+        padding:18px 20px;box-shadow:0 1px 5px rgba(20,40,70,.05);text-decoration:none;color:var(--ink);
+        display:flex;flex-direction:column;transition:transform .12s,box-shadow .12s;position:relative;}
+  .card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(20,40,70,.12);border-color:var(--gold);}
+  .card .ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+             font-size:16px;font-weight:bold;color:#fff;margin-bottom:11px;font-family:Cambria,serif;}
+  .card h3{margin:0 0 4px;font-family:Cambria,serif;font-size:16.5px;color:var(--navy);line-height:1.25;}
+  .card p{margin:0;font-size:12.6px;color:var(--slate);flex:1;}
+  .card .meta{margin-top:11px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .card .tag{font-size:10.5px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:var(--goldk);}
+  .card .fmt{font-size:9.5px;font-weight:bold;letter-spacing:.5px;text-transform:uppercase;color:var(--slate);background:#eef1f5;border-radius:8px;padding:2px 7px;}
+  .badge{position:absolute;top:14px;right:16px;font-size:9.5px;font-weight:bold;letter-spacing:.6px;
+         text-transform:uppercase;padding:3px 8px;border-radius:10px;}
+  .b-doc{background:#fdf2dc;color:var(--goldk);}
+  .b-deck{background:#ece4f6;color:var(--velocity);}
+  .b-master{background:#16263f;color:var(--gold);}
+  /* loop strip */
+  .loops{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 2px;}
+  .loop{flex:1 1 150px;border-radius:11px;padding:13px 15px;color:#fff;}
+  .loop.c{background:var(--clarity);} .loop.b{background:var(--build);}
+  .loop.v{background:var(--velocity);} .loop.i{background:var(--improve);}
+  .loop .ph{font-size:10px;font-weight:bold;letter-spacing:1.4px;text-transform:uppercase;opacity:.85;}
+  .loop h4{margin:2px 0 5px;font-family:Cambria,serif;font-size:17px;}
+  .loop .sp{font-size:11.5px;opacity:.92;}
+  .loop .rt{font-size:13px;font-weight:bold;margin-top:7px;}
+  /* roles split */
+  .rolesplit{display:flex;gap:16px;flex-wrap:wrap;}
+  .rolecol{flex:1 1 360px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 5px rgba(20,40,70,.05);}
+  .rolecol.ai{border-top:4px solid var(--aiblue);}
+  .rolecol.hu{border-top:4px solid var(--human);}
+  .rolecol h3{margin:0 0 3px;font-family:Cambria,serif;font-size:18px;}
+  .rolecol.ai h3{color:var(--aiblue);} .rolecol.hu h3{color:var(--human);}
+  .rolecol .pct{font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;margin-bottom:11px;}
+  .rolecol.ai .pct{color:var(--aiblue);} .rolecol.hu .pct{color:var(--human);}
+  .rolecol ul{margin:0;padding-left:18px;} .rolecol li{font-size:12.8px;margin:6px 0;}
+  .rolecol li b{color:var(--navy);}
+  /* callout */
+  .callout{margin-top:30px;background:var(--navy);color:#fff;border-radius:13px;padding:20px 24px;text-align:center;}
+  .callout .big{font-family:Cambria,serif;font-size:17px;font-weight:bold;color:var(--gold);font-style:italic;}
+  .callout .sub{margin-top:7px;font-size:13px;color:#c9d6e8;max-width:760px;margin-left:auto;margin-right:auto;}
+  /* honesty note */
+  .note{margin-top:20px;font-size:12.5px;color:var(--slate);background:#fff;border:1px solid var(--line);border-left:4px solid var(--goldk);border-radius:0 10px 10px 0;padding:13px 16px;max-width:880px;}
+  .note b{color:var(--navy);}
+  .footnote{margin-top:34px;font-size:11.5px;color:var(--slate);border-top:1px solid var(--line);padding-top:14px;}
+  .backbar{background:#0e1b2e;padding:8px 16px;}
+  .backbar a{color:#c9d6e8;text-decoration:none;font-size:12px;} .backbar a:hover{color:#e8a816;}
+  code{font-family:Consolas,monospace;font-size:11.5px;background:#eef1f5;padding:1px 6px;border-radius:5px;}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/showcase.html">&larr; Showcase</a> &nbsp;&middot;&nbsp; <a href="/two-track-org.html">Two-Track Org</a> &nbsp;&middot;&nbsp; <a href="/ecosystem.html">Ecosystem</a></div>
+<header class="hero"><div class="wrap">
+  <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
+  <h1>The Agentic FDE Practice</h1>
+  <p>The complete charter-and-scoping suite for standing up Forward-Deployed Engineering on the Modutecture account: one Elite Pod Commander backed by an autonomous AI swarm, automating ~80% of the contextual-construction lifecycle and reserving the judgment-bound ~20% for the human. Every document below &mdash; the strategy, the operating model, the lifecycle, the tooling, the security standards, and the AEC use case &mdash; in one place.</p>
+  <div class="tagline">The AI proposes; the human disposes; the deterministic gate is the point.</div>
+  <div class="splitwrap">
+    <div class="splitlbl">The 80:20 operating model</div>
+    <div class="splitbar"><span class="ai">AI &nbsp;80% &mdash; the agentic swarm</span><span class="hu">HITL &nbsp;20%</span></div>
+  </div>
+</div></header>
+
+<div class="wrap">
+
+  <!-- THE SUITE -->
+  <div class="sec-h"><span class="n">1</span>The document suite</div>
+  <p class="sec-sub">The full set, anchored by the Master Reference. Each opens as a download (Word, PDF, or PowerPoint). The Master consolidates everything; the others go deep on each layer.</p>
+  <div class="grid" id="suiteGrid"></div>
+
+  <!-- THE 80:20 MODEL -->
+  <div class="sec-h"><span class="n">2</span>The 80:20 operating model</div>
+  <p class="sec-sub">&ldquo;FDE&rdquo; is now a two-part entity. The agentic swarm owns velocity, breadth, and repetition; the human Pod Commander owns the four things an agent cannot be accountable for &mdash; and is Accountable for every stage.</p>
+  <div class="rolesplit">
+    <div class="rolecol ai">
+      <h3>The Agentic FDE</h3>
+      <div class="pct">The 80% &middot; machine-owned</div>
+      <ul>
+        <li><b>Spec Architect</b> &mdash; intent &amp; spec &rarr; machine-executable plan</li>
+        <li><b>Systems Engineer</b> &mdash; writes the code, builds the binary</li>
+        <li><b>Adversarial SDET</b> &mdash; tests &amp; stress-tests for full coverage</li>
+        <li><b>Security Sentinel</b> &mdash; SAST, dependency &amp; compliance scans</li>
+        <li><b>DevOps Overseer</b> &mdash; zero-trust deploy within guardrails</li>
+        <li><b>Reliability Agent</b> &mdash; monitors, maps traces, auto-heals</li>
+      </ul>
+    </div>
+    <div class="rolecol hu">
+      <h3>The Human Pod Commander</h3>
+      <div class="pct">The 20% &middot; judgment-owned</div>
+      <ul>
+        <li><b>Diagnosis &amp; architecture</b> &mdash; reading the client's real problem</li>
+        <li><b>Client trust &amp; evangelism</b> &mdash; a CISO trusts a person, not a bot</li>
+        <li><b>Spec authorship &amp; intent</b> &mdash; a wrong spec fails at machine speed</li>
+        <li><b>Governance &amp; the ship gate</b> &mdash; the irreversible call</li>
+        <li><b>Exception triage</b> &mdash; breaks the tie when the swarm loops</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THE FOUR LOOPS -->
+  <div class="sec-h"><span class="n">3</span>The four-loop execution model</div>
+  <p class="sec-sub">The lifecycle runs as the LoopManifesto's Observe &rarr; Learn &rarr; Decide &rarr; Act cycle. The split shifts per loop &mdash; human-heavy at the front (intent) and end (governance), AI-heavy through the dense middle.</p>
+  <div class="loops">
+    <div class="loop c"><div class="ph">Observe</div><h4>Clarity</h4><div class="sp">Discovery, strategy, AI product design.</div><div class="rt">AI 30% / HITL 70%</div></div>
+    <div class="loop b"><div class="ph">Learn</div><h4>Build</h4><div class="sp">Product, data &amp; AI, platform automation.</div><div class="rt">AI 90% / HITL 10%</div></div>
+    <div class="loop v"><div class="ph">Decide</div><h4>Velocity</h4><div class="sp">DevSecOps, SRE, test automation, the gate.</div><div class="rt">AI 80% / HITL 20%</div></div>
+    <div class="loop i"><div class="ph">Act</div><h4>Improvement</h4><div class="sp">Governance, compliance, observability.</div><div class="rt">AI 60% / HITL 40%</div></div>
+  </div>
+
+  <div class="callout">
+    <div class="big">One Elite Pod Commander. One autonomous AI swarm. One deterministic gate.</div>
+    <div class="sub">Land one regulated account through a correctness gate that no agent can bypass, prove architectural trust in a short engagement, then scale it into a self-improving StatusNeo GCC. The FDE earns the relationship; the GCC scales the volume.</div>
+  </div>
+
+  <!-- HONESTY -->
+  <div class="note"><b>On sourcing &amp; verification.</b> These are charter-and-scoping artifacts, not a delivery commitment. Several reference specific June-2026 products, metrics, and dates (tool names, the 14-day velocity loop, gross-margin and compliance figures) drawn from source briefings and <b>pending independent verification</b> &mdash; treat them as the target operating model. The durable layer is the structure (the loops, the 80:20 split, the architecture pattern); the perishable layer is the named tools and numbers. The Modutecture engagement is framed as a <b>validated demonstration, not a closed-and-scaled account</b>.</div>
+
+  <div class="footnote" id="footnote">StatusNeo &times; Modutecture &middot; Agentic FDE Practice &middot; charter-and-scoping suite. All artifacts are downloadable above; source markdown lives alongside the binaries in the StatusNeo folder.</div>
+</div>
+
+<script>
+/* ---------- the document suite ---------- */
+/* [file, title, icon, color, blurb, tag, format, badgeClass] */
+var SUITE = [
+  ["/artifacts/statusneo/StatusNeo-Agentic-FDE-MASTER.pdf","Master Reference","M","var(--navy)","The capstone &mdash; 11 parts consolidating the entire practice: thesis, 80:20 model, lifecycle, tooling, security, CI/CD, the Modutecture 7-layer architecture, the AEC use case, the Kaiser correctness gate, and the GCC execution engine.","Start here","PDF + DOCX","b-master"],
+  ["/artifacts/statusneo/01-FDE-CHARTER-PROPOSAL.pdf","FDE Charter Proposal","C","var(--goldk)","The strategic case for the practice &mdash; the gap, why this FDE, the operating model, the 30/60/90 playbook, change leadership, and the Copilot &times; Digital Twin toolbox.","The charter","PDF + DOCX","b-doc"],
+  ["/artifacts/statusneo/StatusNeo_FDE_Charter.pptx","Board Deck","D","var(--velocity)","The 9-slide board deck &mdash; the gap, the thesis, the operating model, the 30/60/90, the transformation KPIs, and the ask. The charter, presentation-ready.","Present it","PPTX","b-deck"],
+  ["/artifacts/statusneo/StatusNeo_FDE_PR-FAQ_Playbook.pdf","PR-FAQ Playbook","Q","var(--exist)","Amazon working-backwards &mdash; the press release, the external &amp; internal FAQ, and the playbook for standing up the practice. Includes the transformation layer and the toolbox.","Working-backwards","PDF + DOCX","b-doc"],
+  ["/artifacts/statusneo/FDE-80-20-Roles-and-Lifecycle.pdf","80:20 Roles &amp; Lifecycle","8","var(--human)","The role definition &mdash; the two halves of the FDE, the seven swarm roles, the per-stage AI:Human ratios, the full RACI (human Accountable everywhere), and the leverage math.","The operating model","PDF","b-doc"],
+  ["/artifacts/statusneo/Agentic-FDE-Lifecycle.pdf","Agentic FDE Lifecycle","L","var(--aiblue)","The 7-stage agentic SDLC &mdash; blueprint, playbook, cookbook, and runbook. Embedded vs. Remote PODs, the multi-cloud matrix, and the closed-loop self-healing model.","The lifecycle","PDF","b-doc"],
+  ["/artifacts/statusneo/Multi-Cloud-Agentic-FDE-Tooling-Directory.pdf","Multi-Cloud Tooling Directory","T","var(--clarity)","The June-2026 capability directory &mdash; generic, AWS, GCP, and Azure agentic toolchains, each mapped to Embedded vs. Remote FDE PODs, with the parallel-rollout crosswalk.","The toolchain","PDF","b-doc"],
+  ["/artifacts/statusneo/AEC-Modutecture-FDE-UseCase.pdf","AEC / Modutecture Use Case","A","var(--goldk)","Contextual Intelligence Construction &mdash; automating the FDE lifecycle (80:20) for Modutecture's Agentic Twin across the four loops, with the deterministic correctness gate and the open scoping questions.","The use case","PDF","b-doc"],
+  ["/artifacts/statusneo/02-FDE-LOOP-COOKBOOK.docx","FDE Loop Cookbook","K","var(--proto)","The methodology cookbook &mdash; how the loops actually run, recipe by recipe, for the embedded engagement.","Methodology","DOCX","b-doc"],
+  ["/artifacts/statusneo/03-LANDING-RUNBOOK.docx","Landing Runbook","R","var(--navy2)","The operational field manual for the first engagement &mdash; how the Pod Commander lands, proves, and sets up the GCC scale-out.","Field manual","DOCX","b-doc"],
+  ["/artifacts/statusneo/09-FDE-30-60-90-OKR-STAR.pdf","30/60/90 &mdash; OKR &amp; STAR","9","var(--human)","The activation addendum &mdash; the 30/60/90 plan re-expressed as three OKRs (Objective + measurable Key Results) and as STAR narratives (Situation/Task/Action/Result), including the Modutecture anchor story.","OKR + STAR","PDF + DOCX","b-doc"],
+  ["/artifacts/statusneo/10-FDE-OKR-SCORECARD.pdf","OKR Scorecard","✓","var(--green)","The printable tracking grid &mdash; fill in actuals against targets at each 30/60/90 checkpoint, score every Key Result 0.0&ndash;1.0, and roll up a horizon mean. Companion to the OKR &amp; STAR addendum.","Tracking sheet","PDF + DOCX","b-doc"],
+];
+
+function card(item){
+  var a=document.createElement("a"); a.href=item[0]; a.className="card";
+  // PDFs open in-browser; office docs download
+  var isOffice = /\.(docx|pptx|xlsx)$/i.test(item[0]);
+  if(isOffice) a.setAttribute("download","");
+  var badge = '<span class="badge '+item[7]+'">'+(/\.pdf$/i.test(item[0])?'open':'download')+'</span>';
+  a.innerHTML =
+    badge +
+    '<div class="ico" style="background:'+item[3]+'">'+item[2]+'</div>'+
+    '<h3>'+item[1]+'</h3>'+
+    '<p>'+item[4]+'</p>'+
+    '<div class="meta"><span class="tag">'+item[5]+'</span><span class="fmt">'+item[6]+'</span></div>';
+  return a;
+}
+SUITE.forEach(function(it){ document.getElementById("suiteGrid").appendChild(card(it)); });
+
+/* ---------- artifact availability note ---------- */
+(function(){
+  var probe = SUITE.map(function(s){ return s[0]; });
+  var missing=[];
+  Promise.all(probe.map(function(u){
+    return fetch(u,{method:"HEAD"}).then(function(r){ if(!r.ok) missing.push(u.split("/").pop()); }).catch(function(){ missing.push(u.split("/").pop()); });
+  })).then(function(){
+    var n=document.getElementById("footnote");
+    if(missing.length){
+      n.innerHTML="Note: "+missing.length+" artifact(s) not yet copied into <code>wwwroot/artifacts/statusneo/</code>. "+
+        "Run <code>sync-statusneo-artifacts.ps1</code> in the StatusNeo folder to populate them, then refresh.";
+    }
+  });
+})();
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

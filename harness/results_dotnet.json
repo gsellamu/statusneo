@@ -1,0 +1,228 @@
+{
+  "stack": ".NET twin service (Hot Chocolate \u002B EF Core)",
+  "build": "pass (0 warnings)",
+  "tests": [
+    {
+      "id": "R1a",
+      "category": "RULES",
+      "name": "Headwall inside room is accepted",
+      "proves": "R1 boundary admits legal footprints",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R1b",
+      "category": "RULES",
+      "name": "Headwall crossing the wall is rejected",
+      "proves": "R1 boundary blocks out-of-bounds",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R2a",
+      "category": "RULES",
+      "name": "Physical footprint overlap is rejected (ERROR)",
+      "proves": "R2 collision is a hard stop",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R2b",
+      "category": "RULES",
+      "name": "Clearance encroachment commits with a WARNING",
+      "proves": "R2 two-tier verdict (T1 snaps-but-flags)",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R3a",
+      "category": "RULES",
+      "name": "Bed with no med-gas source is rejected",
+      "proves": "R3 dependency needs a provider",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R3b",
+      "category": "RULES",
+      "name": "Bed beyond med-gas reach is rejected",
+      "proves": "R3 respects the reach limit",
+      "expected": "False",
+      "actual": "False",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R3c",
+      "category": "RULES",
+      "name": "Bed within reach earns a med_gas binding",
+      "proves": "R3 satisfied dependency = directed edge",
+      "expected": "med_gas",
+      "actual": "med_gas",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "R4",
+      "category": "RULES",
+      "name": "Rotated bed commits but is flagged",
+      "proves": "R4 advisory warns without blocking",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "INV1",
+      "category": "INVARIANTS",
+      "name": "A rejected command writes nothing",
+      "proves": "The gate is real: no event on rejection",
+      "expected": "1",
+      "actual": "1",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "INV2",
+      "category": "INVARIANTS",
+      "name": "Edges follow state (remove source -\u003E edge gone)",
+      "proves": "Connections earned, never promiscuous",
+      "expected": "(1,0)",
+      "actual": "(1,0)",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "ES1",
+      "category": "EVENT-SOURCING",
+      "name": "Replay is deterministic",
+      "proves": "Folding a journal is pure \u0026 repeatable",
+      "expected": "True",
+      "actual": "True",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "ES2",
+      "category": "EVENT-SOURCING",
+      "name": "State rebuilds from the journal after restart",
+      "proves": "Truth survives because the log does",
+      "expected": "2",
+      "actual": "2",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "CC1",
+      "category": "CONCURRENCY",
+      "name": "Concurrent edit is judged against current truth",
+      "proves": "Stale-for-eyes, current-for-the-gate",
+      "expected": "REJECTED",
+      "actual": "REJECTED",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "CC2",
+      "category": "CONCURRENCY",
+      "name": "Stale-but-legal edit rebases, never corrupts",
+      "proves": "Optimism is UX on one truth, not a second",
+      "expected": "(ACCEPTED,True)",
+      "actual": "(ACCEPTED,True)",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "RES1",
+      "category": "RESILIENCE",
+      "name": "Idempotent command retry never double-writes",
+      "proves": "A retried command places once, not twice",
+      "expected": "(1,True)",
+      "actual": "(1,True)",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "SCH1",
+      "category": "SCHEMA",
+      "name": "Placed instance pins its exact type version",
+      "proves": "A later type bump can\u0027t silently mutate an approved design",
+      "expected": "2.3.0",
+      "actual": "2.3.0",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "PERF1",
+      "category": "PERFORMANCE",
+      "name": "Validation (gate) latency",
+      "proves": "Gate sub-ms -\u003E \u0027snaps instantly\u0027 is real (T0/T1)",
+      "expected": "p99 \u003C 1ms",
+      "actual": "p99=0.0973ms",
+      "status": "PASS",
+      "ms": 0
+    },
+    {
+      "id": "PERF2",
+      "category": "PERFORMANCE",
+      "name": "Full commit latency (validate\u002Bappend\u002Bfold)",
+      "proves": "Command path stays interactive",
+      "expected": "p95 \u003C 50ms",
+      "actual": "p95=0.4587ms",
+      "status": "PASS",
+      "ms": 0
+    }
+  ],
+  "perf": {
+    "validate": {
+      "n": 5000,
+      "p50_ms": 0.0049,
+      "p95_ms": 0.0718,
+      "p99_ms": 0.0973,
+      "max_ms": 1.4074
+    },
+    "commit": {
+      "n": 500,
+      "p50_ms": 0.2359,
+      "p95_ms": 0.4587,
+      "p99_ms": 0.6326,
+      "max_ms": 16.4319
+    }
+  },
+  "canonical": {
+    "step1": "ACCEPTED",
+    "step2": "REJECTED",
+    "step2_rules": [
+      "R1-boundary",
+      "R3-medgas"
+    ],
+    "step3": "ACCEPTED",
+    "step3_binding": "med_gas",
+    "step3_warn": [
+      "R2-clearance"
+    ],
+    "instances_after": 2,
+    "bindings_after": 1,
+    "events_after": 2,
+    "after_remove_instances": 1,
+    "after_remove_bindings": 0,
+    "rebuilt_instances": 1,
+    "version_after_remove": 3
+  },
+  "summary": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "pass_rate": 1
+  }
+}

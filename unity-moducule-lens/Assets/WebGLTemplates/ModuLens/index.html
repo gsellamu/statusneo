@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Modutecture Moducule Lens</title>
+  <style>
+    html,body{margin:0;height:100%;background:#0e1a2b;overflow:hidden}
+    #unity-container{width:100%;height:100%}
+    #unity-canvas{width:100%;height:100%;display:block;background:#0e1a2b}
+    #unity-loading{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+      color:#c9d6e8;font:13px Calibri,system-ui,sans-serif}
+  </style>
+</head>
+<body>
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading">loading Moducule lens…</div>
+  </div>
+  <script>
+    // Host (studio.html) -> Unity config relay. studio.js posts
+    // { source:"modutecture-host", type:"configure", spec:"http|ws|room" }.
+    // We forward it into the running Unity instance via SendMessage("TwinClient","Configure",spec).
+    var moduUnity = null;
+    window.addEventListener("message", function (e) {
+      var d = e.data;
+      if (d && d.source === "modutecture-host" && d.type === "configure" && moduUnity) {
+        try { moduUnity.SendMessage("TwinClient", "Configure", d.spec || ""); } catch (err) {}
+      }
+    });
+
+    var buildUrl = "Build";
+    var loaderUrl = buildUrl + "/{{{ LOADER_FILENAME }}}";
+    var config = {
+      dataUrl: buildUrl + "/{{{ DATA_FILENAME }}}",
+      frameworkUrl: buildUrl + "/{{{ FRAMEWORK_FILENAME }}}",
+      codeUrl: buildUrl + "/{{{ CODE_FILENAME }}}",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "{{{ COMPANY_NAME }}}",
+      productName: "{{{ PRODUCT_NAME }}}",
+      productVersion: "{{{ PRODUCT_VERSION }}}",
+    };
+    var script = document.createElement("script");
+    script.src = loaderUrl;
+    script.onload = function () {
+      createUnityInstance(document.querySelector("#unity-canvas"), config, function (p) {})
+        .then(function (instance) {
+          moduUnity = instance;
+          var l = document.getElementById("unity-loading");
+          if (l) l.style.display = "none";
+          // tell the host we're ready (so it can push config immediately)
+          if (window.parent) window.parent.postMessage({ source: "modutecture-unity", type: "ready" }, "*");
+        })
+        .catch(function (msg) { console.error(msg); });
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

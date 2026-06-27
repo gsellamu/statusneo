@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Architecture (self-describing)</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--ink:#1f2a38;--slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;--red:#b3402f;--amber:#d89a12;--green:#1e7a4c;}
+  *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+  body{margin:0;background:#eef2f7;color:var(--ink);}
+  header{background:var(--navy);color:#fff;padding:18px 26px;}
+  header h1{margin:0;font-family:Cambria,Georgia,serif;font-size:21px;}
+  header h1 b{color:var(--gold);} header .t{color:#c9d6e8;font-size:13px;margin-top:4px;font-style:italic;}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px 26px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .card h2{margin:0 0 12px;font-size:14px;color:var(--navy);text-transform:uppercase;letter-spacing:.6px;}
+  .ports{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .port{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--tint);}
+  .port .seam{font-weight:bold;color:var(--navy);font-size:14px;}
+  .port .pt{font-family:Consolas,monospace;font-size:11px;color:var(--slate);}
+  .port .active{display:inline-block;margin:6px 0;padding:2px 9px;border-radius:10px;background:#dff3e7;color:var(--green);font-size:12px;font-weight:bold;}
+  .port .adapters{font-size:12px;color:var(--slate);} .port .adapters span{display:inline-block;background:#eef2f7;border:1px solid var(--line);border-radius:8px;padding:1px 7px;margin:2px 3px 0 0;}
+  .port .adapters span.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .port .note{font-size:11.5px;color:var(--slate);margin-top:6px;font-style:italic;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:6px 9px;} td{padding:5px 9px;border-bottom:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even){background:#fafcfe;} .mono{font-family:Consolas,monospace;font-size:11px;}
+  .sev{font-weight:bold;} .sev.ERROR{color:var(--red);} .sev.WARNING{color:var(--amber);}
+  .pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:bold;}
+  .pill.ok{background:#dff3e7;color:var(--green);} .pill.bad{background:#f6dcd7;color:var(--red);}
+  #health{font-size:13px;} #health .dep{display:inline-block;margin-right:14px;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .dot.up{background:var(--green);} .dot.deg{background:var(--amber);} .dot.down{background:var(--red);}
+  .pat{display:grid;grid-template-columns:1fr;gap:7px;}
+  .pat .row{border-bottom:1px solid var(--line);padding:6px 0;} .pat .n{font-weight:bold;color:var(--navy);}
+  .pat .w{font-family:Consolas,monospace;font-size:11px;color:var(--slate);} .pat .y{font-size:12.5px;color:var(--ink);}
+  .scale{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .scale .ch{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--tint);}
+  .scale .ch b{color:var(--navy);} .scale .ch .p{color:var(--gold);font-weight:bold;font-size:12.5px;} .scale .ch .m{font-size:12px;color:var(--slate);margin-top:4px;}
+  .muted{color:var(--slate);} .err{color:var(--red);}
+</style>
+</head>
+<body>
+<header>
+  <h1>Modutecture Spine — <b>Architecture</b> <span style="font-size:13px;font-weight:normal;color:#9fc3e8">(self-describing · live)</span></h1>
+  <div class="t" id="tagline">loading the platform's own manifest…</div>
+</header>
+<div class="wrap">
+
+  <div class="card">
+    <h2>Live wiring <span id="status" class="pill">checking…</span></h2>
+    <div id="health" class="muted">querying /health…</div>
+    <div class="muted" style="font-size:11.5px;margin-top:8px">Every adapter is health-probed; a real dependency that drops degrades to a labelled fallback — never a crash. Swap any adapter by configuration.</div>
+  </div>
+
+  <div class="card">
+    <h2>Plug-points (ports &amp; adapters) — the modular seams</h2>
+    <div class="ports" id="ports"></div>
+  </div>
+
+  <div class="card">
+    <h2>Advanced patterns implemented</h2>
+    <div class="pat" id="patterns"></div>
+  </div>
+
+  <div class="card">
+    <h2>Moducule genome (live registry)</h2>
+    <table id="registry"><tr><th>Type</th><th>Version</th><th>Footprint</th><th>Ports</th><th>Geometry</th></tr></table>
+  </div>
+
+  <div class="card">
+    <h2>Rule set (the gate)</h2>
+    <table id="rules"><tr><th>Rule</th><th>Severity</th><th>Statement</th><th>Cites</th></tr></table>
+  </div>
+
+  <div class="card">
+    <h2>Scaling channels (design of record)</h2>
+    <div class="scale" id="scaling"></div>
+  </div>
+
+  <div class="card">
+    <h2>Event types</h2>
+    <div id="events" class="mono muted"></div>
+  </div>
+
+  <div class="muted" style="font-size:12px">This page is rendered from <span class="mono">/capabilities</span> + <span class="mono">/health</span> — the running system describing itself.</div>
+</div>
+
+<script>
+async function j(u){ const r = await fetch(u); return r.json(); }
+function dot(v){ if(/up/.test(v)) return "up"; if(/degraded|fallback/.test(v)) return "deg"; if(/down/.test(v)) return "down"; return "deg"; }
+
+(async () => {
+  // live health
+  try {
+    const h = await j("/health");
+    document.getElementById("status").className = "pill " + (h.status === "healthy" ? "ok" : "bad");
+    document.getElementById("status").textContent = h.status.toUpperCase();
+    document.getElementById("health").innerHTML = Object.entries(h.dependencies)
+      .map(([k,v]) => `<span class="dep"><span class="dot ${dot(v)}"></span><b>${k}</b>: ${v}</span>`).join("");
+  } catch(e){ document.getElementById("health").innerHTML = `<span class="err">/health unreachable</span>`; }
+
+  // self-describing manifest
+  let c;
+  try { c = await j("/capabilities"); }
+  catch(e){ document.getElementById("tagline").innerHTML = `<span class="err">/capabilities unreachable — is the service up?</span>`; return; }
+
+  document.getElementById("tagline").textContent = c.tagline;
+
+  document.getElementById("ports").innerHTML = c.ports.map(p => `
+    <div class="port"><div class="seam">${p.seam}</div><div class="pt">${p.port}</div>
+      <div class="active">● ${p.active}</div>
+      <div class="adapters">${p.adapters.map(a => `<span class="${a===p.active||p.active.indexOf(a)===0?'on':''}">${a}</span>`).join("")}</div>
+      <div class="note">${p.note}</div></div>`).join("");
+
+  document.getElementById("patterns").innerHTML = c.patterns.map(p => `
+    <div class="row"><span class="n">${p.name}</span> &nbsp;<span class="w">${p.where}</span><div class="y">${p.why}</div></div>`).join("");
+
+  document.getElementById("registry").innerHTML = `<tr><th>Type</th><th>Version</th><th>Footprint</th><th>Ports</th><th>Geometry</th></tr>` +
+    c.registry.map(m => `<tr><td><b>${m.name}</b><div class="mono">${m.typeId}</div></td><td class="mono">${m.version}</td>
+      <td class="mono">${m.footprint}</td><td class="mono">${m.ports.join("<br>")}</td><td class="mono">${m.geometry}</td></tr>`).join("");
+
+  document.getElementById("rules").innerHTML = `<tr><th>Rule</th><th>Severity</th><th>Statement</th><th>Cites</th></tr>` +
+    c.rules.map(r => `<tr><td class="mono">${r.id}</td><td class="sev ${r.severity}">${r.severity}</td><td>${r.text}</td><td class="mono muted">${r.cites}</td></tr>`).join("");
+
+  document.getElementById("scaling").innerHTML = c.scaling.map(s => `
+    <div class="ch"><b>${s.channel}</b><div class="p">${s.pattern}</div><div class="m">${s.mechanism}</div></div>`).join("");
+
+  document.getElementById("events").textContent = c.events.join("  ·  ");
+})();
+</script>
+</body>
+</html>

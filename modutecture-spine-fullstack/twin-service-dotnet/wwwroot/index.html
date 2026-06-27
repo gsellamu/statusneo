@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Modutecture Spine — Room Planner (live demo)</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--gold2:#c78f0d;--ink:#1f2a38;--slate:#5b6b7e;
+        --tint:#f3f6fa;--line:#dfe6ee;--red:#b3402f;--amber:#d89a12;--green:#1e7a4c;}
+  *{box-sizing:border-box;font-family:Calibri,Segoe UI,system-ui,sans-serif;}
+  body{margin:0;background:#fff;color:var(--ink);display:flex;height:100vh;overflow:hidden;}
+  #left{flex:1;display:flex;flex-direction:column;min-width:0;}
+  #right{width:380px;border-left:1px solid var(--line);display:flex;flex-direction:column;background:var(--tint);}
+  header{padding:11px 16px;background:var(--navy);color:#fff;}
+  header b{color:var(--gold);} header .s{color:#c9d6e8;font-size:12.5px;margin-left:6px;}
+  #conn{float:right;font-size:11px;padding:2px 8px;border-radius:10px;background:#3a4f78;}
+  #conn.ok{background:#1e7a4c;} #conn.bad{background:#b3402f;}
+  #palette{padding:10px 16px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .chip{padding:6px 12px;border:1.5px solid var(--navy);border-radius:18px;cursor:pointer;font-size:13px;background:#fff;user-select:none;}
+  .chip.sel{background:var(--navy);color:#fff;} .chip.tool{border-color:var(--slate);color:var(--slate);}
+  #wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:14px;}
+  canvas{background:#fbfcfe;border:1px solid var(--line);box-shadow:0 2px 10px rgba(0,0,0,.06);cursor:crosshair;max-width:100%;max-height:100%;}
+  #status{padding:9px 16px;font-size:13px;border-top:1px solid var(--line);min-height:38px;}
+  .ok{color:var(--green);} .err{color:var(--red);} .warn{color:var(--amber);}
+  #right h3{margin:0;padding:10px 16px;font-size:12.5px;letter-spacing:.5px;color:var(--navy);border-bottom:1px solid var(--line);text-transform:uppercase;}
+  #ver{padding:6px 16px;font-size:12px;color:var(--slate);border-bottom:1px solid var(--line);}
+  #ver b{color:var(--navy);font-family:monospace;}
+  #log{flex:1;overflow:auto;padding:8px 12px;font-size:12px;}
+  .ev{padding:6px 8px;border-left:3px solid var(--green);background:#fff;margin-bottom:6px;border-radius:3px;}
+  .ev.rm{border-left-color:var(--slate);} .ev .t{font-weight:bold;color:var(--navy);} .ev .m{color:var(--slate);}
+  #agent{padding:11px 16px;border-top:1px solid var(--line);}
+  button{font-size:13px;padding:7px 12px;border:0;border-radius:6px;background:var(--gold);color:var(--navy);font-weight:bold;cursor:pointer;}
+  button.ghost{background:#fff;border:1px solid var(--line);color:var(--ink);font-weight:normal;}
+  .hint{font-size:12px;color:var(--slate);margin-top:6px;}
+</style></head>
+<body>
+  <div id="left">
+    <header><b>Modutecture Spine</b><span class="s">Room Planner — thin client over the GraphQL twin (.NET + EF/Postgres)</span>
+      <span id="conn">connecting…</span></header>
+    <div id="palette">
+      <span style="font-size:12px;color:var(--slate)">Place:</span>
+      <div class="chip" data-type="headwall-hw204">Headwall HW-204</div>
+      <div class="chip" data-type="bed-icu">ICU Bed</div>
+      <div class="chip" data-type="sink-clinical">Clinical Sink</div>
+      <div class="chip tool" id="rotate">Rotate ghost: 0°</div>
+      <div class="chip tool" id="removeMode">Remove: off</div>
+    </div>
+    <div id="wrap"><canvas id="c" width="800" height="600"></canvas></div>
+    <div id="status">Pick a Moducule, then click in the room. The server validates every placement against current truth.</div>
+  </div>
+  <div id="right">
+    <h3>Live twin</h3>
+    <div id="ver">room version: <b id="vnum">0</b> &nbsp;·&nbsp; polling every 0.8s (subscription wired for prod)</div>
+    <h3>Event journal (append-only)</h3>
+    <div id="log"></div>
+    <div id="agent">
+      <button id="suggest">Suggest a bed (agent)</button>
+      <div class="hint">The agent proposes; you approve. It never writes directly.</div>
+      <div id="proposal"></div>
+    </div>
+  </div>
+<script>
+const ROOM=new URLSearchParams(location.search).get("room")||"exam-12", MM_W=4000, MM_H=3000;
+const c=document.getElementById("c"), ctx=c.getContext("2d");
+const SX=c.width/MM_W, SY=c.height/MM_H;
+let reg=null, twin=null, sel=null, ghostRot=0, removeMode=false, mouse=null, lastSeen=-1;
+const px=(x,y)=>[x*SX,y*SY];
+const COLORS={"headwall-hw204":"#23375a","bed-icu":"#3b6ea5","sink-clinical":"#6b8fb5"};
+const setConn=(s,cls)=>{const e=document.getElementById("conn");e.textContent=s;e.className=cls;};
+
+async function gql(query,variables={}){
+  const r=await fetch("/graphql",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({query,variables})});
+  const j=await r.json(); if(j.errors) throw new Error(JSON.stringify(j.errors)); return j.data;
+}
+
+async function boot(){
+  try{
+    const d=await gql(`{ registry{ typeId name footprintW footprintD } medGasReachMm }`);
+    reg={}; d.registry.forEach(m=>reg[m.typeId]=m);
+    setConn("connected","ok");
+    await refresh(); draw();
+    setInterval(refresh, 800);          // polling = bulletproof live multi-tab sync
+  }catch(e){ setConn("offline — is the service up?","bad"); console.error(e); }
+}
+
+async function refresh(){
+  try{
+    const d=await gql(`query($r:String!){ twin(room:$r){ version
+        instances{instanceId typeId x y rotation} bindings{kind from to} } }`,{r:ROOM});
+    twin=d.twin; document.getElementById("vnum").textContent=twin.version;
+    if(twin.version!==lastSeen){ lastSeen=twin.version; await refreshLog(); }
+    setConn("connected · live","ok"); draw();
+  }catch(e){ setConn("offline — retrying…","bad"); }
+}
+
+function dims(t,rot){const m=reg[t];return (rot%180)?[m.footprintD,m.footprintW]:[m.footprintW,m.footprintD];}
+function rectMM(cx,cy,w,d){const[x,y]=px(cx-w/2,cy-d/2);return[x,y,w*SX,d*SY];}
+function fp(t,cx,cy,rot){const[w,d]=dims(t,rot);return[cx-w/2,cy-d/2,cx+w/2,cy+d/2];}
+function over(a,b){return a[0]<b[2]-1&&a[2]>b[0]+1&&a[1]<b[3]-1&&a[3]>b[1]+1;}
+function optimistic(t,cx,cy,rot){ // reflex-arc preview; server stays authoritative
+  const f=fp(t,cx,cy,rot);
+  if(f[0]<0||f[1]<0||f[2]>MM_W||f[3]>MM_H)return false;
+  if(twin) for(const i of twin.instances) if(over(f,fp(i.type_id||i.typeId,i.x,i.y,i.rotation)))return false;
+  return true;
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.strokeStyle="#16263f";ctx.lineWidth=2;ctx.strokeRect(1,1,c.width-2,c.height-2);
+  if(!twin){return;}
+  twin.bindings.forEach(b=>{
+    const f=twin.instances.find(i=>i.instanceId===b.from),t=twin.instances.find(i=>i.instanceId===b.to);
+    if(!f||!t)return;const[fx,fy]=px(f.x,f.y),[tx,ty]=px(t.x,t.y);
+    ctx.strokeStyle="#e8a816";ctx.lineWidth=2;ctx.setLineDash([6,4]);
+    ctx.beginPath();ctx.moveTo(fx,fy);ctx.lineTo(tx,ty);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle="#c78f0d";ctx.font="11px Calibri";ctx.fillText("med-gas",(fx+tx)/2+4,(fy+ty)/2-4);
+  });
+  twin.instances.forEach(i=>{
+    const[w,d]=dims(i.typeId,i.rotation);const[x,y,pw,ph]=rectMM(i.x,i.y,w,d);
+    ctx.fillStyle=COLORS[i.typeId]||"#888";ctx.fillRect(x,y,pw,ph);
+    ctx.strokeStyle="#0d1626";ctx.strokeRect(x,y,pw,ph);
+    ctx.fillStyle="#fff";ctx.font="11px Calibri";ctx.fillText(reg[i.typeId]?.name||i.typeId,x+4,y+14);
+  });
+  if(sel&&mouse&&!removeMode){
+    const[w,d]=dims(sel,ghostRot);const[x,y,pw,ph]=rectMM(mouse.x,mouse.y,w,d);
+    const legal=optimistic(sel,mouse.x,mouse.y,ghostRot);
+    ctx.globalAlpha=.5;ctx.fillStyle=legal?"#1e7a4c":"#b3402f";ctx.fillRect(x,y,pw,ph);ctx.globalAlpha=1;
+  }
+}
+
+async function place(typeId,x,y,rotation){
+  // pass expectedVersion to demonstrate optimistic concurrency; server judges vs current truth
+  const d=await gql(`mutation($r:String!,$c:PlaceInput!,$v:Int){
+      placeModucule(room:$r,cmd:$c,expectedVersion:$v){ status version rebased
+        violations{rule severity message} event{seq} } }`,
+    {r:ROOM,c:{typeId,x:Math.round(x),y:Math.round(y),rotation},v:(twin?twin.version:0)});
+  return d.placeModucule;
+}
+function showResult(res){
+  const s=document.getElementById("status");
+  if(res.status==="ACCEPTED"){
+    const w=(res.violations||[]).filter(v=>v.severity==="WARNING");
+    s.innerHTML=`<span class="ok">✓ COMMITTED</span> seq #${res.event.seq} → version ${res.version}`
+      +(res.rebased?` <span class="warn">(rebased onto newer state)</span>`:``)
+      +(w.length?` &nbsp;<span class="warn">⚠ ${w.map(x=>x.message).join("; ")}</span>`:``);
+  }else{
+    s.innerHTML=`<span class="err">✗ REJECTED — nothing written.</span> `
+      +(res.violations||[]).map(v=>`[${v.rule}] ${v.message}`).join("  ");
+  }
+  refresh();
+}
+
+c.addEventListener("mousemove",e=>{const r=c.getBoundingClientRect();
+  mouse={x:(e.clientX-r.left)*(MM_W/r.width),y:(e.clientY-r.top)*(MM_H/r.height)};draw();});
+c.addEventListener("mouseleave",()=>{mouse=null;draw();});
+c.addEventListener("click",async e=>{
+  const r=c.getBoundingClientRect();
+  const x=(e.clientX-r.left)*(MM_W/r.width), y=(e.clientY-r.top)*(MM_H/r.height);
+  if(removeMode){
+    const hit=[...(twin?.instances||[])].reverse().find(i=>{const f=fp(i.typeId,i.x,i.y,i.rotation);
+      return x>=f[0]&&x<=f[2]&&y>=f[1]&&y<=f[3];});
+    if(hit){const d=await gql(`mutation($r:String!,$id:String!){removeModucule(room:$r,instanceId:$id){status version}}`,
+      {r:ROOM,id:hit.instanceId});showResult({status:"ACCEPTED",version:d.removeModucule.version,event:{seq:"—"},violations:[]});}
+    return;
+  }
+  if(!sel){document.getElementById("status").textContent="Pick a Moducule first.";return;}
+  showResult(await place(sel,x,y,ghostRot));
+});
+
+document.querySelectorAll(".chip[data-type]").forEach(ch=>ch.onclick=()=>{
+  document.querySelectorAll(".chip[data-type]").forEach(x=>x.classList.remove("sel"));
+  ch.classList.add("sel");sel=ch.dataset.type;removeMode=false;
+  document.getElementById("removeMode").textContent="Remove: off";});
+document.getElementById("rotate").onclick=()=>{ghostRot=(ghostRot+90)%360;
+  document.getElementById("rotate").textContent=`Rotate ghost: ${ghostRot}°`;draw();};
+document.getElementById("removeMode").onclick=()=>{removeMode=!removeMode;
+  document.getElementById("removeMode").textContent=`Remove: ${removeMode?"ON":"off"}`;
+  if(removeMode){sel=null;document.querySelectorAll(".chip[data-type]").forEach(x=>x.classList.remove("sel"));}};
+
+async function refreshLog(){
+  const d=await gql(`query($r:String!){ events(room:$r){ seq type payloadJson actor } }`,{r:ROOM});
+  document.getElementById("log").innerHTML=d.events.slice().reverse().map(e=>{
+    const placed=e.type==="MODUCULE_PLACED";let p={};try{p=JSON.parse(e.payloadJson);}catch{}
+    const name=placed?(reg[p.type_id]?.name||p.type_id):p.instance_id;
+    const extra=placed?`(${Math.round(p.x)},${Math.round(p.y)}) rot ${p.rotation}° · v${p.type_version||"?"}`:"removed";
+    return `<div class="ev ${placed?'':'rm'}"><span class="t">#${e.seq} ${e.type.replace('MODUCULE_','')}</span>
+      &nbsp;${name}<div class="m">${extra} · by ${e.actor}</div></div>`;}).join("")
+    ||`<div class="m" style="color:var(--slate)">No events yet — the journal is empty.</div>`;
+}
+
+document.getElementById("suggest").onclick=async()=>{
+  const d=await gql(`mutation($r:String!){ agentSuggest(room:$r){ proposal{typeId x y rotation} rationale citations } }`,{r:ROOM});
+  const a=d.agentSuggest, box=document.getElementById("proposal");
+  if(!a.proposal){box.innerHTML=`<div class="hint err">${a.rationale}</div>`;return;}
+  box.innerHTML=`<div class="hint">${a.rationale}<br><i>cites: ${a.citations.join(", ")}</i></div>
+    <div style="margin-top:6px"><button id="approve">Approve & commit</button>
+    <button class="ghost" id="reject">Reject</button></div>`;
+  document.getElementById("approve").onclick=async()=>{showResult(await place(a.proposal.typeId,a.proposal.x,a.proposal.y,a.proposal.rotation));box.innerHTML="";};
+  document.getElementById("reject").onclick=()=>box.innerHTML="";
+};
+boot();
+</script>
+</body>
+</html>

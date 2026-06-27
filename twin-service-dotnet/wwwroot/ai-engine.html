@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Agentic AI Engine — inside THE CORE</title>
+<style>
+  :root{
+    --navy:#16263F; --navy2:#23375A; --gold:#E8A816; --ink:#1F2A38; --slate:#5B6B7E;
+    --line:#D7E0EA; --tint:#F4F7FB; --white:#FFFFFF; --paper:#EEF2F7;
+    --built:#1E7A4C; --partial:#C77D2A; --road:#E8A816; --proven:#6B4F9E; --ext:#5B6B7E;
+  }
+  *{box-sizing:border-box; font-family:Calibri,'Segoe UI',system-ui,sans-serif;}
+  body{margin:0; background:var(--paper); color:var(--ink);}
+  header{background:linear-gradient(120deg,var(--navy),var(--navy2)); color:#fff; padding:18px 30px 16px;}
+  header .k{color:var(--gold); font-size:12px; font-weight:bold; letter-spacing:3px; margin:0 0 4px;}
+  header h1{margin:0; font-family:Cambria,Georgia,serif; font-size:25px;} header h1 b{color:var(--gold);}
+  header .sub{margin-top:6px; font-size:13px; color:#CFDCEC;}
+  .legend{display:flex; gap:15px; flex-wrap:wrap; margin-top:11px; font-size:11.5px;}
+  .legend span{display:inline-flex; align-items:center; gap:6px; color:#D7E2F0;}
+  .legend i{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .d-built{background:var(--built);} .d-partial{background:var(--partial);} .d-road{background:var(--road);}
+  .d-proven{background:var(--proven);} .d-ext{background:var(--ext);}
+  /* invariant banner */
+  .invariant{max-width:1180px; margin:16px auto 6px; background:var(--navy); color:#fff; border:2px solid var(--gold);
+    border-radius:13px; padding:12px 20px; display:flex; align-items:center; gap:14px;}
+  .invariant .tag{background:var(--gold); color:var(--navy); font-size:11px; font-weight:bold; letter-spacing:1px;
+    padding:4px 11px; border-radius:11px; white-space:nowrap;}
+  .invariant .txt{font-size:14px;} .invariant .txt b{color:var(--gold);}
+  /* layer stack */
+  .wrap{max-width:1180px; margin:0 auto; padding:6px 20px 30px;}
+  .layer{display:flex; gap:14px; background:#fff; border:1px solid var(--line); border-radius:13px;
+    margin-bottom:11px; padding:13px 16px; box-shadow:0 2px 9px rgba(20,40,70,.06); align-items:stretch;}
+  .layer .rail{flex:0 0 215px; border-right:1px solid var(--line); padding-right:14px;}
+  .layer .rail .n{font-family:Cambria,serif; font-size:16px; color:var(--navy); font-weight:bold;}
+  .layer .rail .r{font-size:11.5px; color:var(--slate); margin-top:3px; line-height:1.35; font-style:italic;}
+  .layer .rail .num{display:inline-block; background:var(--navy); color:#fff; font-size:11px; font-weight:bold;
+    width:20px;height:20px;border-radius:50%; text-align:center; line-height:20px; margin-right:7px;}
+  .layer .body{flex:1; display:flex; flex-wrap:wrap; gap:8px; align-content:flex-start;}
+  .chip{position:relative; background:var(--tint); border:1px solid var(--line); border-radius:9px;
+    padding:8px 11px; cursor:default; transition:transform .12s, box-shadow .12s, background .12s; min-width:140px;}
+  .chip:hover{transform:translateY(-1px); box-shadow:0 4px 12px rgba(20,40,70,.14); background:#fff;}
+  .chip .h{display:flex; align-items:center; gap:7px;}
+  .chip .dot{width:9px;height:9px;border-radius:50%; flex:0 0 auto;}
+  .chip .t{font-size:12.5px; font-weight:bold; color:var(--ink);}
+  .chip .d{font-size:10.5px; color:var(--slate); margin-top:3px; line-height:1.25;}
+  .chip.primary{border-color:var(--gold); background:#FFF8E8;}
+  .chip .pin{position:absolute; top:-8px; right:8px; background:var(--gold); color:var(--navy);
+    font-size:8.5px; font-weight:bold; letter-spacing:.5px; padding:2px 7px; border-radius:9px;}
+  .chip .alt{position:absolute; top:-8px; right:8px; background:#fff; border:1px solid var(--slate); color:var(--slate);
+    font-size:8.5px; font-weight:bold; padding:2px 7px; border-radius:9px;}
+  /* AEC band */
+  .aec{background:linear-gradient(120deg,#33414f,#475766); color:#fff; border:0;}
+  .aec .rail{border-right-color:rgba(255,255,255,.2);}
+  .aec .rail .n{color:#fff;} .aec .rail .r{color:#CcD6E0;} .aec .rail .num{background:var(--gold); color:var(--navy);}
+  .aec .chip{background:rgba(255,255,255,.09); border-color:rgba(255,255,255,.2);}
+  .aec .chip:hover{background:rgba(255,255,255,.16);}
+  .aec .chip .t{color:#fff;} .aec .chip .d{color:#C9D3DD;}
+  /* tooltip + footer */
+  #tip{position:fixed; z-index:50; background:var(--navy); color:#fff; font-size:12px; padding:7px 11px; border-radius:8px;
+    max-width:300px; line-height:1.4; box-shadow:0 6px 20px rgba(0,0,0,.3); pointer-events:none; opacity:0; transition:opacity .1s;}
+  footer{max-width:1180px; margin:0 auto; padding:2px 20px 30px;}
+  .mark{background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 18px; box-shadow:0 1px 6px rgba(0,0,0,.05); font-size:13px; line-height:1.55;}
+  .mark b{color:var(--navy);} .mark .g{color:var(--built); font-weight:bold;}
+</style>
+</head>
+<body>
+<header>
+  <p class="k">OUR PROPOSED LAYER · ON MODUTECTURE'S TWIN</p>
+  <h1>Agentic <b>AI Engine</b> — the governed layer we propose to add</h1>
+  <div class="sub">Modutecture already has the twin and the standards data. This is the layer their roadmap doesn't show yet — a deliberately layered, governed stack (not a buzzword pile): every framework has a role, alternatives are swappable behind <b>MCP</b>, the deterministic gate stays authoritative.</div>
+  <div class="legend">
+    <span><i class="d-built"></i> Built (running)</span>
+    <span><i class="d-partial"></i> Partial / in progress</span>
+    <span><i class="d-road"></i> Roadmap</span>
+    <span><i class="d-proven"></i> Proven elsewhere</span>
+    <span><i class="d-ext"></i> External / AEC industry</span>
+  </div>
+</header>
+
+<div class="invariant">
+  <span class="tag">GOVERNANCE INVARIANT</span>
+  <span class="txt">However sophisticated the stack — <b>the LLM proposes, the deterministic gate disposes.</b> No framework, model, or RAG changes this. AI never owns truth.</span>
+</div>
+
+<div class="wrap">
+
+  <!-- 1 Orchestration -->
+  <div class="layer">
+    <div class="rail"><div class="n"><span class="num">1</span>Orchestration</div><div class="r">the agent control plane — stateful, auditable, with HITL checkpoints</div></div>
+    <div class="body">
+      <div class="chip primary" data-tip="Our PRIMARY choice. Stateful graph orchestration with loops (reflection, bounded retries), checkpoints (human-in-the-loop), and full auditability. Healthcare needs an explicit, inspectable state machine where the gate is a checkpoint."><span class="pin">PRIMARY</span><div class="h"><span class="dot d-road"></span><span class="t">LangGraph</span></div><div class="d">stateful graph · loops · HITL checkpoints</div></div>
+      <div class="chip" data-tip="The foundation layer beneath orchestration: chains, document loaders, retrievers, output parsers, model adapters. LangGraph builds on it."><div class="h"><span class="dot d-road"></span><span class="t">LangChain</span></div><div class="d">chains · loaders · retrievers</div></div>
+      <div class="chip" data-tip="EVALUATED ALTERNATIVE. Microsoft's multi-agent conversation framework — strong for agent-to-agent negotiation patterns. Plugs behind the same MCP contract if we need conversational multi-agent."><span class="alt">EVALUATED</span><div class="h"><span class="dot d-road"></span><span class="t">AutoGen</span></div><div class="d">multi-agent conversation</div></div>
+      <div class="chip" data-tip="EVALUATED ALTERNATIVE. Role-based agent 'crews' (planner / reviewer / coordinator as roles). Maps to our reflective pattern; an option for role-orchestration. Same MCP contract."><span class="alt">EVALUATED</span><div class="h"><span class="dot d-road"></span><span class="t">CrewAI</span></div><div class="d">role-based agent teams</div></div>
+    </div>
+  </div>
+
+  <!-- 2 Agent roles -->
+  <div class="layer">
+    <div class="rail"><div class="n"><span class="num">2</span>Agent Roles</div><div class="r">the reflective pattern — propose, critique, then the gate decides</div></div>
+    <div class="body">
+      <div class="chip" data-tip="BUILT today (reflective brain over Ollama). The Planner drafts a placement; the Reviewer critiques it against the rules and corrects it. LLM self-critique catches mistakes before a human sees them."><div class="h"><span class="dot d-built"></span><span class="t">Planner → Reviewer</span></div><div class="d">reflection loop (built)</div></div>
+      <div class="chip" data-tip="Roadmap: additional specialized agents behind the same orchestration — a Retriever agent, a Compliance agent, a BIM-Coordinator agent that talks to Revit/IFC."><div class="h"><span class="dot d-road"></span><span class="t">+ Specialist Agents</span></div><div class="d">retriever · compliance · BIM-coordinator</div></div>
+      <div class="chip" data-tip="Always present: a human approves the gated proposal before it commits. 80/20 AI:HITL governance."><div class="h"><span class="dot d-built"></span><span class="t">Human-in-the-Loop</span></div><div class="d">approval gate (built)</div></div>
+    </div>
+  </div>
+
+  <!-- 3 MCP tools -->
+  <div class="layer">
+    <div class="rail"><div class="n"><span class="num">3</span>Tools — MCP</div><div class="r">capabilities as tools, not hardcoded calls — ports &amp; adapters</div></div>
+    <div class="body">
+      <div class="chip" data-tip="The Model Context Protocol: the agent's capabilities are MCP servers it calls. Swap any implementation without touching the agent — same discipline as the rest of the platform."><div class="h"><span class="dot d-road"></span><span class="t">MCP Tool Bus</span></div><div class="d">standard tool interface</div></div>
+      <div class="chip" data-tip="The authority. The agent calls gate.validate; only a PASS may proceed to commit. Deterministic, auditable."><div class="h"><span class="dot d-built"></span><span class="t">gate.validate</span></div><div class="d">the deterministic authority</div></div>
+      <div class="chip" data-tip="Read current truth and commit (gated) events to the event-sourced twin."><div class="h"><span class="dot d-built"></span><span class="t">twin.read / commit</span></div><div class="d">truth I/O (gated write)</div></div>
+      <div class="chip" data-tip="GraphRAG retrieval over the Neo4j knowledge graph — rules, ports, codes for the room program."><div class="h"><span class="dot d-built"></span><span class="t">grounding.retrieve</span></div><div class="d">GraphRAG over Neo4j</div></div>
+      <div class="chip" data-tip="Roadmap: query the live BIM model (Autodesk APS GraphQL / parsed IFC) so the agent reasons over the actual building."><div class="h"><span class="dot d-road"></span><span class="t">bim.query</span></div><div class="d">Revit / IFC (roadmap)</div></div>
+    </div>
+  </div>
+
+  <!-- 4 RAG / memory -->
+  <div class="layer">
+    <div class="rail"><div class="n"><span class="num">4</span>Retrieval &amp; Memory</div><div class="r">hybrid RAG — graph for structure, vectors for semantics, events for memory</div></div>
+    <div class="body">
+      <div class="chip" data-tip="BUILT. GraphDB (Neo4j) holds the relational rules: a bed REQUIRES a med-gas port a headwall PROVIDES, GOVERNED_BY rule R3. Graph retrieval returns the connected constraint sub-graph — relationships pure vector search would miss."><div class="h"><span class="dot d-built"></span><span class="t">GraphRAG — GraphDB</span></div><div class="d">Neo4j · relational codes</div></div>
+      <div class="chip" data-tip="VectorDB (Qdrant / pgvector) over the code corpus (FGI / NFPA PDFs) for semantic recall and citations. Embeddings via nomic-embed-text (local)."><div class="h"><span class="dot d-partial"></span><span class="t">Vector RAG — VectorDB</span></div><div class="d">Qdrant / pgvector · code corpus</div></div>
+      <div class="chip" data-tip="Roadmap: fuse graph + vector retrieval — structure from the graph, prose of the codes from vectors. The modern, correct hybrid."><div class="h"><span class="dot d-road"></span><span class="t">Hybrid Fusion</span></div><div class="d">graph + vector</div></div>
+      <div class="chip" data-tip="BUILT. The event-sourced twin IS the agent's long-term episodic memory: every prior decision, with full history, is queryable. Not a side cache — the source of record."><div class="h"><span class="dot d-built"></span><span class="t">Episodic Memory</span></div><div class="d">the event store = agent memory</div></div>
+    </div>
+  </div>
+
+  <!-- 5 Models -->
+  <div class="layer">
+    <div class="rail"><div class="n"><span class="num">5</span>Models — LLM &amp; ML</div><div class="r">local-first foundation, a domain-tuned custom model, and classical ML</div></div>
+    <div class="body">
+      <div class="chip" data-tip="BUILT. Local-first foundation LLM via Ollama (mistral-nemo) for privacy and on-prem deployment. Pluggable to a cloud frontier model behind the same brain port — swap by config."><div class="h"><span class="dot d-built"></span><span class="t">Foundation LLM</span></div><div class="d">local Ollama · pluggable cloud</div></div>
+      <div class="chip" data-tip="Roadmap: a CUSTOM LLM — domain LoRA fine-tune on AEC + healthcare codes (the Continuous LoRA Flywheel). A model that speaks Moducules and FGI/NFPA is the moat anyone calling an API can't replicate."><div class="h"><span class="dot d-road"></span><span class="t">Custom LLM (LoRA)</span></div><div class="d">domain fine-tune · the moat</div></div>
+      <div class="chip" data-tip="BUILT. Embeddings (nomic-embed-text, local) power the vector store."><div class="h"><span class="dot d-built"></span><span class="t">Embeddings</span></div><div class="d">nomic-embed-text (local)</div></div>
+      <div class="chip" data-tip="Roadmap: not everything is an LLM. Classical ML for clash detection, telemetry anomaly detection, layout optimization, predictive maintenance on the operational twin."><div class="h"><span class="dot d-road"></span><span class="t">Classical ML</span></div><div class="d">clash · anomaly · optimization</div></div>
+    </div>
+  </div>
+
+  <!-- 6 AEC AI advancements -->
+  <div class="layer aec">
+    <div class="rail"><div class="n"><span class="num">6</span>AEC AI Advancements</div><div class="r">integrate the industry's AI direction — the twin ingests &amp; grounds the agent in it</div></div>
+    <div class="body">
+      <div class="chip" data-tip="Autodesk's AI (Forma generative design, environmental analysis, Autodesk Assistant). The twin ingests Forma/Revit AI outputs via APS and grounds the agent in them — we ride the industry's AI, we don't reinvent it."><div class="h"><span class="dot d-ext"></span><span class="t">Autodesk AI / Forma</span></div><div class="d">generative design · analysis</div></div>
+      <div class="chip" data-tip="Reality capture: laser scans / photogrammetry -> point clouds -> IFC (Scan-to-BIM). Feeds the as-built model into the twin for the operational phase."><div class="h"><span class="dot d-ext"></span><span class="t">Scan-to-BIM</span></div><div class="d">reality capture · point cloud → IFC</div></div>
+      <div class="chip" data-tip="Generative layout / space planning AI proposes candidate arrangements; our gate validates them against healthcare codes — generation made compliant."><div class="h"><span class="dot d-ext"></span><span class="t">Generative Layout</span></div><div class="d">candidates → our gate validates</div></div>
+      <div class="chip" data-tip="ML-driven clash detection across disciplines (Navisworks AI, etc.); results round-trip as BCF issues into the authoring tool."><div class="h"><span class="dot d-ext"></span><span class="t">ML Clash Detection</span></div><div class="d">cross-discipline · BCF round-trip</div></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="tip"></div>
+
+<footer>
+  <div class="mark">
+    <b>The honest framing for the room:</b> this is a <b>governed</b> agentic stack, not a list of logos. We chose <b>LangGraph</b> for an auditable state machine with human checkpoints; <b>AutoGen and CrewAI are evaluated alternatives</b> for multi-agent patterns, swappable behind <b>MCP</b>. Retrieval is <b>hybrid</b> — a GraphDB (Neo4j) for relational codes plus a VectorDB (Qdrant/pgvector) for the code corpus. The model is <b>local-first today</b>, with a <b>custom domain-tuned LLM</b> as the moat on the roadmap. And we plug into the <b>AEC industry's AI</b> — Autodesk Forma, Scan-to-BIM, generative design — rather than reinventing it. Through all of it, the invariant holds: <span class="g">the LLM proposes, the deterministic gate disposes.</span> That is what makes agentic AI safe enough for a hospital.
+  </div>
+</footer>
+
+<script>
+(function(){
+  var tip=document.getElementById('tip');
+  function show(e){var t=e.currentTarget.getAttribute('data-tip'); if(!t)return; tip.textContent=t; tip.style.opacity='1'; move(e);}
+  function move(e){if(tip.style.opacity!=='1')return; var x=e.clientX+14,y=e.clientY+14; if(x+310>innerWidth)x=e.clientX-314; if(y+120>innerHeight)y=e.clientY-110; tip.style.left=x+'px'; tip.style.top=y+'px';}
+  function hide(){tip.style.opacity='0';}
+  document.querySelectorAll('[data-tip]').forEach(function(el){el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);});
+})();
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

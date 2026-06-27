@@ -1,0 +1,28 @@
+# One-command desktop demo: real Postgres + the .NET twin service serving
+# GraphQL and the live web viewer.  Run:  docker compose up --build
+# Then open http://localhost:8099  (open a second tab to show live sync).
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: spine
+    ports: ["5433:5432"]            # host 5433 to avoid clashing with a local PG
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d spine"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  twin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # production stack: real Postgres, NOT in-memory
+      ConnectionStrings__Twin: "Host=db;Database=spine;Username=postgres;Password=postgres"
+    ports: ["8099:8080"]
