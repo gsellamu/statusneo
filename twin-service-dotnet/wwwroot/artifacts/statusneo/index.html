@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>StatusNeo FDE — Artifact Index & File Map</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--mute:#8090a4;--red:#b3402f;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#eef1f5;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.5;}
+  .backbar{background:#0e1b2e;padding:8px 16px;font-size:12px;}
+  .backbar a{color:#c9d6e8;text-decoration:none;} .backbar a:hover{color:var(--gold);}
+  header.hero{background:linear-gradient(150deg,var(--navy),var(--navy2));color:#fff;padding:24px 0 22px;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px;}
+  .kick{color:var(--gold);font-size:11.5px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;}
+  header.hero h1{font-family:Cambria,Georgia,serif;font-size:26px;margin:0 0 8px;}
+  header.hero p{margin:0;color:#cdd9ea;font-size:13.5px;max-width:760px;}
+  main{max-width:1180px;margin:22px auto;padding:0 22px 50px;}
+  /* location summary */
+  .locs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 26px;}
+  .loc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;box-shadow:0 1px 4px rgba(20,40,70,.05);}
+  .loc h3{margin:0 0 6px;font-size:13px;color:var(--navy);font-family:Cambria,serif;}
+  .loc .path{font-family:Consolas,monospace;font-size:11.5px;color:#34495e;background:var(--tint);border:1px solid var(--line);border-radius:7px;padding:6px 9px;word-break:break-all;}
+  .loc p{margin:8px 0 0;font-size:12px;color:var(--slate);}
+  .sec{font-family:Cambria,serif;color:var(--navy);font-size:17px;margin:24px 0 4px;border-bottom:2px solid var(--gold);padding-bottom:5px;}
+  .sec-note{color:var(--slate);font-size:12.5px;margin:0 0 14px;}
+  /* doc card */
+  .doc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:12px;box-shadow:0 1px 4px rgba(20,40,70,.05);}
+  .doc-head{display:flex;align-items:baseline;gap:11px;}
+  .nn{flex:none;font-family:Cambria,serif;font-weight:bold;color:#fff;background:var(--navy);font-size:13px;border-radius:7px;padding:3px 9px;min-width:34px;text-align:center;}
+  .doc-head h4{margin:0;font-size:15px;color:var(--navy);}
+  .doc-head .bl{margin:0;color:var(--slate);font-size:12.5px;}
+  .links{display:flex;flex-wrap:wrap;gap:7px;margin:11px 0 12px;}
+  .links a, .links span.x{font-size:11.5px;text-decoration:none;border-radius:7px;padding:4px 10px;font-weight:bold;border:1px solid transparent;white-space:nowrap;}
+  a.read{background:var(--gold);color:var(--navy);}
+  a.read:hover{background:#f0b020;}
+  a.raw{background:#eef3fb;color:var(--navy2);border-color:#d4e0f0;}
+  a.raw:hover{border-color:var(--gold);}
+  a.dl{background:#eaf4ee;color:var(--green);border-color:#cfe6d8;}
+  a.dl:hover{border-color:var(--green);}
+  span.x{background:#f4f6f9;color:var(--mute);border-color:var(--line);font-weight:normal;}
+  .paths{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;}
+  .paths .k{font-size:10.5px;color:var(--mute);text-transform:uppercase;letter-spacing:.6px;font-weight:bold;white-space:nowrap;}
+  .paths .v{font-family:Consolas,monospace;font-size:11px;color:#3a4a5c;word-break:break-all;}
+  .legend{font-size:11.5px;color:var(--slate);margin:18px 0 0;padding:11px 14px;background:#fff;border:1px solid var(--line);border-radius:10px;}
+  .legend b{color:var(--navy);}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+  .footer{margin-top:24px;color:var(--mute);font-size:11.5px;}
+  @media(max-width:720px){.locs{grid-template-columns:1fr;}.paths{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="backbar"><a href="/statusneo.html">&larr; StatusNeo FDE suite</a> &nbsp;&middot;&nbsp; <a href="/artifacts/statusneo/reader.html">Reader</a> &nbsp;&middot;&nbsp; <a href="/showcase.html">Showcase</a></div>
+<header class="hero"><div class="wrap">
+  <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
+  <h1>Artifact Index &amp; File Map</h1>
+  <p>Every document in the suite &mdash; with its on-disk paths and live URLs. Each one opens in-browser from its markdown source; downloadable PDF/DOCX/PPTX versions are linked when present in the served folder (probed live below).</p>
+</div></header>
+
+<main>
+  <div class="locs">
+    <div class="loc">
+      <h3>1 &middot; Canonical source (repo docs)</h3>
+      <div class="path">statusneo\sources\&lt;doc&gt;.md</div>
+      <p>The source-of-truth markdown for all ten documents, plus <code>README.md</code> and <code>consolidate-statusneo.ps1</code>. GitHub renders these directly.</p>
+    </div>
+    <div class="loc">
+      <h3>2 &middot; Served / web-accessible</h3>
+      <div class="path">twin-service-dotnet\wwwroot\artifacts\statusneo\</div>
+      <p>What the portal serves: <code>reader.html</code>, a copy of the markdown under <code>sources\</code>, and the binary PDF/DOCX/PPTX files.</p>
+    </div>
+  </div>
+
+  <div class="sec">The ten documents</div>
+  <p class="sec-note">Open in-browser (Read), view the raw markdown, or download a binary version if it has been synced.</p>
+  <div id="docList"></div>
+
+  <div class="sec">Presentation artifacts (binary only)</div>
+  <p class="sec-note">No markdown source &mdash; these are downloads. Both are present in the served folder.</p>
+  <div id="binList"></div>
+
+  <div class="legend">
+    <span class="dot" style="background:var(--gold)"></span><b>Read</b> &mdash; opens in the in-browser reader (always works) &nbsp;&middot;&nbsp;
+    <span class="dot" style="background:#d4e0f0"></span><b>.md</b> &mdash; raw markdown source &nbsp;&middot;&nbsp;
+    <span class="dot" style="background:var(--green)"></span><b>PDF/DOCX/PPTX</b> &mdash; downloadable binary, present in the served folder &nbsp;&middot;&nbsp;
+    <span class="dot" style="background:var(--mute)"></span><b>not synced</b> &mdash; binary not in the served folder yet (the in-browser version still works)
+  </div>
+
+  <p class="footer" id="footer">StatusNeo &times; Modutecture &middot; Agentic FDE Practice &middot; artifact index &middot; paths are relative to the repo root <code>modutecture-spine-fullstack\</code>.</p>
+</main>
+
+<script>
+var DOCS = [
+  {n:"00", id:"00-MASTER-AGENTIC-FDE-REFERENCE", t:"Master Reference", b:"The capstone &mdash; 11 parts consolidating the entire practice.", bins:["StatusNeo-Agentic-FDE-MASTER.pdf","StatusNeo-Agentic-FDE-MASTER.docx"]},
+  {n:"01", id:"01-FDE-CHARTER-PROPOSAL", t:"FDE Charter Proposal", b:"The strategic case + the 30/60/90 + change leadership + the Copilot &times; Twin toolbox.", bins:["01-FDE-CHARTER-PROPOSAL.pdf","01-FDE-CHARTER-PROPOSAL.docx"]},
+  {n:"02", id:"02-FDE-LOOP-COOKBOOK", t:"FDE Loop Cookbook", b:"The embedded-delivery methodology, recipe by recipe.", bins:["02-FDE-LOOP-COOKBOOK.pdf","02-FDE-LOOP-COOKBOOK.docx"]},
+  {n:"03", id:"03-LANDING-RUNBOOK", t:"Landing Runbook", b:"The operational field manual for the first 90 days inside a customer.", bins:["03-LANDING-RUNBOOK.pdf","03-LANDING-RUNBOOK.docx"]},
+  {n:"05", id:"05-AGENTIC-FDE-LIFECYCLE", t:"Agentic FDE Lifecycle", b:"The 7-stage agentic SDLC &mdash; blueprint, playbook, cookbook, runbook.", bins:["Agentic-FDE-Lifecycle.pdf","Agentic-FDE-Lifecycle.docx"]},
+  {n:"06", id:"06-FDE-80-20-ROLES-AND-LIFECYCLE", t:"80:20 Roles &amp; Lifecycle", b:"The role split, per-stage AI:Human ratios, and the full RACI.", bins:["FDE-80-20-Roles-and-Lifecycle.pdf","FDE-80-20-Roles-and-Lifecycle.docx"]},
+  {n:"07", id:"07-MULTI-CLOUD-AGENTIC-FDE-TOOLING-DIRECTORY", t:"Multi-Cloud Tooling Directory", b:"Generic / AWS / GCP / Azure agentic toolchains, Embedded vs. Remote.", bins:["Multi-Cloud-Agentic-FDE-Tooling-Directory.pdf","Multi-Cloud-Agentic-FDE-Tooling-Directory.docx"]},
+  {n:"08", id:"08-AEC-MODUTECTURE-FDE-USECASE", t:"AEC / Modutecture Use Case", b:"Contextual construction across the four loops + the deterministic correctness gate.", bins:["AEC-Modutecture-FDE-UseCase.pdf","AEC-Modutecture-FDE-UseCase.docx"]},
+  {n:"09", id:"09-FDE-30-60-90-OKR-STAR", t:"30/60/90 &mdash; OKR &amp; STAR", b:"The plan re-expressed as three OKRs and as STAR narratives, plus the Modutecture anchor.", bins:["09-FDE-30-60-90-OKR-STAR.pdf","09-FDE-30-60-90-OKR-STAR.docx"]},
+  {n:"10", id:"10-FDE-OKR-SCORECARD", t:"OKR Scorecard", b:"The printable tracking grid &mdash; actuals vs. targets, scored 0.0&ndash;1.0.", bins:["10-FDE-OKR-SCORECARD.pdf","10-FDE-OKR-SCORECARD.docx"]},
+];
+var BINS = [
+  {t:"Board Deck", b:"The 9-slide board deck &mdash; the charter, presentation-ready.", bins:["StatusNeo_FDE_Charter.pptx"]},
+  {t:"PR-FAQ Playbook", b:"Amazon working-backwards &mdash; the press release, the FAQ, and the playbook.", bins:["StatusNeo_FDE_PR-FAQ_Playbook.pdf","StatusNeo_FDE_PR-FAQ_Playbook.docx"]},
+];
+
+function ext(f){ var m=f.match(/\.([a-z0-9]+)$/i); return m?m[1].toUpperCase():"FILE"; }
+
+function docCard(d){
+  var el=document.createElement("div"); el.className="doc";
+  var links='<a class="read" href="reader.html?doc='+d.id+'">Read &rarr;</a>'+
+            '<a class="raw" href="sources/'+d.id+'.md">.md</a>';
+  d.bins.forEach(function(f){ links+='<a class="dl pending" data-file="'+f+'" href="'+f+'" download>'+ext(f)+'</a>'; });
+  el.innerHTML=
+    '<div class="doc-head"><span class="nn">'+d.n+'</span>'+
+      '<div><h4>'+d.t+'</h4><p class="bl">'+d.b+'</p></div></div>'+
+    '<div class="links">'+links+'</div>'+
+    '<div class="paths">'+
+      '<span class="k">Source</span><span class="v">statusneo\\sources\\'+d.id+'.md</span>'+
+      '<span class="k">Served</span><span class="v">wwwroot\\artifacts\\statusneo\\sources\\'+d.id+'.md</span>'+
+    '</div>';
+  return el;
+}
+function binCard(d){
+  var el=document.createElement("div"); el.className="doc";
+  var links=''; d.bins.forEach(function(f){ links+='<a class="dl pending" data-file="'+f+'" href="'+f+'" download>'+ext(f)+'</a>'; });
+  var pathRows=d.bins.map(function(f){ return '<span class="k">Served</span><span class="v">wwwroot\\artifacts\\statusneo\\'+f+'</span>'; }).join('');
+  el.innerHTML=
+    '<div class="doc-head"><span class="nn">&#9633;</span>'+
+      '<div><h4>'+d.t+'</h4><p class="bl">'+d.b+'</p></div></div>'+
+    '<div class="links">'+links+'</div>'+
+    '<div class="paths">'+pathRows+'</div>';
+  return el;
+}
+
+var dl=document.getElementById("docList"); DOCS.forEach(function(d){ dl.appendChild(docCard(d)); });
+var bl=document.getElementById("binList"); BINS.forEach(function(d){ bl.appendChild(binCard(d)); });
+
+// probe each binary; turn into a live link or a greyed "not synced" tag
+Array.prototype.forEach.call(document.querySelectorAll("a.dl.pending"), function(a){
+  var f=a.getAttribute("data-file");
+  fetch(f,{method:"HEAD"}).then(function(r){
+    if(r.ok){ a.classList.remove("pending"); a.title="Download "+f; }
+    else throw 0;
+  }).catch(function(){
+    var s=document.createElement("span"); s.className="x"; s.textContent=ext(f)+" \u00b7 not synced"; s.title=f+" is not in the served folder yet";
+    a.parentNode.replaceChild(s,a);
+  });
+});
+</script>
+<script src="/nav.js"></script>
+</body>
+</html>

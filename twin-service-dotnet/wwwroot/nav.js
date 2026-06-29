@@ -21,6 +21,7 @@
     ]],
     ["StatusNeo · Agentic FDE suite", [
       ["/statusneo.html", "FDE Practice — overview"],
+      ["/artifacts/statusneo/index.html", "Artifact index & file map"],
       ["/artifacts/statusneo/reader.html?doc=00-MASTER-AGENTIC-FDE-REFERENCE", "Master Reference"],
       ["/artifacts/statusneo/reader.html?doc=01-FDE-CHARTER-PROPOSAL", "FDE Charter Proposal"],
       ["/artifacts/statusneo/reader.html?doc=06-FDE-80-20-ROLES-AND-LIFECYCLE", "80:20 Roles & Lifecycle"],
@@ -112,6 +113,33 @@
   });
   wrap.appendChild(menu);
   bar.appendChild(wrap);
+
+  // ---- contextual StatusNeo link: each portal page -> its most relevant FDE doc ----
+  var RELATED = {
+    "/index.html": ["/statusneo.html", "StatusNeo FDE suite"],
+    "/studio.html": ["/statusneo.html", "StatusNeo FDE suite"],
+    "/interview.html": ["/statusneo.html", "StatusNeo FDE suite"],
+    "/hierarchy.html": ["/artifacts/statusneo/reader.html?doc=08-AEC-MODUTECTURE-FDE-USECASE", "AEC Use Case"],
+    "/telemetry.html": ["/artifacts/statusneo/reader.html?doc=06-FDE-80-20-ROLES-AND-LIFECYCLE", "80:20 Roles & Lifecycle"],
+    "/architecture.html": ["/artifacts/statusneo/reader.html?doc=08-AEC-MODUTECTURE-FDE-USECASE", "AEC Architecture & Use Case"],
+    "/ai-engine.html": ["/artifacts/statusneo/reader.html?doc=05-AGENTIC-FDE-LIFECYCLE", "Agentic FDE Lifecycle"],
+    "/ecosystem.html": ["/artifacts/statusneo/reader.html?doc=00-MASTER-AGENTIC-FDE-REFERENCE", "FDE Master Reference"],
+    "/vision.html": ["/artifacts/statusneo/reader.html?doc=09-FDE-30-60-90-OKR-STAR", "FDE 30/60/90 — OKR & STAR"],
+    "/two-track-org.html": ["/statusneo.html", "StatusNeo FDE suite"]
+  };
+  var rel = RELATED[here];
+  if (rel) {
+    var relA = document.createElement("a");
+    relA.href = rel[0];
+    relA.innerHTML = "\u2605 " + rel[1] + " \u2192";
+    relA.title = "Related StatusNeo FDE document";
+    relA.style.cssText =
+      "text-decoration:none;font-size:11.5px;font-weight:bold;color:#16263f;background:#e8a816;" +
+      "border-radius:8px;padding:5px 11px;white-space:nowrap;";
+    relA.onmouseover = function () { relA.style.background = "#f0b020"; };
+    relA.onmouseout = function () { relA.style.background = "#e8a816"; };
+    bar.appendChild(relA);
+  }
 
   // ---- open/close logic ----
   var open = false;
