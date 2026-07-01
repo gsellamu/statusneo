@@ -45,7 +45,12 @@
   .cta p{margin:0;color:#d6e2f2;font-size:14px;} .btn{display:inline-block;text-decoration:none;font-size:14px;font-weight:bold;padding:10px 18px;border-radius:10px;background:var(--gold);color:var(--navy);} .btn:hover{background:#f0b020;}
   footer{background:#0e1b2e;color:#9fb2cc;font-size:12px;padding:24px 0;}
   footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;} footer b{color:#cdd9ea;}
+  @media print{
+    body *{visibility:hidden !important;}
+    body::before{content:"This deck is confidential and not available for printing. \00A9 Jithendran (Jeeth) Sellamuthu \2014 prepared for the StatusNeo hiring process.";visibility:visible !important;position:fixed;top:40%;left:8%;right:8%;text-align:center;font-family:Calibri,sans-serif;font-size:15px;color:#16263f;}
+  }
 </style>
+<link rel="stylesheet" href="tour.css"/>
 </head>
 <body>
 
@@ -203,6 +208,7 @@
   </div>
 </footer>
 </div>
-
+<script src="docpage.js"></script>
+<script src="tour.js"></script>
 </body>
 </html>

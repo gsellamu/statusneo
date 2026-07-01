@@ -1,0 +1,57 @@
+/* docpage.css — shared styling for full-text document pages (charter, prfaq, okr-star) */
+:root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+      --slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;--green:#1e7a4c;--code:#0f1a2e;--codefg:#d6e2f0;--paper:#f6f8fb;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif;line-height:1.55;}
+.wm{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+.content{position:relative;z-index:1;}
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(14,27,46,.97);backdrop-filter:blur(6px);
+  display:flex;align-items:center;gap:20px;padding:11px 26px;border-bottom:1px solid #22344f;}
+.nav .brand{color:var(--gold);font-weight:bold;font-size:14px;text-decoration:none;font-family:Cambria,serif;}
+.nav .brand span{color:#cdd9ea;font-weight:normal;}
+.nav .links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+.nav a.ln{color:#cdd9ea;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;}
+.nav a.ln:hover{background:#1f3559;color:#fff;} .nav a.on{background:var(--gold);color:var(--navy);font-weight:bold;}
+/* header */
+header.hd{background:radial-gradient(1000px 400px at 80% -20%,#274064,var(--navy) 60%);color:#fff;padding:40px 0 34px;}
+.wrap{max-width:940px;margin:0 auto;padding:0 26px;}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 12px;}
+header.hd h1{font-family:Cambria,Georgia,serif;font-size:31px;margin:0 0 8px;line-height:1.18;}
+header.hd p{color:#d6e2f2;font-size:14.5px;margin:0;max-width:76ch;}
+/* banner (e.g. hypothetical notice) */
+.banner{background:#fbf3e2;border:1px solid #ecdcb4;border-left:5px solid var(--gold);border-radius:0 10px 10px 0;
+  padding:13px 18px;margin:22px 0 4px;font-size:13.5px;color:#6b5316;}
+.banner b{color:#7a5c10;}
+/* article */
+main{padding:20px 0 54px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:30px 38px 40px;box-shadow:0 2px 14px rgba(20,40,70,.06);}
+.md h1{font-family:Cambria,serif;color:var(--navy);font-size:26px;margin:2px 0 6px;line-height:1.2;}
+.md h2{font-family:Cambria,serif;color:var(--navy);font-size:20px;margin:26px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px;}
+.md h3{font-family:Cambria,serif;color:var(--goldk);font-size:16px;margin:18px 0 4px;font-weight:bold;}
+.md p{margin:9px 0;font-size:14px;} .md em{color:var(--slate);} .md strong{color:var(--navy);}
+.md ul,.md ol{margin:8px 0;padding-left:24px;} .md li{font-size:14px;margin:4px 0;}
+.md blockquote{margin:14px 0;padding:12px 17px;background:#f7faff;border-left:4px solid var(--gold);border-radius:0 9px 9px 0;color:var(--navy);font-size:14px;}
+.md blockquote strong{color:var(--navy);}
+.md hr{border:0;border-top:1px solid var(--line);margin:24px 0;}
+.md table{border-collapse:collapse;width:100%;margin:14px 0;font-size:12.5px;}
+.md th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;border:1px solid #2c3f5e;font-weight:bold;}
+.md td{padding:7px 10px;border:1px solid var(--line);vertical-align:top;}
+.md tr:nth-child(even) td{background:var(--tint);}
+.md code{font-family:Consolas,monospace;font-size:12px;background:#eef1f5;padding:1px 6px;border-radius:5px;color:#34495e;}
+.md pre{background:var(--code);color:var(--codefg);padding:15px 17px;border-radius:11px;overflow:auto;margin:14px 0;}
+.md pre code{background:none;color:var(--codefg);font-size:12px;padding:0;line-height:1.5;}
+.loading{color:var(--slate);font-size:14px;padding:16px 0;}
+/* cta + footer */
+.cta{background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+.cta p{margin:0;color:#d6e2f2;font-size:14px;max-width:64ch;} .cta b{color:#fff;}
+.btn{display:inline-block;text-decoration:none;font-size:14px;font-weight:bold;padding:10px 18px;border-radius:10px;background:var(--gold);color:var(--navy);} .btn:hover{background:#f0b020;}
+footer{background:#0e1b2e;color:#9fb2cc;font-size:12px;padding:24px 0;}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;} footer b{color:#cdd9ea;}
+/* deterrent: print blanks the page */
+@media print{
+  body *{visibility:hidden !important;}
+  body::before{content:"This document is confidential and not available for printing. © Jithendran (Jeeth) Sellamuthu — prepared for the StatusNeo hiring process.";
+    visibility:visible !important;position:fixed;top:40%;left:8%;right:8%;text-align:center;font-family:Calibri,sans-serif;font-size:15px;color:#16263f;}
+}
+@media(max-width:760px){.card{padding:22px 20px 30px;}}

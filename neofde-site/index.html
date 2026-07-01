@@ -13,6 +13,7 @@
   html{scroll-behavior:smooth;}
   body{margin:0;background:var(--paper);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif;line-height:1.55;}
   a{color:inherit;}
+  .wm{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none;}
   /* nav */
   .nav{position:sticky;top:0;z-index:50;background:rgba(14,27,46,.97);backdrop-filter:blur(6px);
     display:flex;align-items:center;gap:20px;padding:11px 26px;border-bottom:1px solid #22344f;}
@@ -79,9 +80,21 @@
   footer b{color:#cdd9ea;}
   .honest{max-width:74ch;line-height:1.5;}
   @media(max-width:760px){.hero h1{font-size:32px;}.split,.suite,.nine{grid-template-columns:1fr;}.suite .cta-col{border-left:0;border-top:1px solid #2c456c;padding-left:0;padding-top:20px;}}
+  @media print{
+    body *{visibility:hidden !important;}
+    body::before{content:"This page is confidential and not available for printing. \00A9 Jithendran (Jeeth) Sellamuthu \2014 prepared for the StatusNeo hiring process.";visibility:visible !important;position:fixed;top:40%;left:8%;right:8%;text-align:center;font-family:Calibri,sans-serif;font-size:15px;color:#16263f;}
+  }
 </style>
+<link rel="stylesheet" href="tour.css"/>
 </head>
 <body>
+
+<svg class="wm" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs><pattern id="wmpat" width="440" height="300" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+    <text x="0" y="150" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#16263f" fill-opacity="0.05">CONFIDENTIAL · © Jithendran Sellamuthu · StatusNeo hiring</text>
+  </pattern></defs>
+  <rect width="100%" height="100%" fill="url(#wmpat)"></rect>
+</svg>
 
 <nav class="nav">
   <a class="brand" href="index.html">Jeeth <span>· Forward Deployed Engineering</span></a>
@@ -102,7 +115,7 @@
       <a class="btn p" href="suite.html">See the complete suite →</a>
       <a class="btn s" href="deck.html">Read the board deck</a>
     </div>
-    <p class="heronote"><b>Prepared for the StatusNeo Managing Partner, Founders &amp; CTOs.</b> A proposal and a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account. The full document suite is shared on hiring and onboarding into StatusNeo. — Jithendran (Jeeth) Sellamuthu</p>
+    <p class="heronote"><b>Prepared for the StatusNeo Managing Partner, Founders &amp; CTOs.</b> A proposal and a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account. Four documents are open to read in full; the rest of the suite is shared on hiring and onboarding into StatusNeo. — Jithendran (Jeeth) Sellamuthu</p>
   </div>
 </header>
 
@@ -174,11 +187,11 @@
       <div>
         <p class="sec-label" style="color:var(--gold)">The complete framework</p>
         <h2>A twelve-document operating framework — already built</h2>
-        <p>Behind this pitch sits the charter, the loop cookbook, the landing runbook, the agentic lifecycle, the multi-cloud tooling directory, the AEC use case, and the activation plan. The complete index — every document and every section — is published here as proof of scope. <b>The full document bodies are shared on hiring and onboarding into StatusNeo.</b></p>
+        <p>Behind this pitch sits the charter, the loop cookbook, the landing runbook, the agentic lifecycle, the multi-cloud tooling directory, the AEC use case, and the activation plan. The complete index — every document and every section — is published here as proof of scope, and <b>four documents are open to read in full</b>: the Charter, the PR-FAQ + Playbook, the Board Deck, and the 30/60/90 OKR &amp; STAR. <b>The remaining eight are shared on hiring and onboarding into StatusNeo.</b></p>
       </div>
       <div class="cta-col">
         <div class="big">12</div>
-        <div class="cap">documents · full index online</div>
+        <div class="cap">documents · 4 open to read in full</div>
         <a class="btn p" href="suite.html">Open the Suite Index →</a>
       </div>
     </div>
@@ -206,6 +219,7 @@
     <span class="honest">A proposal &amp; validated demonstration — Modutecture is proof of the motion, not a closed-and-scaled account. Full document bodies shared on hiring &amp; onboarding into StatusNeo.</span>
   </div>
 </footer>
-
+<script src="docpage.js"></script>
+<script src="tour.js"></script>
 </body>
 </html>

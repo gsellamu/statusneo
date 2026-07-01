@@ -1,0 +1,17 @@
+# Netlify configuration - Jeeth FDE pitch site (static, no build step)
+# Repo root is the site root: index.html, suite.html, deck.html, charter.html, prfaq.html, okr-star.html.
+
+[build]
+  publish = "."
+  command = ""
+
+# Keep this confidential pitch out of search engines and reduce leakage.
+# Reinforces the per-page <meta name="robots" content="noindex,nofollow"> with an HTTP header,
+# and adds light hardening. These are deterrents, not access control.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    X-Frame-Options = "SAMEORIGIN"

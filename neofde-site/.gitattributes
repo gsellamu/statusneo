@@ -1,0 +1,14 @@
+# Normalize line endings to LF in the repository.
+# Silences the "LF will be replaced by CRLF" warnings on Windows and keeps
+# deploy output consistent regardless of the machine that commits.
+* text=auto eol=lf
+
+# Binary types (none currently, but future-proofing so Git never munges them).
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

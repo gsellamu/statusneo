@@ -45,8 +45,15 @@
   .btn:hover{background:#f0b020;}
   footer{background:#0e1b2e;color:#9fb2cc;font-size:12px;padding:24px 0;}
   footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;}
+  a.readbtn{display:inline-block;margin-top:9px;background:var(--gold);color:var(--navy);font-weight:bold;font-size:12.5px;text-decoration:none;padding:5px 14px;border-radius:8px;}
+  a.readbtn:hover{background:#f0b020;}
+  @media print{
+    body *{visibility:hidden !important;}
+    body::before{content:"This page is confidential and not available for printing. \00A9 Jithendran (Jeeth) Sellamuthu \2014 prepared for the StatusNeo hiring process.";visibility:visible !important;position:fixed;top:40%;left:8%;right:8%;text-align:center;font-family:Calibri,sans-serif;font-size:15px;color:#16263f;}
+  }
   footer b{color:#cdd9ea;}
 </style>
+<link rel="stylesheet" href="tour.css"/>
 </head>
 <body>
 
@@ -73,14 +80,14 @@
 
 <header class="hd">
   <div class="wrap">
-    <p class="eyebrow">Scope — section names only, no content</p>
+    <p class="eyebrow">Scope index — plus four documents open in full</p>
     <h1>The Agentic FDE Suite — Index &amp; Contents</h1>
-    <p>Twelve documents, built and ready. Every document and every section is listed below. This proves the depth of the framework; it does not reproduce it.</p>
+    <p>Twelve documents, built and ready. Every document and every section is listed below — and <b>four of them are open to read in full</b>, marked with a gold <b>Read in full</b> button. The remaining eight are shared on hiring and onboarding.</p>
   </div>
 </header>
 
 <div class="wrap content">
-  <div class="frame"><b>What this is.</b> A scope outline of a complete, already-built operating framework for an onshore Forward Deployed Engineering practice. <b>The full document bodies are shared on hiring and onboarding into StatusNeo.</b> This is a proposal and a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account; June-2026 figures are per source, pending verification.</div>
+  <div class="frame"><b>What this is.</b> A scope outline of a complete, already-built operating framework for an onshore Forward Deployed Engineering practice. <b>Four documents are open to read in full</b> — the Charter, the PR-FAQ + Playbook, the Board Deck, and the 30/60/90 OKR &amp; STAR (look for the gold <b>Read in full</b> button). <b>The remaining eight are shared on hiring and onboarding into StatusNeo.</b> This is a proposal and a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account; June-2026 figures are per source, pending verification.</div>
 
   <main>
     <div class="doc"><div class="doc-h"><span class="nn">00</span><h3>Master Reference</h3><p class="d pill">capstone</p></div>
@@ -97,8 +104,9 @@
       <ul>
         <li>1. The Strategic Gap · 2. Why Me · 3. The FDE Operating Model · 4. The 30/60/90 Day Playbook · 5. Success Metrics</li>
         <li>6. Change Leadership &amp; Agentic AI Transformation (6.1–6.7: responsibilities, matrix, KPIs, timeline, dashboard, LangGraph telemetry hooks, payload standard)</li>
-        <li>7. The FDE Agentic Toolbox — Copilot × Digital Twin (7.1–7.5) · 8. The Killer Value</li>
+        <li>7. The FDE Agentic Toolbox — Copilot × Digital Twin (7.1–7.6) · 8. Operating Rigor — Evals, Handoff, Security, Pipeline &amp; Team (8.1–8.5) · 9. The Killer Value</li>
       </ul>
+      <a class="readbtn" href="charter.html">Read in full →</a>
     </div>
 
     <div class="doc"><div class="doc-h"><span class="nn">02</span><h3>FDE Loop Cookbook</h3></div>
@@ -134,6 +142,7 @@
     <div class="doc"><div class="doc-h"><span class="nn">09</span><h3>30/60/90 — OKR &amp; STAR</h3></div>
       <p class="d">The plan as OKRs and as STAR narratives.</p>
       <ul><li>Part A: The OKRs (Land &amp; Charter · Codify &amp; Prove · Productize &amp; Scale) · Part B: The STAR Narratives (three horizon STARs + the Modutecture anchor)</li></ul>
+      <a class="readbtn" href="okr-star.html">Read in full →</a>
     </div>
 
     <div class="doc"><div class="doc-h"><span class="nn">10</span><h3>OKR Scorecard</h3></div>
@@ -144,6 +153,7 @@
     <div class="doc"><div class="doc-h"><span class="nn">D</span><h3>Board Deck (9 slides)</h3></div>
       <p class="d">The charter, presentation-ready — <a href="deck.html" style="color:var(--goldk);font-weight:bold;">read it here</a>.</p>
       <ul><li>1. Title · 2. Strategic Gap · 3. Thesis · 4. Why Me · 5. Operating Model · 6. 30/60/90 · 7. Change Leadership · 8. Killer Value · 9. The Ask</li></ul>
+      <a class="readbtn" href="deck.html">Read in full →</a>
     </div>
 
     <div class="doc"><div class="doc-h"><span class="nn">Q</span><h3>PR-FAQ + Execution Playbook</h3></div>
@@ -152,6 +162,7 @@
         <li>Part I: The Press Release · Part II: FAQ (External + Internal — WHY / WHAT / WHO / WHERE / WHEN / HOW)</li>
         <li>Part III: The Execution Playbook (1. Six Questions · 2. WHO · 3. WHERE · 4. WHEN · 5. HOW · 6. Transformation Layer · 7. Governing Metrics · 8. Why Feasible &amp; Exclusive)</li>
       </ul>
+      <a class="readbtn" href="prfaq.html">Read in full →</a>
     </div>
 
     <div class="sec2">Roadmap — the FDE Excellence Operating Framework</div>
@@ -180,6 +191,7 @@
   </div>
 </footer>
 </div>
-
+<script src="docpage.js"></script>
+<script src="tour.js"></script>
 </body>
 </html>
