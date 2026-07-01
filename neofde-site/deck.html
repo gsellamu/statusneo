@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Board Deck — Forward Deployed Engineering · Jeeth FDE</title>
+<meta name="robots" content="noindex,nofollow"/>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;--green:#1e7a4c;--paper:#f6f8fb;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif;line-height:1.5;}
+  .wm{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+  .content{position:relative;z-index:1;}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(14,27,46,.97);backdrop-filter:blur(6px);
+    display:flex;align-items:center;gap:20px;padding:11px 26px;border-bottom:1px solid #22344f;}
+  .nav .brand{color:var(--gold);font-weight:bold;font-size:14px;text-decoration:none;font-family:Cambria,serif;}
+  .nav .brand span{color:#cdd9ea;font-weight:normal;}
+  .nav .links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+  .nav a.ln{color:#cdd9ea;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;}
+  .nav a.ln:hover{background:#1f3559;color:#fff;} .nav a.on{background:var(--gold);color:var(--navy);font-weight:bold;}
+  header.hd{background:radial-gradient(1000px 400px at 80% -20%,#274064,var(--navy) 60%);color:#fff;padding:44px 0 40px;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 26px;}
+  .eyebrow{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 12px;}
+  header.hd h1{font-family:Cambria,Georgia,serif;font-size:32px;margin:0 0 8px;}
+  header.hd p{color:#d6e2f2;font-size:14.5px;margin:0;max-width:72ch;}
+  main{padding:26px 0 50px;}
+  .slide{background:#fff;border:1px solid var(--line);border-radius:15px;padding:28px 32px;margin-bottom:18px;box-shadow:0 2px 12px rgba(20,40,70,.05);}
+  .sh{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+  .sh .n{font-family:Cambria,serif;font-weight:bold;color:#fff;background:var(--navy);width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .sh .tag{background:var(--tint);border:1px solid var(--line);border-radius:20px;padding:2px 12px;font-size:11.5px;color:var(--slate);font-weight:bold;}
+  .slide h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:23px;margin:0 0 8px;line-height:1.2;}
+  .slide .sub{color:var(--slate);font-size:14.5px;margin:0 0 10px;}
+  .slide h3{font-family:Cambria,serif;color:var(--goldk);font-size:15px;margin:14px 0 4px;}
+  .slide p{font-size:14px;margin:8px 0;} .slide strong{color:var(--navy);}
+  .slide ul{margin:8px 0;padding-left:22px;} .slide li{font-size:14px;margin:4px 0;}
+  .quote{background:#f7faff;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;color:var(--navy);font-size:15px;margin:10px 0;}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:7px 10px;border:1px solid #2c3f5e;}
+  td{padding:7px 10px;border:1px solid var(--line);} tr:nth-child(even) td{background:var(--tint);}
+  .num{list-style:none;padding-left:0;} .num li{display:flex;gap:11px;align-items:baseline;margin:8px 0;font-size:14px;}
+  .num .b{flex:none;font-family:Cambria,serif;font-weight:bold;color:#fff;background:var(--navy);border-radius:6px;font-size:12px;padding:2px 9px;min-width:24px;text-align:center;}
+  .meta{color:var(--slate);font-size:13px;margin-top:14px;border-top:1px solid var(--line);padding-top:10px;}
+  .cta{background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;margin-top:6px;display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+  .cta p{margin:0;color:#d6e2f2;font-size:14px;} .btn{display:inline-block;text-decoration:none;font-size:14px;font-weight:bold;padding:10px 18px;border-radius:10px;background:var(--gold);color:var(--navy);} .btn:hover{background:#f0b020;}
+  footer{background:#0e1b2e;color:#9fb2cc;font-size:12px;padding:24px 0;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;} footer b{color:#cdd9ea;}
+</style>
+</head>
+<body>
+
+<svg class="wm" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <pattern id="wmpat" width="380" height="250" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <text x="0" y="130" font-family="Arial, sans-serif" font-size="15" font-weight="bold"
+            fill="#16263f" fill-opacity="0.045">CONFIDENTIAL · © Jithendran Sellamuthu · StatusNeo hiring</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#wmpat)"></rect>
+</svg>
+
+<div class="content">
+<nav class="nav">
+  <a class="brand" href="index.html">Jeeth <span>· Forward Deployed Engineering</span></a>
+  <div class="links">
+    <a class="ln" href="index.html">Home</a>
+    <a class="ln" href="suite.html">The Suite</a>
+    <a class="ln on" href="deck.html">Board Deck</a>
+    <a class="ln" href="index.html#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hd">
+  <div class="wrap">
+    <p class="eyebrow">Board Deck · 9 slides</p>
+    <h1>Forward Deployed Engineering</h1>
+    <p>The presentation form of the FDE Charter — the case for standing up StatusNeo's Forward Deployed Engineering practice, structured for a board room.</p>
+  </div>
+</header>
+
+<div class="wrap content">
+  <main>
+
+    <div class="slide">
+      <div class="sh"><span class="n">1</span><span class="tag">Title</span></div>
+      <h2>The onshore tip of the spear for Authentic AI™ delivery</h2>
+      <p>A charter to stand up StatusNeo's FDE practice — and a 30/60/90 plan to prove it.</p>
+      <div class="meta"><strong>Jithendran (Jeeth) Sellamuthu</strong> · Head of Forward Deployed Engineering (proposed) · prepared for the Founder &amp; Board sponsor · June 2026</div>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">2</span><span class="tag">The Strategic Gap</span></div>
+      <h2>StatusNeo has the frameworks and the scale</h2>
+      <p class="sub">What it does not yet name is the onshore, customer-embedded delivery motion.</p>
+      <h3>What StatusNeo has built</h3>
+      <ul>
+        <li>Authentic AI™ Loop — Clarity → Build → Velocity → Improvement</li>
+        <li>Enterprise OS Fabric™ — six fabrics (Dev, Data, Ops, Security, Experience, Decision)</li>
+        <li>AI-Native SDLC + AI Maturity Index + AI Agents Library</li>
+        <li>GCC Setup &amp; Scale — offshore-concentrated, SV-disciplined; sharp 2026 POV</li>
+      </ul>
+      <h3>The one thing missing — Forward Deployed Engineering</h3>
+      <ul>
+        <li>Lands the OS Fabric™ inside the customer — not just in a GCC</li>
+        <li>De-risks the offshore handoff — the #1 GCC failure mode</li>
+        <li>Unlocks regulated, air-gapped buyers — healthcare, BFSI, airlines</li>
+        <li>Tip of the spear for land-and-expand — FDE opens, GCC scales</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">3</span><span class="tag">The Thesis</span></div>
+      <h2>The missing onshore tip of the spear</h2>
+      <p>StatusNeo has the frameworks and the offshore scale. <strong>FDE is the missing onshore tip of the spear</strong> that lands those frameworks inside the customer, de-risks the handoff, and unlocks the regulated enterprises your air-gapped posture is already built for.</p>
+      <div class="quote">"And I just proved it live for your customer Modutecture — the CTO was enthusiastic and invited me deeper."</div>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">4</span><span class="tag">Why Me</span></div>
+      <h2>The proof is already on the table</h2>
+      <p class="sub">28 years of the exact motion this practice needs.</p>
+      <ul>
+        <li><strong>28 yrs FDE-equivalent</strong> — embedded-at-customer from HCL-HP → Qualcomm (40M users, 99.999%, US Patent) → GE Healthcare → Mitchell → Amazon → Stealth GenAI.</li>
+        <li><strong>Regulated-domain native</strong> — healthcare, financial, safety-critical — exactly StatusNeo's regulated target verticals (healthcare, BFSI, airlines).</li>
+        <li><strong>AI-native architect</strong> — governed agentic AI: the model proposes, a deterministic gate disposes. Authentic AI™ "responsible, not reckless" in running code.</li>
+        <li><strong>Live proof — Modutecture</strong> — a working, customer-validated FDE engagement for your customer. The CTO wants more. That's the pilot for this practice.</li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">5</span><span class="tag">The Operating Model</span></div>
+      <h2>FDE lands. GCC scales. One pod, no handoffs.</h2>
+      <ul>
+        <li><strong>FDE — onshore:</strong> embedded, senior, customer-trusted. Runs the AI Maturity Scan, diagnoses, architects, and lands a working slice on the customer's stack.</li>
+        <li><strong>The seam:</strong> the FDE stays single owner of the outcome. Pulls the offshore pod in behind earned trust — no handoff gap.</li>
+        <li><strong>GCC — offshore:</strong> velocity + cost. Scales delivery behind the trusted relationship using the Agents Library + AI-Native SDLC.</li>
+      </ul>
+      <p class="sub">FDE = onshore trust + architecture authority. GCC = offshore velocity + cost. Two halves of one motion.</p>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">6</span><span class="tag">The 30 / 60 / 90</span></div>
+      <h2>From one validated pilot to a named, scaling practice</h2>
+      <h3>Days 0–30 · Listen, Map, Land</h3>
+      <ul><li>Immersion (sponsor, CEO, CTO, regional heads) · audit accounts → 3–5 FDE targets · run the AI Maturity Scan (interviews, capability heatmap, score) · formalize Modutecture as pilot #0 · draft &amp; sign the FDE Charter v1</li></ul>
+      <h3>Days 31–60 · Codify &amp; Prove</h3>
+      <ul><li>Document the FDE Loop™ (cookbook) · build the Landing Runbook · onboard first 2–3 FDEs · land a second account</li></ul>
+      <h3>Days 61–90 · Scale &amp; Institutionalize</h3>
+      <ul><li>Productize "StatusNeo FDE" · practice dashboard + pipeline · co-sell enablement across regions · whitepaper: The Embedded Edge</li></ul>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">7</span><span class="tag">Change Leadership</span></div>
+      <h2>The FDE drives adoption — measured, not asserted</h2>
+      <p class="sub">In an 80:20 agentic model, deploying software is easy; breaking organizational inertia is the job.</p>
+      <table>
+        <tr><th>Metric</th><th>Target</th><th>Meaning</th></tr>
+        <tr><td>Time-to-First-Value</td><td>&lt; 14 days</td><td>to first tested binary in staging</td></tr>
+        <tr><td>Client-Authored Specs</td><td>&gt; 60%</td><td>of Gherkin files by month 2</td></tr>
+        <tr><td>Agentic PR Merge Rate</td><td>&gt; 90%</td><td>merged with no human rewrites</td></tr>
+        <tr><td>Human Intervention</td><td>&lt; 2 / 1k LOC</td><td>manual commits to agent code</td></tr>
+        <tr><td>Platform Contribution</td><td>≥ 2 / pilot</td><td>components pushed Spoke → Hub</td></tr>
+        <tr><td>System Adoption</td><td>&gt; 75%</td><td>weekly active of trained operators</td></tr>
+      </table>
+      <p class="sub">The crossover that proves it: when the client stops micromanaging the code and starts authoring the specifications.</p>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">8</span><span class="tag">The Killer Value</span></div>
+      <h2>Exclusive to me, now — five reasons</h2>
+      <ul class="num">
+        <li><span class="b">1</span><span><strong>I am the proof, not the pitch.</strong> Ran the embedded FDE motion live for your own customer (Modutecture). No one else can say that today.</span></li>
+        <li><span class="b">2</span><span><strong>I unlock your hardest segment.</strong> Healthcare, BFSI, and airlines don't buy pure offshore — they demand embedded, regulated-domain engineers. Healthcare, financial, and safety-critical systems are my whole career.</span></li>
+        <li><span class="b">3</span><span><strong>I make the OS Fabric™ landable.</strong> The framework is excellent; FDE is how it gets deployed and trusted inside a customer, not just architected in a deck.</span></li>
+        <li><span class="b">4</span><span><strong>I solve the GCC handoff problem.</strong> The #1 failure mode of offshore-led delivery — solved by the onshore tip of the spear that opens accounts the GCC scales.</span></li>
+        <li><span class="b">5</span><span><strong>Authentic AI™ in running code.</strong> "Responsible, not reckless / business-driven, not demo-driven" is governed agentic AI. I build that. FDE makes it real.</span></li>
+      </ul>
+    </div>
+
+    <div class="slide">
+      <div class="sh"><span class="n">9</span><span class="tag">The Ask</span></div>
+      <h2>Give me the charter — and 90 days</h2>
+      <p>The charter to stand up StatusNeo's Forward Deployed Engineering practice — starting with the Modutecture pilot already in flight — and 90 days to prove it becomes a named, scaling, regulated-enterprise-unlocking practice line.</p>
+      <ul>
+        <li><strong>Day 30</strong> — Charter signed · pilot live</li>
+        <li><strong>Day 60</strong> — Methodology + 2nd account</li>
+        <li><strong>Day 90</strong> — Named practice · pipeline · co-sell</li>
+      </ul>
+      <div class="meta"><strong>Jithendran (Jeeth) Sellamuthu</strong> · Head of Forward Deployed Engineering (proposed) · gsellamu@gmail.com · +1 858 226 0619</div>
+    </div>
+
+    <div class="cta">
+      <p>The complete twelve-document framework sits behind this deck. Full bodies shared on hiring &amp; onboarding into StatusNeo.</p>
+      <a class="btn" href="suite.html">See the Suite Index →</a>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span><b>Confidential</b> · © Jithendran (Jeeth) Sellamuthu · prepared for the StatusNeo hiring process</span>
+    <span>A proposal &amp; validated demonstration — Modutecture is proof of the motion, not a closed account.</span>
+  </div>
+</footer>
+</div>
+
+</body>
+</html>

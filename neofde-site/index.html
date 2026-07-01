@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jeeth — Forward Deployed Engineering for StatusNeo</title>
+<meta name="description" content="A charter to stand up StatusNeo's Forward Deployed Engineering practice — the onshore tip of the spear for Authentic AI delivery. Prepared for StatusNeo leadership."/>
+<meta name="robots" content="noindex,nofollow"/>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#e2e8f0;--green:#1e7a4c;--paper:#f6f8fb;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:Calibri,"Segoe UI",system-ui,sans-serif;line-height:1.55;}
+  a{color:inherit;}
+  /* nav */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(14,27,46,.97);backdrop-filter:blur(6px);
+    display:flex;align-items:center;gap:20px;padding:11px 26px;border-bottom:1px solid #22344f;}
+  .nav .brand{color:var(--gold);font-weight:bold;font-size:14px;letter-spacing:.4px;text-decoration:none;font-family:Cambria,serif;}
+  .nav .brand span{color:#cdd9ea;font-weight:normal;}
+  .nav .links{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;}
+  .nav a.ln{color:#cdd9ea;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:8px;}
+  .nav a.ln:hover{background:#1f3559;color:#fff;}
+  .nav a.cta{background:var(--gold);color:var(--navy);font-weight:bold;}
+  .nav a.cta:hover{background:#f0b020;color:var(--navy);}
+  /* hero */
+  .hero{background:radial-gradient(1200px 500px at 78% -10%,#274064 0%,var(--navy) 55%);color:#fff;padding:74px 0 66px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 26px;}
+  .eyebrow{color:var(--gold);font-size:12px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 16px;}
+  .hero h1{font-family:Cambria,Georgia,serif;font-size:44px;line-height:1.1;margin:0 0 16px;max-width:15ch;}
+  .hero h1 .g{color:var(--gold);}
+  .hero p.lead{font-size:17px;color:#d6e2f2;max-width:60ch;margin:0 0 26px;}
+  .btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px;}
+  .btn{display:inline-block;text-decoration:none;font-size:14px;font-weight:bold;padding:11px 20px;border-radius:10px;}
+  .btn.p{background:var(--gold);color:var(--navy);} .btn.p:hover{background:#f0b020;}
+  .btn.s{background:transparent;color:#fff;border:1px solid #3c567e;} .btn.s:hover{background:#1f3559;}
+  .heronote{font-size:12.5px;color:#9fb2cc;border-top:1px solid #2c456c;padding-top:16px;max-width:70ch;}
+  .heronote b{color:#cdd9ea;}
+  /* sections */
+  section{padding:52px 0;}
+  .sec-label{color:var(--goldk);font-size:12px;font-weight:bold;letter-spacing:2.4px;text-transform:uppercase;margin:0 0 8px;}
+  h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:28px;margin:0 0 14px;line-height:1.18;}
+  p{font-size:15px;}
+  .thesis{background:#fff;border-left:5px solid var(--gold);border-radius:0 14px 14px 0;padding:22px 26px;
+    font-size:18px;color:var(--navy);max-width:80ch;box-shadow:0 2px 14px rgba(20,40,70,.06);}
+  .thesis b{color:var(--navy);}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:8px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 2px 12px rgba(20,40,70,.05);}
+  .card .n{font-family:Cambria,serif;font-weight:bold;color:#fff;background:var(--navy);width:30px;height:30px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;font-size:14px;margin-bottom:11px;}
+  .card h3{margin:0 0 6px;font-size:16px;color:var(--navy);font-family:Cambria,serif;}
+  .card p{margin:0;font-size:13.5px;color:var(--slate);}
+  .record{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:10px;}
+  .rec{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 17px;border-top:3px solid var(--gold);}
+  .rec b{color:var(--navy);font-size:14px;} .rec div{color:var(--slate);font-size:12.5px;margin-top:3px;}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:10px;}
+  .box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;box-shadow:0 2px 12px rgba(20,40,70,.05);}
+  .box h3{margin:0 0 8px;font-family:Cambria,serif;color:var(--navy);font-size:18px;}
+  .box ul{margin:6px 0 0;padding-left:20px;} .box li{font-size:14px;margin:5px 0;}
+  .scan{background:linear-gradient(120deg,#1b2e4b,#24406a);color:#fff;border-radius:16px;padding:30px 32px;margin-top:8px;}
+  .scan h3{font-family:Cambria,serif;color:var(--gold);font-size:20px;margin:0 0 10px;}
+  .scan p{color:#d6e2f2;font-size:15px;margin:0;max-width:78ch;}
+  .scan b{color:#fff;}
+  .nine{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px;}
+  .nb{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;box-shadow:0 2px 12px rgba(20,40,70,.05);}
+  .nb .d{font-family:Cambria,serif;font-weight:bold;color:var(--goldk);font-size:15px;}
+  .nb .t{font-size:13.5px;color:var(--ink);margin-top:6px;}
+  .suite{background:var(--navy);color:#fff;border-radius:18px;padding:36px 36px;display:grid;grid-template-columns:1.4fr 1fr;gap:26px;align-items:center;}
+  .suite h2{color:#fff;} .suite p{color:#d6e2f2;font-size:15px;}
+  .suite .cta-col{text-align:center;border-left:1px solid #2c456c;padding-left:26px;}
+  .suite .big{font-family:Cambria,serif;font-size:40px;color:var(--gold);line-height:1;}
+  .suite .cap{font-size:12.5px;color:#9fb2cc;margin:6px 0 16px;}
+  .ask{background:#fff;border:1px solid var(--line);border-radius:16px;padding:30px 32px;box-shadow:0 2px 14px rgba(20,40,70,.06);}
+  .ask .q{font-family:Cambria,serif;font-size:22px;color:var(--navy);margin:0 0 8px;}
+  .contact{display:flex;gap:22px;flex-wrap:wrap;margin-top:14px;font-size:15px;}
+  .contact a{color:var(--navy);font-weight:bold;text-decoration:none;border-bottom:2px solid var(--gold);}
+  footer{background:#0e1b2e;color:#9fb2cc;font-size:12px;padding:26px 0;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;}
+  footer b{color:#cdd9ea;}
+  .honest{max-width:74ch;line-height:1.5;}
+  @media(max-width:760px){.hero h1{font-size:32px;}.split,.suite,.nine{grid-template-columns:1fr;}.suite .cta-col{border-left:0;border-top:1px solid #2c456c;padding-left:0;padding-top:20px;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="index.html">Jeeth <span>· Forward Deployed Engineering</span></a>
+  <div class="links">
+    <a class="ln" href="index.html">Home</a>
+    <a class="ln" href="suite.html">The Suite</a>
+    <a class="ln" href="deck.html">Board Deck</a>
+    <a class="ln cta" href="#contact">Contact</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Forward Deployed Engineering · prepared for StatusNeo</p>
+    <h1>The onshore <span class="g">tip of the spear</span> for Authentic&nbsp;AI™ delivery.</h1>
+    <p class="lead">A charter to stand up StatusNeo's Forward Deployed Engineering practice — and a 90-day plan to prove it. Already documented as a complete operating framework. Already demonstrated, live, for a StatusNeo customer.</p>
+    <div class="btns">
+      <a class="btn p" href="suite.html">See the complete suite →</a>
+      <a class="btn s" href="deck.html">Read the board deck</a>
+    </div>
+    <p class="heronote"><b>Prepared for the StatusNeo Managing Partner, Founders &amp; CTOs.</b> A proposal and a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account. The full document suite is shared on hiring and onboarding into StatusNeo. — Jithendran (Jeeth) Sellamuthu</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">The thesis</p>
+    <div class="thesis">StatusNeo has the frameworks and the offshore scale. <b>FDE is the missing onshore tip of the spear</b> that lands those frameworks inside the customer, de-risks the handoff, and unlocks the regulated enterprises the air-gapped posture is already built for.</div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="wrap">
+    <p class="sec-label">Why Jeeth</p>
+    <h2>Five reasons it's his to build</h2>
+    <div class="cards">
+      <div class="card"><div class="n">1</div><h3>The proof, not the pitch</h3><p>Ran the embedded FDE motion live for a StatusNeo customer (Modutecture); the CTO invited expansion. No other candidate can say that today.</p></div>
+      <div class="card"><div class="n">2</div><h3>Unlocks the hardest segment</h3><p>Healthcare, BFSI, and airlines won't buy pure-offshore — they demand embedded, regulated-domain engineers. Healthcare, financial, and safety-critical systems are his whole career.</p></div>
+      <div class="card"><div class="n">3</div><h3>Makes the OS Fabric™ landable</h3><p>The framework is excellent; FDE is how it gets deployed and trusted inside a customer — not just architected in a deck.</p></div>
+      <div class="card"><div class="n">4</div><h3>Solves the GCC handoff</h3><p>The #1 failure mode of offshore-led delivery — de-risked by an onshore owner who opens the account the GCC then scales.</p></div>
+      <div class="card"><div class="n">5</div><h3>Hands-on from day one</h3><p>Can personally be the FDE on the first hard accounts while standing up the cadre — not a manager who needs a team first.</p></div>
+    </div>
+    <div class="record">
+      <div class="rec"><b>Qualcomm</b><div>40M users · 99.999% · US Patent 8,655,833</div></div>
+      <div class="rec"><b>GE Healthcare</b><div>HIPAA / regulated medical systems</div></div>
+      <div class="rec"><b>Amazon</b><div>Six-nines-class scale &amp; operations</div></div>
+      <div class="rec"><b>28 years</b><div>Embedded-at-customer across regulated verticals</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="sec-label">The operating model</p>
+    <h2>FDE lands. GCC scales. One pod, no handoffs.</h2>
+    <div class="split">
+      <div class="box"><h3>FDE — onshore</h3><ul>
+        <li>Embedded, senior, customer-trusted.</li>
+        <li>Runs the AI Maturity Scan, diagnoses, architects, and lands a working slice on the customer's stack.</li>
+        <li>Stays single owner of the outcome — pulls the pod in behind earned trust, no handoff gap.</li>
+      </ul></div>
+      <div class="box"><h3>GCC — offshore</h3><ul>
+        <li>Velocity + cost.</li>
+        <li>Scales delivery behind the trusted relationship using the Agents Library + AI-Native SDLC.</li>
+        <li>FDE = onshore trust + architecture authority. GCC = offshore velocity + cost. Two halves of one motion.</li>
+      </ul></div>
+    </div>
+    <div class="scan">
+      <h3>It starts with an AI Engineering Maturity Scan</h3>
+      <p>Structured interviews across engineering, platform, DevOps/SRE, and product; a maturity score and capability heatmap; and an opinionated 90-day / 6-month / 12-month roadmap that says where AI creates disproportionate ROI — and <b>where AI should not be used.</b> Then, unlike an assessor who leaves a deck, <b>the FDE ships the fix.</b></p>
+    </div>
+  </div>
+</section>
+
+<section style="background:#fff;">
+  <div class="wrap">
+    <p class="sec-label">The 90-day proof</p>
+    <h2>From one validated pilot to a named, scaling practice</h2>
+    <div class="nine">
+      <div class="nb"><div class="d">Day 30 — Scan &amp; Land</div><div class="t">AI Maturity Scan run · charter signed · Modutecture pilot live · 3–5 target accounts identified.</div></div>
+      <div class="nb"><div class="d">Day 60 — Prove</div><div class="t">Methodology documented (cookbook + runbook) · a second account landed.</div></div>
+      <div class="nb"><div class="d">Day 90 — Scale</div><div class="t">A named, sellable practice · pipeline, dashboard, and cross-region co-sell.</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="suite">
+      <div>
+        <p class="sec-label" style="color:var(--gold)">The complete framework</p>
+        <h2>A twelve-document operating framework — already built</h2>
+        <p>Behind this pitch sits the charter, the loop cookbook, the landing runbook, the agentic lifecycle, the multi-cloud tooling directory, the AEC use case, and the activation plan. The complete index — every document and every section — is published here as proof of scope. <b>The full document bodies are shared on hiring and onboarding into StatusNeo.</b></p>
+      </div>
+      <div class="cta-col">
+        <div class="big">12</div>
+        <div class="cap">documents · full index online</div>
+        <a class="btn p" href="suite.html">Open the Suite Index →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:#fff;">
+  <div class="wrap">
+    <p class="sec-label">The ask</p>
+    <div class="ask">
+      <p class="q">Give the charter — and 90 days.</p>
+      <p>The charter to stand up StatusNeo's Forward Deployed Engineering practice — starting with the Modutecture pilot already in flight — and 90 days to prove it becomes a named, scaling, regulated-enterprise-unlocking practice line.</p>
+      <div class="contact">
+        <span>Jithendran (Jeeth) Sellamuthu</span>
+        <a href="mailto:gsellamu@gmail.com">gsellamu@gmail.com</a>
+        <a href="tel:+18582260619">+1 858 226 0619</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Confidential</b> · © Jithendran (Jeeth) Sellamuthu · prepared for the StatusNeo hiring process</span>
+    <span class="honest">A proposal &amp; validated demonstration — Modutecture is proof of the motion, not a closed-and-scaled account. Full document bodies shared on hiring &amp; onboarding into StatusNeo.</span>
+  </div>
+</footer>
+
+</body>
+</html>
