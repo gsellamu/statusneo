@@ -64,17 +64,14 @@
 <div class="layout">
   <nav class="docs" id="docNav"></nav>
   <main>
-    <div class="toolbar">
-      <span class="src" id="srcLabel"></span>
-      <a class="raw" id="rawLink" href="#" target="_blank">View raw .md &rarr;</a>
-    </div>
-    <article class="md" id="docBody"><div class="loading">Loading\u2026</div></article>
+    <article class="md" id="docBody"><div class="loading">Loading&hellip;</div></article>
   </main>
 </div>
 
 <script>
 /* ---------- the suite ---------- */
 var DOCS = [
+  ["SUITE-INDEX","IX","Suite Index & Contents","overview"],
   ["00-MASTER-AGENTIC-FDE-REFERENCE","00","Master Reference","capstone"],
   ["01-FDE-CHARTER-PROPOSAL","01","FDE Charter Proposal","charter"],
   ["02-FDE-LOOP-COOKBOOK","02","FDE Loop Cookbook","method"],
@@ -85,6 +82,8 @@ var DOCS = [
   ["08-AEC-MODUTECTURE-FDE-USECASE","08","AEC / Modutecture Use Case","use case"],
   ["09-FDE-30-60-90-OKR-STAR","09","30/60/90 — OKR & STAR","activation"],
   ["10-FDE-OKR-SCORECARD","10","OKR Scorecard","tracking"],
+  ["DECK-FDE-CHARTER","D","Board Deck","presentation"],
+  ["PRFAQ-FDE-PLAYBOOK","Q","PR-FAQ Playbook","narrative"],
 ];
 
 /* ---------- minimal, offline markdown -> HTML (handles headers, tables,
@@ -191,8 +190,6 @@ function loadDoc(id){
   var meta=DOCS.filter(function(d){return d[0]===id;})[0]||DOCS[0];
   var url="sources/"+meta[0]+".md";
   document.getElementById("docTitle").textContent=meta[2];
-  document.getElementById("srcLabel").textContent="sources/"+meta[0]+".md";
-  document.getElementById("rawLink").href=url;
   document.title="StatusNeo FDE — "+meta[2];
   Array.prototype.forEach.call(nav.querySelectorAll("a"),function(a){ a.classList.toggle("on",a.dataset.id===id); });
   var body=document.getElementById("docBody");

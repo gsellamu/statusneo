@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>StatusNeo Agentic FDE Suite — Index &amp; Board Deck (Confidential)</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#8a95a3;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.5;}
+
+  /* fixed watermark — renders on every printed page in Chromium browsers */
+  .wm{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none;}
+  /* fixed confidential footer — prints on every page */
+  .cfoot{position:fixed;left:0;right:0;bottom:0;z-index:9998;pointer-events:none;
+    background:rgba(14,27,46,.93);color:#e8eef7;font-size:9.5px;letter-spacing:.3px;
+    text-align:center;padding:4px 8px;}
+  .cfoot b{color:var(--gold);}
+
+  /* screen-only how-to banner */
+  .howto{max-width:820px;margin:14px auto;background:#fff;border:1px solid var(--line);
+    border-left:5px solid var(--gold);border-radius:10px;padding:13px 17px;font-size:13px;color:var(--ink);
+    box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .howto b{color:var(--navy);}
+  .howto code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:12px;}
+
+  /* the printable sheets */
+  .sheet{max-width:820px;margin:16px auto;background:#fff;padding:40px 46px 56px;
+    box-shadow:0 3px 16px rgba(0,0,0,.22);border-radius:4px;position:relative;}
+  .kick{color:var(--goldk);font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 8px;}
+  h1{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:27px;margin:0 0 6px;line-height:1.18;}
+  h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:19px;margin:22px 0 7px;border-bottom:1px solid var(--line);padding-bottom:5px;}
+  h3{font-family:Cambria,Georgia,serif;color:var(--goldk);font-size:14.5px;margin:15px 0 4px;}
+  p{font-size:13.5px;margin:8px 0;}
+  em{color:var(--slate);}
+  strong{color:var(--navy);}
+  ul{margin:7px 0;padding-left:22px;} li{font-size:13px;margin:3px 0;}
+  .sub{color:var(--slate);font-size:14px;margin:2px 0 0;}
+  .conf{margin:20px 0 0;padding:12px 15px;background:#f7faff;border-left:4px solid var(--gold);
+    border-radius:0 8px 8px 0;color:var(--navy);font-size:12px;}
+  .meta-row{margin-top:26px;font-size:12.5px;color:var(--slate);}
+  .meta-row b{color:var(--navy);}
+  .idx h3{margin-top:13px;}
+  .idx .d{font-size:12.5px;color:var(--slate);margin:1px 0 3px;}
+  .kpi{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;}
+  .kpi th{background:var(--navy);color:#fff;text-align:left;padding:6px 9px;border:1px solid #2c3f5e;}
+  .kpi td{padding:6px 9px;border:1px solid var(--line);}
+  .slidehd{display:flex;align-items:baseline;gap:10px;margin-bottom:2px;}
+  .slidehd .n{font-family:Cambria,serif;font-weight:bold;color:#fff;background:var(--navy);font-size:12px;border-radius:6px;padding:2px 9px;}
+  .tag{display:inline-block;background:var(--tint);border:1px solid var(--line);border-radius:20px;
+    padding:2px 11px;font-size:11px;color:var(--slate);font-weight:bold;}
+
+  @page{size:letter;margin:14mm 12mm 16mm;}
+  @media print{
+    body{background:#fff;}
+    .howto{display:none;}
+    .sheet{box-shadow:none;margin:0 auto;max-width:100%;padding:6mm 4mm 10mm;border-radius:0;
+      page-break-after:always;}
+    .sheet:last-of-type{page-break-after:auto;}
+    .wm{position:fixed;}
+    .cfoot{position:fixed;}
+  }
+</style>
+</head>
+<body>
+
+<!-- WATERMARK (fixed, every page) -->
+<svg class="wm" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <pattern id="wmpat" width="360" height="230" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <text x="0" y="120" font-family="Arial, sans-serif" font-size="16.5" font-weight="bold"
+            fill="#16263f" fill-opacity="0.08">CONFIDENTIAL &#183; &#169; Jithendran Sellamuthu &#183; StatusNeo hiring process</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#wmpat)"></rect>
+</svg>
+
+<!-- CONFIDENTIAL FOOTER (fixed, every page) -->
+<div class="cfoot"><b>CONFIDENTIAL</b> &nbsp;&middot;&nbsp; &copy; Jithendran (Jeeth) Sellamuthu &nbsp;&middot;&nbsp; Prepared for the StatusNeo hiring process &nbsp;&middot;&nbsp; Not for redistribution</div>
+
+<!-- SCREEN-ONLY: how to make the PDF -->
+<div class="howto">
+  <b>To create the watermarked PDF:</b> press <code>Ctrl</code>+<code>P</code> (or <code>&#8984;</code>+<code>P</code>) &rarr; Destination <b>Save as PDF</b> &rarr; enable <b>Background graphics</b> so the watermark prints &rarr; Save. The confidential watermark and footer render on every page. <em>(This banner does not appear in the printout.)</em>
+</div>
+
+<!-- ============ COVER ============ -->
+<section class="sheet">
+  <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
+  <h1>The Agentic FDE Suite</h1>
+  <p class="sub">Index &amp; Board Deck — the scope of the practice, and the case for standing it up.</p>
+
+  <div class="conf">
+    <b>Confidential &middot; &copy; Jithendran (Jeeth) Sellamuthu &middot; prepared for the StatusNeo hiring process.</b>
+    This package contains the <b>board deck</b> and a <b>scope index (section names only)</b> of a twelve-document
+    operating framework. Full document bodies are held and available on engagement. This is a <b>proposal and a
+    validated demonstration, not a delivered engagement</b> — the Modutecture work is a demonstration, not a
+    closed-and-scaled account. June-2026 figures are per source, pending verification.
+  </div>
+
+  <div class="meta-row">
+    <b>Author:</b> Jithendran (Jeeth) Sellamuthu &middot; Head of Forward Deployed Engineering (proposed)<br>
+    <b>Contact:</b> gsellamu@gmail.com &middot; +1 858 226 0619<br>
+    <b>Prepared for:</b> the StatusNeo Founder &amp; Board sponsor
+  </div>
+</section>
+
+<!-- ============ SUITE INDEX ============ -->
+<section class="sheet idx">
+  <p class="kick">Scope — section names only, no content</p>
+  <h1>Suite Index &amp; Contents</h1>
+  <p class="sub">Twelve documents, built and ready. Every document and every section is listed. Contents are not reproduced.</p>
+
+  <h3>00 &middot; Master Reference <span class="tag">capstone</span></h3>
+  <div class="d">The capstone — 11 parts consolidating the entire practice.</div>
+  <ul>
+    <li>I. The Thesis &middot; II. The 80:20 Operating Model &middot; III. The Agentic FDE Lifecycle &middot; IV. The Multi-Cloud Tooling Directory</li>
+    <li>V. Agentic Security &amp; Guardrails &middot; VI. CI/CD for Remote PODs &middot; VII. The Modutecture AEC Architecture &middot; VIII. The AEC Use Case</li>
+    <li>IX. The Kaiser Correctness Gate &middot; X. The GCC Execution Engine &middot; XI. Roadmap, Benchmarks &amp; Open Questions</li>
+  </ul>
+
+  <h3>01 &middot; FDE Charter Proposal</h3>
+  <div class="d">The strategic case + the 30/60/90.</div>
+  <ul>
+    <li>1. The Strategic Gap &middot; 2. Why Me &middot; 3. The FDE Operating Model &middot; 4. The 30/60/90 Day Playbook &middot; 5. Success Metrics</li>
+    <li>6. Change Leadership &amp; Agentic AI Transformation (6.1 Core Responsibilities &middot; 6.2 Transformation Matrix &middot; 6.3 Quantitative KPIs &middot; 6.4 Timeline &middot; 6.5 Executive Dashboard &middot; 6.6 LangGraph Telemetry Hooks &middot; 6.7 Telemetry Payload Standard)</li>
+    <li>7. The FDE Agentic Toolbox — Copilot &times; Digital Twin (7.1&ndash;7.5) &middot; 8. The Killer Value</li>
+  </ul>
+
+  <h3>02 &middot; FDE Loop Cookbook</h3>
+  <div class="d">The methodology, recipe by recipe.</div>
+  <ul><li>The Core Principle &middot; Recipe 1 Clarity &middot; Recipe 2 Build &middot; Recipe 3 Velocity &middot; Recipe 4 Improvement &middot; The FDE Archetype</li></ul>
+
+  <h3>03 &middot; Landing Runbook</h3>
+  <div class="d">The first-90-days field manual.</div>
+  <ul><li>Pre-Landing &middot; Phase 1 Listen &amp; Diagnose &middot; Phase 2 Land a Working Slice &middot; Phase 3 Pull the Pod In &middot; Phase 4 Govern &amp; Expand &middot; The Break-Glass Rules &middot; What "Done" Means at Day 90</li></ul>
+
+  <h3>05 &middot; Agentic FDE Lifecycle</h3>
+  <div class="d">The 7-stage SDLC, blueprint to runbook.</div>
+  <ul><li>I. The 7-Stage Lifecycle &middot; II. Playbook (Frameworks &amp; Tooling) &middot; III. Cookbook (Embedded vs. Remote PODs) &middot; IV. Runbook (Operate &amp; Scale) &middot; V. Scalability &amp; Enterprise Adoption</li></ul>
+
+  <h3>06 &middot; FDE 80:20 Roles &amp; Lifecycle</h3>
+  <div class="d">The role split + the full RACI.</div>
+  <ul><li>I. The Two Halves of the FDE &middot; II. The 80:20 Lifecycle, Stage by Stage &middot; III. The 80:20 RACI &middot; IV. The Split Across Embedded &amp; Remote PODs</li></ul>
+
+  <h3>07 &middot; Multi-Cloud Tooling Directory</h3>
+  <div class="d">Generic / AWS / GCP / Azure, Embedded vs. Remote.</div>
+  <ul><li>Generic &amp; Cloud-Agnostic Orchestration &middot; AWS Ecosystem &middot; GCP Ecosystem &middot; Azure Ecosystem &middot; Parallel-Rollout Crosswalk</li></ul>
+
+  <h3>08 &middot; AEC / Modutecture Use Case</h3>
+  <div class="d">Contextual construction across the four loops.</div>
+  <ul><li>I. The Use Case &middot; II. Execution Across the Four Loops &middot; III. The Lifecycle Automation Stack &middot; IV. How the Use Case Scales (FDE Lands, GCC Scales)</li></ul>
+
+  <h3>09 &middot; 30/60/90 — OKR &amp; STAR</h3>
+  <div class="d">The plan as OKRs and as STAR narratives.</div>
+  <ul><li>Part A: The OKRs (Land &amp; Charter &middot; Codify &amp; Prove &middot; Productize &amp; Scale) &middot; Part B: The STAR Narratives (three horizon STARs + the Modutecture anchor)</li></ul>
+
+  <h3>10 &middot; OKR Scorecard</h3>
+  <div class="d">The printable tracking grid.</div>
+  <ul><li>Days 0&ndash;30 &middot; Days 31&ndash;60 &middot; Days 61&ndash;90 &middot; Overall rollup</li></ul>
+
+  <h3>DECK &middot; Board Deck (9 slides)</h3>
+  <div class="d">The charter, presentation-ready (included in full after this index).</div>
+  <ul><li>1. Title &middot; 2. Strategic Gap &middot; 3. Thesis &middot; 4. Why Me &middot; 5. Operating Model &middot; 6. 30/60/90 &middot; 7. Change Leadership &middot; 8. Killer Value &middot; 9. The Ask</li></ul>
+
+  <h3>PR-FAQ &middot; PR-FAQ + Execution Playbook</h3>
+  <div class="d">Amazon working-backwards.</div>
+  <ul>
+    <li>Part I: The Press Release &middot; Part II: FAQ (External + Internal — WHY/WHAT/WHO/WHERE/WHEN/HOW)</li>
+    <li>Part III: The Execution Playbook (1. Six Questions &middot; 2. WHO &middot; 3. WHERE &middot; 4. WHEN &middot; 5. HOW &middot; 6. Transformation Layer &middot; 7. Governing Metrics &middot; 8. Why Feasible &amp; Exclusive)</li>
+  </ul>
+
+  <h2>Roadmap — the FDE Excellence Operating Framework</h2>
+  <p class="sub"><em>Designed; in development, not yet built.</em></p>
+  <ul>
+    <li><b>11</b> The 12 Pillars of FDE Excellence — three scopes (IC / POD / Org) + a 5-level maturity model</li>
+    <li><b>12 / 13 / 14</b> FDE (IC), FDE POD, FDE Org Charters &middot; <b>15 / 16 / 17</b> Playbook / Cookbook / Runbook (tier-spanning + per-tier)</li>
+    <li><b>18</b> AI Tools &amp; Frameworks Directory &middot; <b>19</b> Governance, Reliability &amp; Best-Practices Compendium</li>
+    <li><em>The 12 pillars:</em> Customer &amp; Commercial &middot; Delivery &middot; Engineering &middot; AI Orchestration &amp; Tooling &middot; Architecture &amp; Platform &middot; AI Reliability &amp; Fragility &middot; Governance &amp; Compliance &middot; Security &amp; Identity &middot; Operational &middot; Methodology &amp; Frameworks &middot; People &amp; Talent &middot; Knowledge &amp; Context</li>
+  </ul>
+  <p class="conf" style="margin-top:16px"><b>Full document bodies available on engagement.</b> This index is shared to demonstrate scope, not to transfer the work.</p>
+</section>
+
+<!-- ============ BOARD DECK ============ -->
+<section class="sheet">
+  <div class="slidehd"><span class="n">1</span><span class="tag">Title</span></div>
+  <h1>Forward Deployed Engineering</h1>
+  <p class="sub">The onshore tip of the spear for Authentic AI&trade; delivery.</p>
+  <p>A charter to stand up StatusNeo's FDE practice — and a 30/60/90 plan to prove it.</p>
+  <div class="meta-row"><b>Jithendran (Jeeth) Sellamuthu</b> &middot; Head of Forward Deployed Engineering (proposed)<br>Prepared for the Founder &amp; Board sponsor &middot; June 2026</div>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">2</span><span class="tag">The Strategic Gap</span></div>
+  <h1>StatusNeo has the frameworks and the scale</h1>
+  <p class="sub">What it does not yet name is the onshore, customer-embedded delivery motion.</p>
+  <h3>What StatusNeo has built</h3>
+  <ul>
+    <li>Authentic AI&trade; Loop — Clarity &rarr; Build &rarr; Velocity &rarr; Improvement</li>
+    <li>Enterprise OS Fabric&trade; — six fabrics (Dev, Data, Ops, Security, Experience, Decision)</li>
+    <li>AI-Native SDLC + AI Maturity Index + AI Agents Library</li>
+    <li>GCC Setup &amp; Scale — offshore-concentrated, SV-disciplined; sharp 2026 POV (Context is the Moat, Agent-Washing, Agentic Blueprint)</li>
+  </ul>
+  <h3>The one thing missing — Forward Deployed Engineering</h3>
+  <ul>
+    <li>Lands the OS Fabric&trade; inside the customer — not just in a GCC</li>
+    <li>De-risks the offshore handoff — the #1 GCC failure mode</li>
+    <li>Unlocks regulated, air-gapped buyers — healthcare, BFSI, airlines</li>
+    <li>Tip of the spear for land-and-expand — FDE opens, GCC scales</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">3</span><span class="tag">The Thesis</span></div>
+  <h1>The missing onshore tip of the spear</h1>
+  <p>StatusNeo has the frameworks and the offshore scale. <strong>FDE is the missing onshore tip of the spear</strong> that lands those frameworks inside the customer, de-risks the handoff, and unlocks the regulated enterprises your air-gapped posture is already built for.</p>
+  <p class="conf">"And I just proved it live for your customer Modutecture — the CTO was enthusiastic and invited me deeper."</p>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">4</span><span class="tag">Why Me</span></div>
+  <h1>The proof is already on the table</h1>
+  <p class="sub">28 years of the exact motion this practice needs.</p>
+  <ul>
+    <li><strong>28 yrs FDE-equivalent</strong> — embedded-at-customer from HCL-HP &rarr; Qualcomm (40M users, 99.999%, US Patent) &rarr; GE Healthcare &rarr; Mitchell &rarr; Amazon &rarr; Stealth GenAI.</li>
+    <li><strong>Regulated-domain native</strong> — healthcare, financial, safety-critical — exactly StatusNeo's regulated target verticals (healthcare, BFSI, airlines).</li>
+    <li><strong>AI-native architect</strong> — governed agentic AI: the model proposes, a deterministic gate disposes.</li>
+    <li><strong>Live proof — Modutecture</strong> — a working, customer-validated FDE engagement for your customer. The CTO wants more. That's the pilot for this practice.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">5</span><span class="tag">The Operating Model</span></div>
+  <h1>FDE lands. GCC scales. One pod, no handoffs.</h1>
+  <ul>
+    <li><strong>FDE — onshore:</strong> embedded, senior, customer-trusted. Runs the AI Maturity Scan, diagnoses, architects, and lands a working slice on the customer's stack.</li>
+    <li><strong>The seam:</strong> the FDE stays single owner of the outcome. Pulls the offshore pod in behind earned trust — no handoff gap.</li>
+    <li><strong>GCC — offshore:</strong> velocity + cost. Scales delivery behind the trusted relationship using the Agents Library + AI-Native SDLC.</li>
+  </ul>
+  <p class="sub">FDE = onshore trust + architecture authority. GCC = offshore velocity + cost. Two halves of one motion.</p>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">6</span><span class="tag">The 30/60/90</span></div>
+  <h1>From one validated pilot to a named, scaling practice</h1>
+  <h3>Days 0&ndash;30 — Listen, Map, Land</h3>
+  <ul><li>Immersion (sponsor, CEO, CTO, regional heads) &middot; audit accounts &rarr; 3&ndash;5 FDE targets &middot; run the AI Maturity Scan (interviews, capability heatmap, score) &middot; formalize Modutecture as pilot #0 &middot; draft &amp; sign the FDE Charter v1</li></ul>
+  <h3>Days 31&ndash;60 — Codify &amp; Prove</h3>
+  <ul><li>Document the FDE Loop&trade; (cookbook) &middot; build the Landing Runbook &middot; onboard first 2&ndash;3 FDEs &middot; land a second account</li></ul>
+  <h3>Days 61&ndash;90 — Scale &amp; Institutionalize</h3>
+  <ul><li>Productize "StatusNeo FDE" &middot; practice dashboard + pipeline &middot; co-sell enablement across regions &middot; whitepaper: The Embedded Edge</li></ul>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">7</span><span class="tag">Change Leadership</span></div>
+  <h1>The FDE drives adoption — measured, not asserted</h1>
+  <p class="sub">In an 80:20 agentic model, deploying software is easy; breaking organizational inertia is the job.</p>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Target</th><th>Meaning</th></tr>
+    <tr><td>Time-to-First-Value</td><td>&lt; 14 days</td><td>to first tested binary in staging</td></tr>
+    <tr><td>Client-Authored Specs</td><td>&gt; 60%</td><td>of Gherkin files by month 2</td></tr>
+    <tr><td>Agentic PR Merge Rate</td><td>&gt; 90%</td><td>merged with no human rewrites</td></tr>
+    <tr><td>Human Intervention</td><td>&lt; 2 / 1k LOC</td><td>manual commits to agent code</td></tr>
+    <tr><td>Platform Contribution</td><td>&ge; 2 / pilot</td><td>components pushed Spoke &rarr; Hub</td></tr>
+    <tr><td>System Adoption</td><td>&gt; 75%</td><td>weekly active of trained operators</td></tr>
+  </table>
+  <p class="sub">The crossover that proves it: when the client stops micromanaging the code and starts authoring the specifications.</p>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">8</span><span class="tag">The Killer Value</span></div>
+  <h1>Exclusive to me, now — five reasons</h1>
+  <ul>
+    <li><strong>I am the proof, not the pitch.</strong> Ran the embedded FDE motion live for your own customer (Modutecture).</li>
+    <li><strong>I unlock your hardest segment.</strong> Healthcare, BFSI, and airlines demand embedded, regulated-domain engineers.</li>
+    <li><strong>I make the OS Fabric&trade; landable.</strong> The framework is excellent; FDE is how it gets deployed and trusted inside a customer.</li>
+    <li><strong>I solve the GCC handoff problem.</strong> The #1 failure mode of offshore-led delivery — solved by the onshore tip of the spear.</li>
+    <li><strong>Authentic AI&trade; in running code.</strong> Responsible, not reckless; business-driven, not demo-driven — governed agentic AI, made real.</li>
+  </ul>
+</section>
+
+<section class="sheet">
+  <div class="slidehd"><span class="n">9</span><span class="tag">The Ask</span></div>
+  <h1>Give me the charter — and 90 days</h1>
+  <p>The charter to stand up StatusNeo's Forward Deployed Engineering practice — starting with the Modutecture pilot already in flight — and 90 days to prove it becomes a named, scaling, regulated-enterprise-unlocking practice line.</p>
+  <ul>
+    <li><strong>Day 30</strong> — Charter signed &middot; pilot live</li>
+    <li><strong>Day 60</strong> — Methodology + 2nd account</li>
+    <li><strong>Day 90</strong> — Named practice &middot; pipeline &middot; co-sell</li>
+  </ul>
+  <div class="meta-row"><b>Jithendran (Jeeth) Sellamuthu</b> &middot; Head of Forward Deployed Engineering (proposed) &middot; gsellamu@gmail.com &middot; +1 858 226 0619</div>
+</section>
+
+</body>
+</html>

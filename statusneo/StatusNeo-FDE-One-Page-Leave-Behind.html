@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>StatusNeo FDE — One-Page Leave-Behind (Confidential)</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#8a95a3;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.34;}
+
+  .wm{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none;}
+  .cfoot{position:fixed;left:0;right:0;bottom:0;z-index:9998;pointer-events:none;
+    background:rgba(14,27,46,.93);color:#e8eef7;font-size:9px;letter-spacing:.3px;text-align:center;padding:3px 8px;}
+  .cfoot b{color:var(--gold);}
+  .howto{max-width:840px;margin:12px auto;background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);
+    border-radius:10px;padding:10px 15px;font-size:12px;box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .howto b{color:var(--navy);} .howto code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:11.5px;}
+
+  .sheet{max-width:840px;margin:14px auto;background:#fff;padding:26px 34px 30px;box-shadow:0 3px 16px rgba(0,0,0,.22);border-radius:4px;}
+  .kick{color:var(--goldk);font-size:10px;font-weight:bold;letter-spacing:2.6px;text-transform:uppercase;margin:0 0 3px;}
+  h1{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:22px;margin:0 0 2px;line-height:1.12;}
+  .sub{color:var(--slate);font-size:12.5px;margin:0 0 8px;}
+  .one{background:#f7faff;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:9px 13px;margin:0 0 11px;font-size:12.5px;color:var(--navy);}
+  .one b{color:var(--navy);}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:14px;margin:2px 0 4px;border-bottom:2px solid var(--gold);padding-bottom:3px;}
+  p{font-size:11.7px;margin:4px 0;}
+  strong{color:var(--navy);}
+  ul{margin:4px 0;padding-left:17px;} li{font-size:11.5px;margin:2px 0;}
+  .proofrow{font-size:11px;color:var(--ink);margin:3px 0;padding-left:9px;border-left:3px solid var(--gold);}
+  .band{margin:12px 0 0;}
+  .nine{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:4px;}
+  .nb{background:var(--tint);border:1px solid var(--line);border-radius:9px;padding:8px 11px;}
+  .nb .d{font-family:Cambria,serif;font-weight:bold;color:var(--goldk);font-size:11.5px;}
+  .nb .t{font-size:11px;color:var(--ink);margin-top:2px;}
+  .ask{margin-top:12px;background:var(--navy);color:#fff;border-radius:11px;padding:12px 16px;}
+  .ask b{color:var(--gold);}
+  .ask .big{font-family:Cambria,Georgia,serif;font-size:14.5px;line-height:1.3;}
+  .foot{margin-top:11px;font-size:10.7px;color:var(--slate);}
+  .foot b{color:var(--navy);}
+
+  @page{size:letter;margin:11mm 11mm 13mm;}
+  @media print{
+    body{background:#fff;} .howto{display:none;}
+    .sheet{box-shadow:none;margin:0 auto;max-width:100%;padding:0 2mm;border-radius:0;}
+    .wm,.cfoot{position:fixed;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="wm" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <pattern id="wmpat" width="360" height="230" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <text x="0" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
+            fill="#16263f" fill-opacity="0.07">CONFIDENTIAL &#183; &#169; Jithendran Sellamuthu &#183; StatusNeo hiring process</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#wmpat)"></rect>
+</svg>
+<div class="cfoot"><b>CONFIDENTIAL</b> &nbsp;&middot;&nbsp; &copy; Jithendran (Jeeth) Sellamuthu &nbsp;&middot;&nbsp; Prepared for the StatusNeo hiring process &nbsp;&middot;&nbsp; A proposal &amp; validated demonstration</div>
+
+<div class="howto"><b>To save as PDF:</b> <code>Ctrl</code>+<code>P</code> &rarr; <b>Save as PDF</b> &rarr; enable <b>Background graphics</b>. Designed to fit one page. <em>(This banner isn't printed.)</em></div>
+
+<section class="sheet">
+  <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
+  <h1>Forward Deployed Engineering — the onshore tip of the spear</h1>
+  <p class="sub">A charter to stand up StatusNeo's FDE practice, and a 90-day plan to prove it. &middot; Jithendran (Jeeth) Sellamuthu, Head of FDE (proposed)</p>
+
+  <div class="one"><b>The thesis:</b> StatusNeo has the frameworks and the offshore scale. FDE is the missing <b>onshore</b> tip of the spear that lands those frameworks inside the customer, de-risks the handoff, and unlocks the regulated enterprises the air-gapped posture is already built for. And it's already been proven live for your customer Modutecture.</div>
+
+  <div class="cols">
+    <div>
+      <h2>The gap &amp; the model</h2>
+      <p><strong>The gap:</strong> the frameworks (Authentic AI&trade; Loop, OS Fabric&trade;, AI-Native SDLC) are excellent, but frameworks don't deploy themselves inside a customer's constraints, politics, and regulated data.</p>
+      <p><strong>FDE lands. GCC scales. One pod, no handoffs.</strong></p>
+      <ul>
+        <li><strong>FDE (onshore):</strong> embedded, senior, customer-trusted — diagnoses, architects, lands a working slice on the customer's stack.</li>
+        <li><strong>GCC (offshore):</strong> velocity + cost — scales delivery behind the trusted relationship.</li>
+        <li>The FDE stays single owner of the outcome and pulls the pod in behind earned trust — no handoff gap.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Why Jeeth</h2>
+      <ul>
+        <li><strong>He is the proof, not the pitch</strong> — ran this exact motion live for your customer Modutecture; the CTO invited expansion.</li>
+        <li><strong>Unlocks the hardest segment</strong> — healthcare, BFSI, airlines won't buy pure-offshore; embedded regulated-domain work (healthcare, financial, safety-critical) is his whole career.</li>
+        <li><strong>AI-native architect</strong> — governed agentic AI: the model proposes, a deterministic gate disposes.</li>
+        <li><strong>Starts hands-on</strong> — can be the FDE on the first hard accounts while building the cadre.</li>
+      </ul>
+      <h2 style="margin-top:8px">Track record</h2>
+      <div class="proofrow"><strong>Qualcomm</strong> — 40M users, 99.999%, US Patent 8,655,833</div>
+      <div class="proofrow"><strong>GE Healthcare</strong> — HIPAA / regulated medical systems</div>
+      <div class="proofrow"><strong>Amazon</strong> — six-nines-class scale &middot; <strong>28 yrs</strong> embedded-at-customer</div>
+    </div>
+  </div>
+
+  <div class="band">
+    <h2>The 90-day proof</h2>
+    <div class="nine">
+      <div class="nb"><div class="d">Day 30 — Scan &amp; Land</div><div class="t">AI Maturity Scan run &middot; charter signed &middot; Modutecture pilot live &middot; 3–5 targets identified.</div></div>
+      <div class="nb"><div class="d">Day 60 — Prove</div><div class="t">Methodology documented (cookbook + runbook) &middot; a second account landed.</div></div>
+      <div class="nb"><div class="d">Day 90 — Scale</div><div class="t">A named, sellable practice &middot; pipeline, dashboard, and cross-region co-sell.</div></div>
+    </div>
+  </div>
+
+  <div class="ask">
+    <div class="big"><b>The ask:</b> the charter to stand up StatusNeo's Forward Deployed Engineering practice — starting with the Modutecture pilot already in flight — and 90 days to prove it becomes a named, scaling, regulated-enterprise-unlocking practice line.</div>
+  </div>
+
+  <p class="foot"><b>Honest framing:</b> a proposal plus a validated demonstration — the Modutecture engagement is proof of the motion, not a closed-and-scaled account. Behind this page sits a complete, already-built twelve-document operating framework. &nbsp;·&nbsp; <b>Jeeth Sellamuthu</b> · gsellamu@gmail.com · +1 858 226 0619</p>
+</section>
+
+</body>
+</html>

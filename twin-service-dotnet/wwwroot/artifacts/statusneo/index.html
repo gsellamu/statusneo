@@ -55,7 +55,7 @@
 <header class="hero"><div class="wrap">
   <p class="kick">StatusNeo &times; Modutecture &middot; Forward-Deployed Engineering</p>
   <h1>Artifact Index &amp; File Map</h1>
-  <p>Every document in the suite &mdash; with its on-disk paths and live URLs. Each one opens in-browser from its markdown source; downloadable PDF/DOCX/PPTX versions are linked when present in the served folder (probed live below).</p>
+  <p>Every document in the suite &mdash; with its on-disk paths and in-browser link. Each opens in the gated, watermarked reader; there are no download or raw-file links.</p>
 </div></header>
 
 <main>
@@ -72,19 +72,12 @@
     </div>
   </div>
 
-  <div class="sec">The ten documents</div>
-  <p class="sec-note">Open in-browser (Read), view the raw markdown, or download a binary version if it has been synced.</p>
+  <div class="sec">The full document set</div>
+  <p class="sec-note">Twelve documents. Each opens in the gated, watermarked reader &mdash; no downloads, no raw files.</p>
   <div id="docList"></div>
 
-  <div class="sec">Presentation artifacts (binary only)</div>
-  <p class="sec-note">No markdown source &mdash; these are downloads. Both are present in the served folder.</p>
-  <div id="binList"></div>
-
   <div class="legend">
-    <span class="dot" style="background:var(--gold)"></span><b>Read</b> &mdash; opens in the in-browser reader (always works) &nbsp;&middot;&nbsp;
-    <span class="dot" style="background:#d4e0f0"></span><b>.md</b> &mdash; raw markdown source &nbsp;&middot;&nbsp;
-    <span class="dot" style="background:var(--green)"></span><b>PDF/DOCX/PPTX</b> &mdash; downloadable binary, present in the served folder &nbsp;&middot;&nbsp;
-    <span class="dot" style="background:var(--mute)"></span><b>not synced</b> &mdash; binary not in the served folder yet (the in-browser version still works)
+    <span class="dot" style="background:var(--gold)"></span><b>Read</b> &mdash; opens in the in-browser reader (gated + watermarked). Every artifact in the suite opens this way; there are no download or raw-file links in the UI. The underlying static files still exist on disk at the paths shown &mdash; closing that fully requires the server-side gate.
   </div>
 
   <p class="footer" id="footer">StatusNeo &times; Modutecture &middot; Agentic FDE Practice &middot; artifact index &middot; paths are relative to the repo root <code>modutecture-spine-fullstack\</code>.</p>
@@ -92,65 +85,34 @@
 
 <script>
 var DOCS = [
-  {n:"00", id:"00-MASTER-AGENTIC-FDE-REFERENCE", t:"Master Reference", b:"The capstone &mdash; 11 parts consolidating the entire practice.", bins:["StatusNeo-Agentic-FDE-MASTER.pdf","StatusNeo-Agentic-FDE-MASTER.docx"]},
-  {n:"01", id:"01-FDE-CHARTER-PROPOSAL", t:"FDE Charter Proposal", b:"The strategic case + the 30/60/90 + change leadership + the Copilot &times; Twin toolbox.", bins:["01-FDE-CHARTER-PROPOSAL.pdf","01-FDE-CHARTER-PROPOSAL.docx"]},
-  {n:"02", id:"02-FDE-LOOP-COOKBOOK", t:"FDE Loop Cookbook", b:"The embedded-delivery methodology, recipe by recipe.", bins:["02-FDE-LOOP-COOKBOOK.pdf","02-FDE-LOOP-COOKBOOK.docx"]},
-  {n:"03", id:"03-LANDING-RUNBOOK", t:"Landing Runbook", b:"The operational field manual for the first 90 days inside a customer.", bins:["03-LANDING-RUNBOOK.pdf","03-LANDING-RUNBOOK.docx"]},
-  {n:"05", id:"05-AGENTIC-FDE-LIFECYCLE", t:"Agentic FDE Lifecycle", b:"The 7-stage agentic SDLC &mdash; blueprint, playbook, cookbook, runbook.", bins:["Agentic-FDE-Lifecycle.pdf","Agentic-FDE-Lifecycle.docx"]},
-  {n:"06", id:"06-FDE-80-20-ROLES-AND-LIFECYCLE", t:"80:20 Roles &amp; Lifecycle", b:"The role split, per-stage AI:Human ratios, and the full RACI.", bins:["FDE-80-20-Roles-and-Lifecycle.pdf","FDE-80-20-Roles-and-Lifecycle.docx"]},
-  {n:"07", id:"07-MULTI-CLOUD-AGENTIC-FDE-TOOLING-DIRECTORY", t:"Multi-Cloud Tooling Directory", b:"Generic / AWS / GCP / Azure agentic toolchains, Embedded vs. Remote.", bins:["Multi-Cloud-Agentic-FDE-Tooling-Directory.pdf","Multi-Cloud-Agentic-FDE-Tooling-Directory.docx"]},
-  {n:"08", id:"08-AEC-MODUTECTURE-FDE-USECASE", t:"AEC / Modutecture Use Case", b:"Contextual construction across the four loops + the deterministic correctness gate.", bins:["AEC-Modutecture-FDE-UseCase.pdf","AEC-Modutecture-FDE-UseCase.docx"]},
-  {n:"09", id:"09-FDE-30-60-90-OKR-STAR", t:"30/60/90 &mdash; OKR &amp; STAR", b:"The plan re-expressed as three OKRs and as STAR narratives, plus the Modutecture anchor.", bins:["09-FDE-30-60-90-OKR-STAR.pdf","09-FDE-30-60-90-OKR-STAR.docx"]},
-  {n:"10", id:"10-FDE-OKR-SCORECARD", t:"OKR Scorecard", b:"The printable tracking grid &mdash; actuals vs. targets, scored 0.0&ndash;1.0.", bins:["10-FDE-OKR-SCORECARD.pdf","10-FDE-OKR-SCORECARD.docx"]},
+  {n:"IX", id:"SUITE-INDEX", t:"Suite Index &amp; Contents", b:"The complete scope of the practice &mdash; section names only. The share-first overview."},
+  {n:"00", id:"00-MASTER-AGENTIC-FDE-REFERENCE", t:"Master Reference", b:"The capstone &mdash; 11 parts consolidating the entire practice."},
+  {n:"01", id:"01-FDE-CHARTER-PROPOSAL", t:"FDE Charter Proposal", b:"The strategic case + the 30/60/90 + change leadership + the Copilot &times; Twin toolbox."},
+  {n:"02", id:"02-FDE-LOOP-COOKBOOK", t:"FDE Loop Cookbook", b:"The embedded-delivery methodology, recipe by recipe."},
+  {n:"03", id:"03-LANDING-RUNBOOK", t:"Landing Runbook", b:"The operational field manual for the first 90 days inside a customer."},
+  {n:"05", id:"05-AGENTIC-FDE-LIFECYCLE", t:"Agentic FDE Lifecycle", b:"The 7-stage agentic SDLC &mdash; blueprint, playbook, cookbook, runbook."},
+  {n:"06", id:"06-FDE-80-20-ROLES-AND-LIFECYCLE", t:"80:20 Roles &amp; Lifecycle", b:"The role split, per-stage AI:Human ratios, and the full RACI."},
+  {n:"07", id:"07-MULTI-CLOUD-AGENTIC-FDE-TOOLING-DIRECTORY", t:"Multi-Cloud Tooling Directory", b:"Generic / AWS / GCP / Azure agentic toolchains, Embedded vs. Remote."},
+  {n:"08", id:"08-AEC-MODUTECTURE-FDE-USECASE", t:"AEC / Modutecture Use Case", b:"Contextual construction across the four loops + the deterministic correctness gate."},
+  {n:"09", id:"09-FDE-30-60-90-OKR-STAR", t:"30/60/90 &mdash; OKR &amp; STAR", b:"The plan re-expressed as three OKRs and as STAR narratives, plus the Modutecture anchor."},
+  {n:"10", id:"10-FDE-OKR-SCORECARD", t:"OKR Scorecard", b:"The printable tracking grid &mdash; actuals vs. targets, scored 0.0&ndash;1.0."},
+  {n:"D", id:"DECK-FDE-CHARTER", t:"Board Deck", b:"The 9-slide board deck &mdash; the charter, presentation-ready."},
+  {n:"Q", id:"PRFAQ-FDE-PLAYBOOK", t:"PR-FAQ Playbook", b:"Amazon working-backwards &mdash; the press release, the FAQ, and the execution playbook."},
 ];
-var BINS = [
-  {t:"Board Deck", b:"The 9-slide board deck &mdash; the charter, presentation-ready.", bins:["StatusNeo_FDE_Charter.pptx"]},
-  {t:"PR-FAQ Playbook", b:"Amazon working-backwards &mdash; the press release, the FAQ, and the playbook.", bins:["StatusNeo_FDE_PR-FAQ_Playbook.pdf","StatusNeo_FDE_PR-FAQ_Playbook.docx"]},
-];
-
-function ext(f){ var m=f.match(/\.([a-z0-9]+)$/i); return m?m[1].toUpperCase():"FILE"; }
 
 function docCard(d){
   var el=document.createElement("div"); el.className="doc";
-  var links='<a class="read" href="reader.html?doc='+d.id+'">Read &rarr;</a>'+
-            '<a class="raw" href="sources/'+d.id+'.md">.md</a>';
-  d.bins.forEach(function(f){ links+='<a class="dl pending" data-file="'+f+'" href="'+f+'" download>'+ext(f)+'</a>'; });
   el.innerHTML=
     '<div class="doc-head"><span class="nn">'+d.n+'</span>'+
       '<div><h4>'+d.t+'</h4><p class="bl">'+d.b+'</p></div></div>'+
-    '<div class="links">'+links+'</div>'+
+    '<div class="links"><a class="read" href="reader.html?doc='+d.id+'">Read &rarr;</a></div>'+
     '<div class="paths">'+
       '<span class="k">Source</span><span class="v">statusneo\\sources\\'+d.id+'.md</span>'+
       '<span class="k">Served</span><span class="v">wwwroot\\artifacts\\statusneo\\sources\\'+d.id+'.md</span>'+
     '</div>';
   return el;
 }
-function binCard(d){
-  var el=document.createElement("div"); el.className="doc";
-  var links=''; d.bins.forEach(function(f){ links+='<a class="dl pending" data-file="'+f+'" href="'+f+'" download>'+ext(f)+'</a>'; });
-  var pathRows=d.bins.map(function(f){ return '<span class="k">Served</span><span class="v">wwwroot\\artifacts\\statusneo\\'+f+'</span>'; }).join('');
-  el.innerHTML=
-    '<div class="doc-head"><span class="nn">&#9633;</span>'+
-      '<div><h4>'+d.t+'</h4><p class="bl">'+d.b+'</p></div></div>'+
-    '<div class="links">'+links+'</div>'+
-    '<div class="paths">'+pathRows+'</div>';
-  return el;
-}
-
 var dl=document.getElementById("docList"); DOCS.forEach(function(d){ dl.appendChild(docCard(d)); });
-var bl=document.getElementById("binList"); BINS.forEach(function(d){ bl.appendChild(binCard(d)); });
-
-// probe each binary; turn into a live link or a greyed "not synced" tag
-Array.prototype.forEach.call(document.querySelectorAll("a.dl.pending"), function(a){
-  var f=a.getAttribute("data-file");
-  fetch(f,{method:"HEAD"}).then(function(r){
-    if(r.ok){ a.classList.remove("pending"); a.title="Download "+f; }
-    else throw 0;
-  }).catch(function(){
-    var s=document.createElement("span"); s.className="x"; s.textContent=ext(f)+" \u00b7 not synced"; s.title=f+" is not in the served folder yet";
-    a.parentNode.replaceChild(s,a);
-  });
-});
 </script>
 <script src="/nav.js"></script>
 </body>

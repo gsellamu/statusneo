@@ -31,6 +31,7 @@
     ["StatusNeo · Agentic FDE suite", [
       ["/statusneo.html", "FDE Practice — overview"],
       ["/artifacts/statusneo/index.html", "Artifact index & file map"],
+      ["/artifacts/statusneo/reader.html?doc=SUITE-INDEX", "★ Suite Index & Contents"],
       ["/artifacts/statusneo/reader.html?doc=00-MASTER-AGENTIC-FDE-REFERENCE", "Master Reference"],
       ["/artifacts/statusneo/reader.html?doc=01-FDE-CHARTER-PROPOSAL", "FDE Charter Proposal"],
       ["/artifacts/statusneo/reader.html?doc=06-FDE-80-20-ROLES-AND-LIFECYCLE", "80:20 Roles & Lifecycle"],
@@ -41,8 +42,8 @@
       ["/artifacts/statusneo/reader.html?doc=03-LANDING-RUNBOOK", "Landing Runbook"],
       ["/artifacts/statusneo/reader.html?doc=09-FDE-30-60-90-OKR-STAR", "30/60/90 OKR & STAR"],
       ["/artifacts/statusneo/reader.html?doc=10-FDE-OKR-SCORECARD", "OKR Scorecard"],
-      ["/artifacts/statusneo/StatusNeo_FDE_Charter.pptx", "Board Deck (.pptx)", true],
-      ["/artifacts/statusneo/StatusNeo_FDE_PR-FAQ_Playbook.pdf", "PR-FAQ Playbook (.pdf)", true],
+      ["/artifacts/statusneo/reader.html?doc=DECK-FDE-CHARTER", "Board Deck"],
+      ["/artifacts/statusneo/reader.html?doc=PRFAQ-FDE-PLAYBOOK", "PR-FAQ Playbook"],
     ]],
     ["Architecture artifacts", [
       ["/artifacts/ADR-009-edge-feed-layer.html", "ADR-009 · Edge-Feed (page)"],

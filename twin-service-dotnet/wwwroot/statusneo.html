@@ -179,44 +179,27 @@ var DOC = {
   "02-FDE-LOOP-COOKBOOK":"02-FDE-LOOP-COOKBOOK",
   "03-LANDING-RUNBOOK":"03-LANDING-RUNBOOK",
   "09-FDE-30-60-90-OKR-STAR":"09-FDE-30-60-90-OKR-STAR",
-  "10-FDE-OKR-SCORECARD":"10-FDE-OKR-SCORECARD"
+  "10-FDE-OKR-SCORECARD":"10-FDE-OKR-SCORECARD",
+  "StatusNeo_FDE_Charter":"DECK-FDE-CHARTER",
+  "StatusNeo_FDE_PR-FAQ_Playbook":"PRFAQ-FDE-PLAYBOOK"
 };
 function stem(href){ return href.split("/").pop().replace(/\.(pdf|docx|pptx)$/i,""); }
 function card(item){
   var docId = DOC[stem(item[0])];
-  var href = docId ? ("/artifacts/statusneo/reader.html?doc="+docId) : item[0];
+  // every artifact opens in the gated, watermarked reader — never a download
+  var href = "/artifacts/statusneo/reader.html" + (docId ? "?doc="+docId : "");
   var a=document.createElement("a"); a.href=href; a.className="card";
-  var isOffice = /\.(docx|pptx|xlsx)$/i.test(item[0]);
-  var badgeTxt;
-  if(docId){ badgeTxt="read"; }                                  // opens in-browser from markdown
-  else if(isOffice){ a.setAttribute("download",""); badgeTxt="download"; }
-  else { badgeTxt="open"; }
-  var fmt = docId ? "Read online" : item[6];
   a.innerHTML =
-    '<span class="badge '+item[7]+'">'+badgeTxt+'</span>'+
+    '<span class="badge '+item[7]+'">read</span>'+
     '<div class="ico" style="background:'+item[3]+'">'+item[2]+'</div>'+
     '<h3>'+item[1]+'</h3>'+
     '<p>'+item[4]+'</p>'+
-    '<div class="meta"><span class="tag">'+item[5]+'</span><span class="fmt">'+fmt+'</span></div>';
+    '<div class="meta"><span class="tag">'+item[5]+'</span><span class="fmt">Read online</span></div>';
   return a;
 }
 SUITE.forEach(function(it){ document.getElementById("suiteGrid").appendChild(card(it)); });
 
-/* ---------- availability note: only the 2 binary-only artifacts need a file on disk ---------- */
-(function(){
-  var bins = SUITE.map(function(s){return s[0];}).filter(function(u){ return !DOC[stem(u)]; });
-  var missing=[];
-  Promise.all(bins.map(function(u){
-    return fetch(u,{method:"HEAD"}).then(function(r){ if(!r.ok) missing.push(u.split("/").pop()); }).catch(function(){ missing.push(u.split("/").pop()); });
-  })).then(function(){
-    var n=document.getElementById("footnote");
-    if(missing.length){
-      n.innerHTML="Every document above opens in-browser from its markdown source &mdash; no download needed. Two presentation artifacts are optional downloads, not yet in <code>wwwroot/artifacts/statusneo/</code>: "+missing.join(", ")+".";
-    } else {
-      n.innerHTML="Every document opens in-browser; the Board Deck and PR-FAQ are also available as downloads.";
-    }
-  });
-})();
+/* every artifact opens in-browser in the gated, watermarked reader - no downloads, no raw files */
 </script>
 <script src="/nav.js"></script>
 </body>

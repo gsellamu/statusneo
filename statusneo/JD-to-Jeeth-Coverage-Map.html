@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>JD → Jeeth — Coverage Map (Confidential)</title>
+<style>
+  :root{--navy:#16263f;--navy2:#23375a;--gold:#e8a816;--goldk:#c9952f;--ink:#1f2a38;
+        --slate:#5b6b7e;--tint:#f3f6fa;--line:#dfe6ee;--green:#1e7a4c;--amber:#9a6a12;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:#8a95a3;color:var(--ink);font-family:Calibri,Segoe UI,system-ui,sans-serif;line-height:1.4;}
+
+  .wm{position:fixed;inset:0;width:100%;height:100%;z-index:9999;pointer-events:none;}
+  .cfoot{position:fixed;left:0;right:0;bottom:0;z-index:9998;pointer-events:none;
+    background:rgba(14,27,46,.93);color:#e8eef7;font-size:9.5px;letter-spacing:.3px;text-align:center;padding:4px 8px;}
+  .cfoot b{color:var(--gold);}
+  .howto{max-width:900px;margin:14px auto;background:#fff;border:1px solid var(--line);border-left:5px solid var(--gold);
+    border-radius:10px;padding:11px 16px;font-size:12.5px;box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .howto b{color:var(--navy);} .howto code{background:#eef1f5;padding:1px 6px;border-radius:5px;font-family:Consolas,monospace;font-size:12px;}
+
+  .sheet{max-width:900px;margin:16px auto;background:#fff;padding:32px 40px 46px;box-shadow:0 3px 16px rgba(0,0,0,.22);border-radius:4px;}
+  .kick{color:var(--goldk);font-size:11px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin:0 0 6px;}
+  h1{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:25px;margin:0 0 4px;line-height:1.16;}
+  .sub{color:var(--slate);font-size:13.5px;margin:0 0 6px;}
+  h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:17px;margin:22px 0 4px;border-bottom:2px solid var(--gold);padding-bottom:4px;}
+  .hint{color:var(--slate);font-size:12px;margin:2px 0 8px;}
+  p{font-size:13px;margin:6px 0;}
+  strong{color:var(--navy);}
+  table{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:12px;}
+  th{background:var(--navy);color:#fff;text-align:left;padding:6px 9px;border:1px solid #2c3f5e;}
+  td{padding:6px 9px;border:1px solid var(--line);vertical-align:top;}
+  tr:nth-child(even) td{background:var(--tint);}
+  td.req{font-weight:bold;color:var(--navy);width:31%;}
+  td.chk{width:60px;text-align:center;font-weight:bold;}
+  .yes{color:var(--green);} .exc{color:var(--goldk);}
+  .lead{background:#f7faff;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:11px 15px;margin:10px 0;font-size:13px;color:var(--navy);}
+  .lead b{color:var(--navy);}
+  .flag{background:#fbf6ea;border:1px solid #ecdfc0;border-radius:9px;padding:10px 14px;margin:8px 0;font-size:12px;color:var(--ink);}
+  .flag b{color:var(--amber);}
+  ul{margin:5px 0;padding-left:19px;} li{font-size:12.3px;margin:2px 0;}
+  .foot{margin-top:18px;font-size:11.7px;color:var(--slate);} .foot b{color:var(--navy);}
+
+  @page{size:letter;margin:12mm 11mm 14mm;}
+  @media print{
+    body{background:#fff;} .howto{display:none;}
+    .sheet{box-shadow:none;margin:0 auto;max-width:100%;padding:4mm 3mm 8mm;border-radius:0;}
+    .wm,.cfoot{position:fixed;}
+    h2{page-break-after:avoid;} table{page-break-inside:auto;} tr{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="wm" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <pattern id="wmpat" width="360" height="230" patternUnits="userSpaceOnUse" patternTransform="rotate(-30)">
+      <text x="0" y="120" font-family="Arial, sans-serif" font-size="16" font-weight="bold"
+            fill="#16263f" fill-opacity="0.07">CONFIDENTIAL &#183; &#169; Jithendran Sellamuthu &#183; StatusNeo hiring process</text>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#wmpat)"></rect>
+</svg>
+<div class="cfoot"><b>CONFIDENTIAL</b> &nbsp;&middot;&nbsp; &copy; Jithendran (Jeeth) Sellamuthu &nbsp;&middot;&nbsp; Prepared for the StatusNeo hiring process</div>
+
+<div class="howto"><b>To save as PDF:</b> <code>Ctrl</code>+<code>P</code> &rarr; <b>Save as PDF</b> &rarr; enable <b>Background graphics</b>. <em>(This banner isn't printed.)</em></div>
+
+<section class="sheet">
+  <p class="kick">StatusNeo &middot; AI-Native Transformation role &middot; requirement-by-requirement</p>
+  <h1>JD &rarr; Jeeth: Coverage Map</h1>
+  <p class="sub">Every line of the job description, mapped to concrete evidence. Legend: <span class="yes">&#10003;</span> meets &middot; <span class="exc">&#10003;&#10003;</span> exceeds.</p>
+
+  <div class="lead"><b>The headline:</b> the role StatusNeo posted &mdash; a hands-on, embedded, opinionated AI builder-advisor who goes inside customer engineering orgs, runs an AI Maturity Scan, and ships the fix &mdash; <b>is the Forward Deployed Engineering motion Jeeth has already documented and demonstrated.</b> He meets every must-have and exceeds most. The one framing note: he operates a level above the posted IC band (see the last section).</div>
+
+  <h2>Must-have &mdash; all met</h2>
+  <table>
+    <tr><th>JD requirement</th><th>Jeeth's evidence</th><th>&nbsp;</th></tr>
+    <tr><td class="req">4&ndash;14 yrs real engineering experience</td><td>28 years of embedded, hands-on engineering across Qualcomm, GE Healthcare, Amazon, and a stealth GenAI platform.</td><td class="chk exc">&#10003;&#10003;</td></tr>
+    <tr><td class="req">Has personally written production code</td><td>Production systems at Qualcomm (40M users, 99.999%, US Patent 8,655,833), GE Healthcare (HIPAA), Amazon (six-nines scale). Still hands-on to the commit.</td><td class="chk exc">&#10003;&#10003;</td></tr>
+    <tr><td class="req">Built systems end-to-end</td><td>A career of end-to-end embedded builds; most recently a working vertical slice on the customer's own stack at Modutecture.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Used AI daily in development workflows</td><td>Builds with agentic tooling daily &mdash; agentic IDE / Claude Code, LangGraph multi-agent orchestration, local quantized LLMs (Ollama / vLLM), AI-augmented testing and CI/CD.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Deep understanding of AI in engineering (not just ML theory)</td><td>The entire FDE suite is applied AI-in-engineering: the agentic SDLC, AI-augmented coding / testing / review, the deterministic gate. Not model theory &mdash; running code.</td><td class="chk exc">&#10003;&#10003;</td></tr>
+    <tr><td class="req">SDLC transformation</td><td>The FDE lifecycle, the 80:20 AI:human operating model, the Loop Cookbook and Landing Runbook &mdash; a documented, repeatable SDLC-transformation method.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Modern DevOps / Platform Engineering</td><td>DevSecOps, SRE, AIOps, and CI/CD for embedded and remote PODs &mdash; codified in the Multi-Cloud Tooling Directory (AWS / GCP / Azure).</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Strong communication &mdash; teach, challenge, influence</td><td>The role is CXO-facing by design; the board deck, workshops, and executive briefings are built to teach and challenge, not present slideware.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Opinionated, curious, intellectually honest</td><td>The whole posture: strong POV ("this is wrong / this is what good looks like"), an explicit "where AI should <em>not</em> be used" stance, and a hard honesty discipline (claims labeled built / proven / next).</td><td class="chk exc">&#10003;&#10003;</td></tr>
+  </table>
+
+  <h2>The stated CORE &mdash; the AI Maturity Scan</h2>
+  <p class="hint">The JD names the diagnostic as the core of the role. This is where to be explicit &mdash; Jeeth runs the scan <strong>and</strong> ships the fix.</p>
+  <table>
+    <tr><th>JD asks for&hellip;</th><th>Jeeth's evidence</th><th>&nbsp;</th></tr>
+    <tr><td class="req">Lead AI Engineering Maturity Assessments; structured interviews with eng leaders, platform, DevOps/SRE, product/architecture</td><td>The FDE "Clarity / Diagnose" loop is exactly this: structured stakeholder interviews (sponsor, CTO, platform, delivery) to find the load-bearing gap. It is step one of every engagement.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Maturity scores, capability heatmaps, benchmarking vs. best-in-class</td><td>Maps to StatusNeo's own AI Maturity Index, extended with an embedded-delivery readiness vector; produces scores and heatmaps as the diagnostic output.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Actionable 90-day / 6-month / 12-month roadmaps</td><td>The 30/60/90 (and its OKR / STAR + scorecard) is precisely this format &mdash; opinionated, measurable, horizon-based roadmaps.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Say where AI should <em>not</em> be used; where agentic workflows create disproportionate ROI</td><td>Core to the philosophy &mdash; "the model proposes, a deterministic gate disposes"; correctness and compliance precede velocity. Explicitly names where AI is the wrong tool.</td><td class="chk exc">&#10003;&#10003;</td></tr>
+    <tr><td class="req">Recommend tooling, platforms, architectures, governance</td><td>The Multi-Cloud Tooling Directory + the 7-layer architecture + the governance / guardrails model deliver exactly this.</td><td class="chk yes">&#10003;</td></tr>
+  </table>
+
+  <h2>Strongly preferred</h2>
+  <table>
+    <tr><th>JD requirement</th><th>Jeeth's evidence</th><th>&nbsp;</th></tr>
+    <tr><td class="req">Consulting / advising enterprise customers</td><td>28 years embedded-at-customer &mdash; that <em>is</em> the forward-deployed consulting motion. Currently placed (via StatusNeo) inside Modutecture in an architecture-rescue role.</td><td class="chk exc">&#10003;&#10003;</td></tr>
+    <tr><td class="req">Agentic AI systems &middot; multi-agent orchestration</td><td>The agentic FDE lifecycle: seven specialized swarm roles orchestrated with LangGraph; multi-agent SDLC is the core design.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">AI governance and guardrails</td><td>The deterministic correctness gate, the Security Sentinel role (SAST / dependency / compliance), and the agentic-security model &mdash; governed agentic AI in running code.</td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Public footprint (blogs, talks, GitHub, evangelism)</td><td><strong>Live:</strong> a GitHub portfolio of the FDE practice and platform work. <strong>In the plan:</strong> the "Embedded Edge" whitepaper and CXO roundtable / conference track (Day-90 deliverable). <em>Honest status: GitHub now; speaking footprint is aspirational, not yet extensive.</em></td><td class="chk yes">&#10003;</td></tr>
+    <tr><td class="req">Comfort with CTOs / CIOs / Heads of Eng / CDOs</td><td>Direct CTO engagement at Modutecture; a career of building trust with engineering and compliance leadership in regulated rooms.</td><td class="chk yes">&#10003;</td></tr>
+  </table>
+
+  <h2>"Who this role is NOT for" &mdash; Jeeth is the opposite of every exclusion</h2>
+  <table>
+    <tr><th>The JD rejects&hellip;</th><th>Why that's the inverse of Jeeth</th></tr>
+    <tr><td class="req">Pure solution architects who don't code anymore</td><td>Still hands-on to the commit &mdash; builds the vertical slice himself, doesn't just draw the boxes.</td></tr>
+    <tr><td class="req">Presales slide creators</td><td>"I am the proof, not the pitch." The deliverable is running, observable software &mdash; slideware is the anti-pattern he calls out.</td></tr>
+    <tr><td class="req">Research-only AI specialists with no production exposure</td><td>Six-nines production systems and deployed agentic workflows &mdash; production is the whole career.</td></tr>
+    <tr><td class="req">People uncomfortable taking strong points of view</td><td>The honesty discipline is a strong-POV engine: names what's wrong, what "good" looks like, and where AI should not be used.</td></tr>
+  </table>
+
+  <h2>The one framing note &mdash; level</h2>
+  <div class="lead"><b>The JD is a 4&ndash;14-year IC builder-advisor role. Jeeth is 28 years and proposes to <em>own the charter.</em></b> Read this as a strength, not a mismatch: <b>the posting is the receipt that the FDE need is real and named at StatusNeo.</b> Jeeth does the exact motion the role describes &mdash; at the highest level &mdash; and systematizes it into a named, scaling practice. If only the IC seat is funded today, it is still the wedge into the charter.</div>
+
+  <div class="flag"><b>Keep it honest (credibility notes):</b> Modutecture is a <strong>validated demonstration, not a closed-and-scaled account</strong>. The <strong>speaking / blog footprint is aspirational</strong> &mdash; GitHub is live, broad public evangelism is not yet. Verticals are aligned to StatusNeo's stated targets (BFSI, retail, healthcare, airlines); Jeeth's deepest regulated-domain proof is healthcare, financial, and safety-critical.</div>
+
+  <p class="foot"><b>Bottom line for the managing partner:</b> he covers every line of the JD, exceeds the engineering and AI-in-engineering bars, and is the living opposite of everyone the role excludes &mdash; ready to run the Maturity Scan and own the charter. &nbsp;&middot;&nbsp; <b>Jeeth Sellamuthu</b> &middot; gsellamu@gmail.com &middot; +1 858 226 0619</p>
+</section>
+
+</body>
+</html>
