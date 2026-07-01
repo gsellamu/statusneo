@@ -3,6 +3,15 @@
  * click-dropdown listing every surface + artifact, grouped. Brand + health
  * pip stay visible. Highlights the current page. Closes on outside-click/Esc. */
 (function () {
+  // on every page: access gate first, then confidential deterrents + watermark + footnote
+  ["/gate.js", "/protect.js"].forEach(function (src) {
+    var id = "__inj" + src.replace(/[^a-z]/gi, "");
+    if (!document.getElementById(id)) {
+      var s = document.createElement("script");
+      s.id = id; s.src = src;
+      (document.head || document.documentElement).appendChild(s);
+    }
+  });
   // grouped link model: [href, label, optional download flag]
   var GROUPS = [
     ["Live surfaces", [
